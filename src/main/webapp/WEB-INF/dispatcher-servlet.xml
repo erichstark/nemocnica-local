@@ -6,24 +6,32 @@
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
     <context:component-scan base-package="sk.stuba.fei.nemocnica"/>
+
     <mvc:annotation-driven/>
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+    <mvc:view-controller path="/" view-name="index"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
     <mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
     <mvc:resources mapping="/img/**" location="/WEB-INF/img/"/>
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
-
+    <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"/>
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="annotatedClasses">
             <list>
                 <!-- List of annotated classes to store in DB -->
-                <!--<value>sk.stuba.fei.nemocnica.model.User</value>-->
+                <value>sk.stuba.fei.nemocnica.model.Zamestnanec</value>
+                <value>sk.stuba.fei.nemocnica.model.Ambulancia</value>
+                <value>sk.stuba.fei.nemocnica.model.Specializacia</value>
+                <value>sk.stuba.fei.nemocnica.model.Zariadenie</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -31,7 +39,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.datasource">java:jboss/datasources/PostgreSQLDS</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
-                <!-- IDEA 'Cannot resolve schema' due to used jndi datasource. Please ignore it. -->
+                <!-- If IDEA 'Cannot resolve schema' please ignore it. It's due to used jndi datasource. -->
                 <prop key="hibernate.default_schema">public</prop>
                 <prop key="show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -39,16 +47,13 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
         </property>
     </bean>
 
-    <tx:annotation-driven/>
-
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
     <!-- Example of creating DAO bean which can be later injected to controller by using @Autowired annotation -->
-    <!--<bean id="userDao" class="sk.stuba.fei.nemocnica.dao.UserDAOImpl">-->
-    <!--<constructor-arg ref="sessionFactory"/>-->
+    <!-- <bean id="userDao" class="sk.stuba.fei.nemocnica.dao.UserDAOImpl">-->
+    <!--    <constructor-arg ref="sessionFactory"/>-->
     <!--</bean>-->
 
 </beans>
