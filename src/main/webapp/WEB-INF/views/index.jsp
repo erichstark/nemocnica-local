@@ -11,9 +11,9 @@
 <body>
 
 <div style="text-align: center;">
-  <h2>Hello World Bitches and Fuckers !!!!</h2>
+  <h2>Index</h2>
   <h3>
-    <a href="hello?name=Eric">Click Here</a>
+    <a href="hello">Click Here</a>
   </h3>
 </div>
 </body>
