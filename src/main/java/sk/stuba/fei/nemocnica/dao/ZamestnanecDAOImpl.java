@@ -42,7 +42,11 @@ public class ZamestnanecDAOImpl implements ZamestnanecDAO {
         Query query = session.createQuery(BY_USERNAME);
         query.setParameter("username", username);
         List list = query.list();
-        return (Zamestnanec) list.get(0);
+        if (list.size() == 0) {
+            return null;
+        } else {
+            return (Zamestnanec) list.get(0);
+        }
     }
 
     @Override

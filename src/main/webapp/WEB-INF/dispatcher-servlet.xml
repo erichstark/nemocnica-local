@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:component-scan base-package="sk.stuba.fei.nemocnica"/>
 
@@ -51,9 +51,14 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <tx:annotation-driven/>
     <!-- Example of creating DAO bean which can be later injected to controller by using @Autowired annotation -->
     <!-- <bean id="userDao" class="sk.stuba.fei.nemocnica.dao.UserDAOImpl">-->
     <!--    <constructor-arg ref="sessionFactory"/>-->
     <!--</bean>-->
+
+    <bean id="zamestnanecDao" class="sk.stuba.fei.nemocnica.dao.ZamestnanecDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
 
 </beans>
