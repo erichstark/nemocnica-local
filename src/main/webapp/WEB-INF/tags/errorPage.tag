@@ -17,10 +17,10 @@
                     </div>
                     <div class="error-actions">
                         <button onclick="history.back()" class="btn btn-primary btn-lg">
-                            <span class="glyphicon glyphicon-home"></span> Späť
+                            <span class="glyphicon glyphicon-step-backward"></span> Späť
                         </button>
                         <a href="${pageContext.request.contextPath}/" class="btn btn-default btn-lg">
-                            <span class="glyphicon glyphicon-envelope"></span> Home
+                            <span class="glyphicon glyphicon-home"></span> Home
                         </a>
                     </div>
                 </div>
