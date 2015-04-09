@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<t:menuFooterPage pageTitle="IndexPage">
-    Index Page
-</t:menuFooterPage>
+<t:errorPage error="404 Not Found" details="Stránka nebola nájdená"/>

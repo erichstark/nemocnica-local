@@ -26,7 +26,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     ZamestnanecDAO zamestnanecDao;
 
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();

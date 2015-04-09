@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
-    @RequestMapping(value = "/admin")
+    @RequestMapping(value = "/admin/")
     public ModelAndView showAdmin() {
-        return new ModelAndView("admin");
+        return new ModelAndView("admin/index");
     }
 }
