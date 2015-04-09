@@ -16,6 +16,7 @@
                 <%--TODO generate menu from attribute--%>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li><a href="${pageContext.request.contextPath}/admin">Admin</a></li>
                     <li><a href="#">Link1</a></li>
                     <li><a href="#">Link2</a></li>
                     <li class="dropdown">
