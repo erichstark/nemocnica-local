@@ -13,7 +13,6 @@ public class Zamestnanec implements Serializable {
     private int id;
     private String username;
     private String password;
-    private String displayName;
     private String role;
     private Set<Ambulancia> ambulancie;
     private Set<Specializacia> specializacie;
@@ -43,15 +42,6 @@ public class Zamestnanec implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Column(nullable = false)
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
     }
 
     @Column(nullable = false)
