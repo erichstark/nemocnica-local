@@ -22,6 +22,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
     <mvc:resources mapping="/img/**" location="/WEB-INF/img/"/>
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
     <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"/>
+    <mvc:resources mapping="/fav/**" location="/WEB-INF/fav/"/>
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -39,7 +40,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.datasource">java:jboss/datasources/PostgreSQLDS</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
-                <!-- If IDEA 'Cannot resolve schema' please ignore it. It's due to used jndi datasource. -->
                 <prop key="hibernate.default_schema">public</prop>
                 <prop key="show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -52,10 +52,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <tx:annotation-driven/>
-    <!-- Example of creating DAO bean which can be later injected to controller by using @Autowired annotation -->
-    <!-- <bean id="userDao" class="sk.stuba.fei.nemocnica.dao.UserDAOImpl">-->
-    <!--    <constructor-arg ref="sessionFactory"/>-->
-    <!--</bean>-->
 
     <bean id="zamestnanecDao" class="sk.stuba.fei.nemocnica.dao.ZamestnanecDAOImpl">
         <constructor-arg ref="sessionFactory"/>
