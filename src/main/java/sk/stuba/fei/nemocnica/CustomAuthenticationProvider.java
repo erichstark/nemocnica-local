@@ -62,7 +62,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private List<GrantedAuthority> parseRoles(String roles) {
         List<GrantedAuthority> grantedAuths = new ArrayList<>();
         for (String token : roles.split(",")) {
-            grantedAuths.add(new SimpleGrantedAuthority(token));
+            if (!token.isEmpty())
+                grantedAuths.add(new SimpleGrantedAuthority(token));
         }
         return grantedAuths;
     }
