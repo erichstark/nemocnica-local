@@ -1,6 +1,5 @@
 package sk.stuba.fei.nemocnica.dao;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +12,6 @@ import java.util.List;
  */
 public class ZamestnanecDAOImpl implements ZamestnanecDAO {
 
-    private static final String BY_USERNAME = "FROM Zamestnanec Z WHERE username = :username";
-
     private SessionFactory sessionFactory;
 
     public ZamestnanecDAOImpl(SessionFactory sessionFactory) {
@@ -23,36 +20,29 @@ public class ZamestnanecDAOImpl implements ZamestnanecDAO {
 
     @Override
     @Transactional
-    public List<Zamestnanec> getAll() {
+    public List<Zamestnanec> findAll() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createCriteria(Zamestnanec.class).list();
+        return session.getNamedQuery("Zamestnanec.findAll").list();
     }
 
     @Override
     @Transactional
-    public Zamestnanec getById(int id) {
+    public Zamestnanec findById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        return (Zamestnanec) session.get(Zamestnanec.class, id);
+        return (Zamestnanec) session.getNamedQuery("Zamestnanec.findById").setParameter("id", id).uniqueResult();
     }
 
     @Override
     @Transactional
-    public Zamestnanec getByUsername(String username) {
+    public Zamestnanec findByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(BY_USERNAME);
-        query.setParameter("username", username);
-        List list = query.list();
-        if (list.size() == 0) {
-            return null;
-        } else {
-            return (Zamestnanec) list.get(0);
-        }
+        return (Zamestnanec) session.getNamedQuery("Zamestnanec.findByUsername").setParameter("username", username).uniqueResult();
     }
 
     @Override
     @Transactional
     public void createOrUpdate(Zamestnanec zamestnanec) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(zamestnanec);
+        session.persist(zamestnanec);
     }
 }

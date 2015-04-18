@@ -30,11 +30,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-        Zamestnanec zamestnanec = zamestnanecDao.getByUsername(name);
+        Zamestnanec zamestnanec = zamestnanecDao.findByUsername(name);
         if (zamestnanec != null) {
             try {
-                boolean valid = PasswordHash.validatePassword(password, zamestnanec.getPassword());
-                if (valid) {
+                if (PasswordHash.validatePassword(password, zamestnanec.getPassword())) {
                     return new UsernamePasswordAuthenticationToken(name, authentication, parseRoles(zamestnanec.getRole()));
                 }
             } catch (NoSuchAlgorithmException | InvalidKeySpecException ignored) {

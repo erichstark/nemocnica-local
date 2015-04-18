@@ -31,8 +31,9 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.
                 <!-- List of annotated classes to store in DB -->
                 <value>sk.stuba.fei.nemocnica.model.Zamestnanec</value>
                 <value>sk.stuba.fei.nemocnica.model.Ambulancia</value>
-                <value>sk.stuba.fei.nemocnica.model.Specializacia</value>
                 <value>sk.stuba.fei.nemocnica.model.Zariadenie</value>
+                <value>sk.stuba.fei.nemocnica.model.Pacient</value>
+                <value>sk.stuba.fei.nemocnica.model.Poistovna</value>
             </list>
         </property>
         <property name="hibernateProperties">

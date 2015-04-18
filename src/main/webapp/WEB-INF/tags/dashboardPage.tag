@@ -1,7 +1,8 @@
 <%@tag description="User Page template" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<t:genericPage pageTitle="Administrácia">
+<%@attribute name="pageTitle" required="true" %>
+<t:genericPage pageTitle="${pageTitle}">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -12,10 +13,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand" href="${pageContext.request.contextPath}">Nemocnica Local</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
+
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Settings</a></li>
                     <li><a href="#">Profile</a></li>
@@ -31,7 +33,9 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin">Overview <span
+                            class="sr-only">(current)</span></a></li>
+                    <li><a href="${pageContext.request.contextPath}/admin/zamestnanci">Zamestnanci</a></li>
                     <li><a href="#">Reports</a></li>
                     <li><a href="#">Analytics</a></li>
                     <li><a href="#">Export</a></li>
