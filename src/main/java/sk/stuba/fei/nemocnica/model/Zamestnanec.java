@@ -1,13 +1,23 @@
 package sk.stuba.fei.nemocnica.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by matus_000 on 4.4.2015.
  */
 @Entity
+@XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = "Zamestnanec.findAll", query = "SELECT z FROM Zamestnanec z"),
+        @NamedQuery(name = "Zamestnanec.findById", query = "SELECT z FROM Zamestnanec z WHERE z.id = :id"),
+        @NamedQuery(name = "Zamestnanec.findByRole", query = "SELECT z FROM Zamestnanec z WHERE z.role LIKE :role"),
+        @NamedQuery(name = "Zamestnanec.findByUsername", query = "SELECT z FROM Zamestnanec z WHERE z.username = :username")})
 public class Zamestnanec implements Serializable {
 
     private int id;
@@ -15,7 +25,16 @@ public class Zamestnanec implements Serializable {
     private String password;
     private String role;
     private Set<Ambulancia> ambulancie;
-    private Set<Specializacia> specializacie;
+    private List<String> specializacie;
+
+    public Zamestnanec() {
+        id = 0;
+        username = "";
+        password = "";
+        role = "";
+        ambulancie = new HashSet<>();
+        specializacie = new ArrayList<>();
+    }
 
     @Id
     public int getId() {
@@ -69,19 +88,12 @@ public class Zamestnanec implements Serializable {
         this.ambulancie = ambulancie;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "zamestnanec_specializacia",
-            joinColumns =
-            @JoinColumn(name = "zamestnanec", referencedColumnName = "id"),
-            inverseJoinColumns =
-            @JoinColumn(name = "specializacia", referencedColumnName = "id")
-    )
-    public Set<Specializacia> getSpecializacie() {
+    @ElementCollection
+    public List<String> getSpecializacie() {
         return specializacie;
     }
 
-    public void setSpecializacie(Set<Specializacia> specializacie) {
+    public void setSpecializacie(List<String> specializacie) {
         this.specializacie = specializacie;
     }
 }

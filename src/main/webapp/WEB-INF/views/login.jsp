@@ -13,7 +13,7 @@
                         <input type="text" class="form-control" id="username" name="username" required autofocus>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Heslo</label>
                         <input type="password" class="form-control" id="password" name="password">
                     </div>
                     <button type="submit" class="btn btn-sm btn-default">Prihlásiť</button>

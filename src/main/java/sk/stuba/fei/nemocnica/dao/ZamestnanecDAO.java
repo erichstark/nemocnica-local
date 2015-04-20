@@ -8,11 +8,11 @@ import java.util.List;
  * Created by matus_000 on 7.4.2015.
  */
 public interface ZamestnanecDAO {
-    List getAll();
+    List<Zamestnanec> findAll();
 
-    Zamestnanec getById(int id);
+    Zamestnanec findById(int id);
 
-    Zamestnanec getByUsername(String username);
+    Zamestnanec findByUsername(String username);
 
     void createOrUpdate(Zamestnanec zamestnanec);
 }

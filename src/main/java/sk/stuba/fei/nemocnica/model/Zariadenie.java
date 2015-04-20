@@ -13,6 +13,10 @@ public class Zariadenie implements Serializable {
     private int id;
     private String nazov;
     private Set<Ambulancia> ambulancie;
+    private String ulica;
+    private String cislo;
+    private String mesto;
+    private String psc;
 
     @Id
     public int getId() {
@@ -39,5 +43,41 @@ public class Zariadenie implements Serializable {
 
     public void setAmbulancie(Set<Ambulancia> ambulancie) {
         this.ambulancie = ambulancie;
+    }
+
+    @Column(nullable = false)
+    public String getUlica() {
+        return ulica;
+    }
+
+    public void setUlica(String ulica) {
+        this.ulica = ulica;
+    }
+
+    @Column(nullable = false)
+    public String getCislo() {
+        return cislo;
+    }
+
+    public void setCislo(String cislo) {
+        this.cislo = cislo;
+    }
+
+    @Column(nullable = false)
+    public String getMesto() {
+        return mesto;
+    }
+
+    public void setMesto(String mesto) {
+        this.mesto = mesto;
+    }
+
+    @Column(nullable = false)
+    public String getPsc() {
+        return psc;
+    }
+
+    public void setPsc(String psc) {
+        this.psc = psc;
     }
 }
