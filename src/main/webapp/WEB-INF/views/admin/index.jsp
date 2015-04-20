@@ -3,6 +3,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:dashboardPage pageTitle="Administrácia">
     <h1 class="page-header">Dashboard</h1>
+
     <div class="row placeholders">
         <div class="col-xs-6 col-sm-3 placeholder">
             <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="200x200"
