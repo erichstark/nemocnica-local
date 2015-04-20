@@ -1,5 +1,6 @@
 package sk.stuba.fei.nemocnica.jms;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +13,14 @@ import javax.jms.TextMessage;
 @Component
 public class JmsProducer {
 
+    @Autowired
     private JmsTemplate jmsTemplate;
 
-    public JmsProducer(JmsTemplate jmsTemplate) {
+    public JmsTemplate getJmsTemplate() {
+        return jmsTemplate;
+    }
+
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 
