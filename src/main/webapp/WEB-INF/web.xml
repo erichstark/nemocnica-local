@@ -40,6 +40,7 @@
             /WEB-INF/dispatcher-servlet.xml
             /WEB-INF/security-context.xml
             /WEB-INF/hibernate-context.xml
+            /WEB-INF/jms-context.xml
         </param-value>
     </context-param>
 

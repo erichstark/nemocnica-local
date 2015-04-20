@@ -448,6 +448,9 @@
                     <jms-queue name="DLQ">
                         <entry name="java:/jms/queue/DLQ"/>
                     </jms-queue>
+                    <jms-queue name="testQueue">
+                        <entry name="java:/jms/queue/TestQueue"/>
+                    </jms-queue>
                 </jms-destinations>
             </hornetq-server>
         </subsystem>
