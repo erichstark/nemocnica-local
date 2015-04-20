@@ -38,7 +38,8 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             /WEB-INF/dispatcher-servlet.xml
-            /WEB-INF/security-applicationContext.xml
+            /WEB-INF/security-context.xml
+            /WEB-INF/hibernate-context.xml
         </param-value>
     </context-param>
 
@@ -79,6 +80,4 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
-
-
 </web-app>
