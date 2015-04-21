@@ -16,16 +16,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                 <value>sk.stuba.fei.nemocnica.model.Poistovna</value>
             </list>
         </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.datasource">java:jboss/datasources/PostgreSQLDS</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
-                <prop key="hibernate.default_schema">public</prop>
-                <prop key="show_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-            </props>
-        </property>
+        <property name="configLocation" value="/WEB-INF/hibernate.cfg.xml"/>
     </bean>
 
     <bean id="transactionManager"
