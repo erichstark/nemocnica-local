@@ -41,6 +41,14 @@ public class ZamestnanecDAOImpl implements ZamestnanecDAO {
 
     @Override
     @Transactional
+    public List<Zamestnanec> findDoctors(String fullName,String specialization, String town) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("SELECT zam FROM Zamestnanec zam ").list();
+    }
+
+
+    @Override
+    @Transactional
     public void createOrUpdate(Zamestnanec zamestnanec) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(zamestnanec);

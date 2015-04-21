@@ -1,11 +1,11 @@
-<beans xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:component-scan base-package="sk.stuba.fei.nemocnica"/>
 
@@ -23,5 +23,43 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
     <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"/>
     <mvc:resources mapping="/fav/**" location="/WEB-INF/fav/"/>
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="annotatedClasses">
+            <list>
+                <!-- List of annotated classes to store in DB -->
+                <value>sk.stuba.fei.nemocnica.model.Zamestnanec</value>
+                <value>sk.stuba.fei.nemocnica.model.Ambulancia</value>
+                <value>sk.stuba.fei.nemocnica.model.Zariadenie</value>
+                <value>sk.stuba.fei.nemocnica.model.Pacient</value>
+                <value>sk.stuba.fei.nemocnica.model.Poistovna</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.datasource">java:jboss/datasources/PostgreSQLDS</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
+                <prop key="hibernate.default_schema">public</prop>
+                <prop key="show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:annotation-driven/>
+
+    <bean id="zamestnanecDao" class="sk.stuba.fei.nemocnica.dao.ZamestnanecDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="ambulanciaDao" class="sk.stuba.fei.nemocnica.dao.AmbulanciaDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
 
 </beans>

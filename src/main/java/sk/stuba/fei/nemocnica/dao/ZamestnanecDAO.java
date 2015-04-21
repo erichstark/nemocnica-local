@@ -14,5 +14,7 @@ public interface ZamestnanecDAO {
 
     Zamestnanec findByUsername(String username);
 
+    List<Zamestnanec> findDoctors(String fullName,String specialization, String town);
+
     void createOrUpdate(Zamestnanec zamestnanec);
 }

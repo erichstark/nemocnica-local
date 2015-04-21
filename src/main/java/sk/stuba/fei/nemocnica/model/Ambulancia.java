@@ -1,6 +1,7 @@
 package sk.stuba.fei.nemocnica.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -8,6 +9,12 @@ import java.util.Set;
  * Created by matus_000 on 4.4.2015.
  */
 @Entity
+@XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = "Ambulancia.findAll", query = "SELECT a FROM Ambulancia a WHERE a.name like :meno"),
+        @NamedQuery(name = "Ambulancia.findById", query = " SELECT a FROM Ambulancia a WHERE a.id=:id"),
+        @NamedQuery(name = "Ambulancia.findByMeno", query = "SELECT a FROM Ambulancia a WHERE a.name = :name"),
+        @NamedQuery(name = "Ambulancia.findByZariadenie", query = "SELECT a FROM Ambulancia a WHERE a.zariadenie = :zariadenie")})
 public class Ambulancia implements Serializable {
 
     private int id;

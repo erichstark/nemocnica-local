@@ -17,23 +17,30 @@ import java.util.Set;
         @NamedQuery(name = "Zamestnanec.findAll", query = "SELECT z FROM Zamestnanec z"),
         @NamedQuery(name = "Zamestnanec.findById", query = "SELECT z FROM Zamestnanec z WHERE z.id = :id"),
         @NamedQuery(name = "Zamestnanec.findByRole", query = "SELECT z FROM Zamestnanec z WHERE z.role LIKE :role"),
-        @NamedQuery(name = "Zamestnanec.findByUsername", query = "SELECT z FROM Zamestnanec z WHERE z.username = :username")})
+        @NamedQuery(name = "Zamestnanec.findByUsername", query = "SELECT z FROM Zamestnanec z WHERE z.username = :username"),
+        @NamedQuery(name = "Zamestnanec.findDoctors", query = "SELECT z FROM Zamestnanec z  WHERE (concat(z.name,' ',z.surname) like :fullName " +
+                "    or concat(z.name,' ',z.surname) like :fullName) and z.role='doctor'" )})
 public class Zamestnanec implements Serializable {
 
     private int id;
     private String username;
     private String password;
     private String role;
+    private String name;
+    private String surname;
+
     private Set<Ambulancia> ambulancie;
-    private List<String> specializacie;
+    private List<String> specializations;
 
     public Zamestnanec() {
         id = 0;
         username = "";
         password = "";
         role = "";
+        name= "";
+        surname= "";
         ambulancie = new HashSet<>();
-        specializacie = new ArrayList<>();
+        specializations = new ArrayList<>();
     }
 
     @Id
@@ -72,6 +79,24 @@ public class Zamestnanec implements Serializable {
         this.role = role;
     }
 
+    @Column
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "zamestnanec_ambulancia",
@@ -88,12 +113,12 @@ public class Zamestnanec implements Serializable {
         this.ambulancie = ambulancie;
     }
 
-    @ElementCollection
-    public List<String> getSpecializacie() {
-        return specializacie;
+    @ElementCollection(fetch=FetchType.EAGER)
+    public List<String> getSpecializations() {
+        return specializations;
     }
 
-    public void setSpecializacie(List<String> specializacie) {
-        this.specializacie = specializacie;
+    public void setSpecializations(List<String> specializations) {
+        this.specializations = specializations;
     }
 }
