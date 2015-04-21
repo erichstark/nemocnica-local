@@ -30,4 +30,8 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         <constructor-arg ref="sessionFactory"/>
     </bean>
 
+    <bean id="ambulanciaDao" class="sk.stuba.fei.nemocnica.dao.AmbulanciaDAOImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
 </beans>
