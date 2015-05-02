@@ -1,18 +1,18 @@
 package sk.stuba.fei.nemocnica.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import sk.stuba.fei.nemocnica.JmsProducer;
 
-/**
- * Created by matus_000 on 31.3.2015.
- */
+import java.util.Map;
+
 @Controller
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
-    @RequestMapping(value = "/admin")
-    public ModelAndView showAdmin() {
-        return new ModelAndView("admin/index");
+
+    @RequestMapping("/admin")
+    public String index(Map<String, Object> model) {
+        model.put("pageTitle", "Admin Dashboard");
+        return "admin/index";
     }
 }
