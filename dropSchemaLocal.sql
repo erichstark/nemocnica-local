@@ -1,2 +1,2 @@
-drop schema local cascade;
-create schema local;
+drop schema public cascade;
+create schema public;
