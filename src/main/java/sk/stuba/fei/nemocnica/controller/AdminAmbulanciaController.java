@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.nemocnica.domain.Ambulancia;
+import sk.stuba.fei.nemocnica.domain.Poistovna;
 import sk.stuba.fei.nemocnica.domain.Zariadenie;
 import sk.stuba.fei.nemocnica.formEntity.FormAmbulancia;
 import sk.stuba.fei.nemocnica.service.AmbulanciaService;
@@ -110,5 +111,34 @@ public class AdminAmbulanciaController {
         model.put("ambulancie", ambulanciaService.findAll());
 
         return "admin/ambulancia/index";
+    }
+
+    @RequestMapping(value = "/poistovna/add", method = RequestMethod.POST, params = {"id_poistovna", "id_ambulancia"})
+    public String poistovnaAdd(@RequestParam("id_poistovna") Long id_poistovna, @RequestParam("id_ambulancia") Long id_ambulancia) {
+
+        Ambulancia ambulancia = ambulanciaService.findOne(id_ambulancia);
+        Poistovna poistovna = poistovnaService.findOne(id_poistovna);
+
+        ambulancia.getPoistovne().add(poistovna);
+        poistovna.getAmbulancie().add(ambulancia);
+
+        ambulanciaService.save(ambulancia);
+
+        return "redirect:/admin/ambulancia/edit/" + id_ambulancia;
+    }
+
+    @RequestMapping(value = "{id_ambulancia}/poistovna/{id_poistovna}/delete")
+    public String poistovnaDelete(@PathVariable("id_ambulancia") Long id_ambulancia, @PathVariable("id_poistovna") Long id_poistovna) {
+
+        Ambulancia ambulancia = ambulanciaService.findOne(id_ambulancia);
+        for (Poistovna p : ambulancia.getPoistovne()) {
+            if (p.getId() == id_poistovna) {
+                ambulancia.getPoistovne().remove(p);
+            }
+        }
+
+        ambulanciaService.save(ambulancia);
+
+        return "redirect:/admin/ambulancia/edit/" + id_ambulancia;
     }
 }
