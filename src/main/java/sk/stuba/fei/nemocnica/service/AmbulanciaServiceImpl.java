@@ -18,14 +18,22 @@ public class AmbulanciaServiceImpl implements AmbulanciaService {
     @Autowired
     private AmbulanciaRepository ambulanciaRepository;
 
+    @Override
     public Ambulancia findOne(Long id) {
         return ambulanciaRepository.findOne(id);
     }
 
+    @Override
+    public List<Ambulancia> findByName(String name) {
+        return ambulanciaRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    @Override
     public Iterable<Ambulancia> findAll() {
         return ambulanciaRepository.findAll();
     }
 
+    @Override
     public boolean exists(Long id) {
         return ambulanciaRepository.exists(id);
     }
@@ -35,6 +43,7 @@ public class AmbulanciaServiceImpl implements AmbulanciaService {
         ambulanciaRepository.save(ambulancia);
     }
 
+    @Override
     public void delete(Long id) {
         ambulanciaRepository.delete(id);
     }

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.nemocnica.domain.Poistovna;
 import sk.stuba.fei.nemocnica.repository.PoistovnaRepository;
 
+import java.util.List;
+
 /**
  * Created by pallo on 5/3/15.
  */
@@ -19,6 +21,11 @@ public class PoistovnaServiceImpl implements PoistovnaService {
     @Override
     public Poistovna findOne(Long id) {
         return poistovnaRepository.findOne(id);
+    }
+
+    @Override
+    public List<Poistovna> findByName(String name) {
+        return poistovnaRepository.findByNazovContainingIgnoreCase(name);
     }
 
     @Override

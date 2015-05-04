@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface AmbulanciaRepository extends CrudRepository<Ambulancia, Long> {
 
-
+    List<Ambulancia> findByNameContainingIgnoreCase(String name);
 }
