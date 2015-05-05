@@ -43,7 +43,7 @@
                 <td>${facility_index + 1}</td>
                 <td>${facility.id}</td>
                 <td><a href="<@spring.url '/admin/facility/edit/' + facility.id />">${facility.name}</a></td>
-                <td>${facility.ulica+' '+facility.cislo+', '+facility.psc+' '+facility.mesto}</td>
+                <td>${facility.streetAndNumber+', '+facility.zip+' '+facility.city}</td>
                 <td><a href="<@spring.url '/admin/facility/delete/' + facility.id />"
                        onclick="return confirm('!! Zmaz ak si si isty ze toto facility nema ziadnu ambulanciu !!');">Zmazať</a>
                 </td>

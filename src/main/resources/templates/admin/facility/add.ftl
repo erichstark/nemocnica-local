@@ -24,24 +24,19 @@
                    value="${facility.name!""}">
         </div>
         <div class="form-group">
-            <label for="facility-ulica">Ulica</label>
-            <input type="text" name="ulica" class="form-control" id="facility-ulica" placeholder="Ulica"
-                   value="${facility.ulica!""}">
+            <label for="facility-streetAndNumber">Ulica a číslo</label>
+            <input type="text" name="streetAndNumber" class="form-control" id="facility-streetAndNumber" placeholder="StreetAndNumber"
+                   value="${facility.streetAndNumber!""}">
         </div>
         <div class="form-group">
-            <label for="facility-cislo">Číslo</label>
-            <input type="text" name="cislo" class="form-control" id="facility-cislo" placeholder="Číslo"
-                   value="${facility.cislo!""}">
+            <label for="facility-zip">PSČ</label>
+            <input type="text" name="zip" class="form-control" id="facility-zip" placeholder="PSČ"
+                   value="${facility.zip!""}">
         </div>
         <div class="form-group">
-            <label for="facility-psc">PSČ</label>
-            <input type="text" name="psc" class="form-control" id="facility-psc" placeholder="PSČ"
-                   value="${facility.psc!""}">
-        </div>
-        <div class="form-group">
-            <label for="facility-mesto">Mesto</label>
-            <input type="text" name="mesto" class="form-control" id="facility-mesto" placeholder="Mesto"
-                   value="${facility.mesto!""}">
+            <label for="facility-city">City</label>
+            <input type="text" name="city" class="form-control" id="facility-city" placeholder="City"
+                   value="${facility.city!""}">
         </div>
 
         <div class="form-group">

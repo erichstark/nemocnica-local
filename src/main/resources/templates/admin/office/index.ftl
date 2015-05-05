@@ -45,7 +45,7 @@
                 <td>${office.id}</td>
                 <td><a href="<@spring.url '/admin/office/edit/' + office.id />">${office.name}</a></td>
                 <td>${office.facility.name}</td>
-                <td>${office.facility.mesto+', '+office.facility.ulica+' '+office.facility.cislo}</td>
+                <td>${office.facility.city+', '+office.facility.streetAndNumber}</td>
                 <td><a href="<@spring.url '/admin/office/delete/' + office.id />"
                        onclick="return confirm('Naozaj?');">Zmazať</a></td>
             </tr>

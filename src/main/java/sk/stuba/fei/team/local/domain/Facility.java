@@ -4,19 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-/**
- * Created by matus_000 on 4.4.2015.
- */
 @Entity
 public class Facility implements Serializable {
 
     private Long id;
     private String name;
     private Set<Office> offices;
-    private String ulica;
-    private String cislo;
-    private String mesto;
-    private String psc;
+    private String streetAndNumber;
+    private String city;
+    private String zip;
 
     @Id
     public Long getId() {
@@ -46,38 +42,29 @@ public class Facility implements Serializable {
     }
 
     @Column(nullable = false)
-    public String getUlica() {
-        return ulica;
+    public String getStreetAndNumber() {
+        return streetAndNumber;
     }
 
-    public void setUlica(String ulica) {
-        this.ulica = ulica;
-    }
-
-    @Column(nullable = false)
-    public String getCislo() {
-        return cislo;
-    }
-
-    public void setCislo(String cislo) {
-        this.cislo = cislo;
+    public void setStreetAndNumber(String streetAndNumber) {
+        this.streetAndNumber = streetAndNumber;
     }
 
     @Column(nullable = false)
-    public String getMesto() {
-        return mesto;
+    public String getCity() {
+        return city;
     }
 
-    public void setMesto(String mesto) {
-        this.mesto = mesto;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Column(nullable = false)
-    public String getPsc() {
-        return psc;
+    public String getZip() {
+        return zip;
     }
 
-    public void setPsc(String psc) {
-        this.psc = psc;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 }

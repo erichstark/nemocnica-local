@@ -26,6 +26,8 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     private boolean enabled;
     private String firstName;
     private String lastName;
+    private String prefix_title;
+    private String suffix_title;
     private Set<Office> offices;
     private List<String> specializations;
 
@@ -165,6 +167,24 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Column(columnDefinition = "VARCHAR(256) DEFAULT ''")
+    public String getSuffix_title() {
+        return suffix_title;
+    }
+
+    public void setSuffix_title(String suffix_title) {
+        this.suffix_title = suffix_title;
+    }
+
+    @Column(columnDefinition = "VARCHAR(256) DEFAULT ''")
+    public String getPrefix_title() {
+        return prefix_title;
+    }
+
+    public void setPrefix_title(String prefix_title) {
+        this.prefix_title = prefix_title;
     }
 
     @ManyToMany(cascade = CascadeType.ALL)

@@ -3,17 +3,15 @@ package sk.stuba.fei.team.local.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by matus_000 on 15.4.2015.
- */
 @Entity
 public class Patient implements Serializable {
     private Long id;
-    private String name;
+    private String firstName;
     private String surname;
-    private String telefon;
+    private String phone;
     private String email;
-    private String titul;
+    private String prefix_title;
+    private String suffix_title;
     private Insurance insurance;
 
     @Id
@@ -26,12 +24,12 @@ public class Patient implements Serializable {
     }
 
     @Column(nullable = false)
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     @Column(nullable = false)
@@ -43,14 +41,15 @@ public class Patient implements Serializable {
         this.surname = surname;
     }
 
-    public String getTelefon() {
-        return telefon;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefon(String telefon) {
-        this.telefon = telefon;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
+    @Column(unique = true, nullable = false)
     public String getEmail() {
         return email;
     }
@@ -59,12 +58,20 @@ public class Patient implements Serializable {
         this.email = email;
     }
 
-    public String getTitul() {
-        return titul;
+    public String getPrefix_title() {
+        return prefix_title;
     }
 
-    public void setTitul(String titul) {
-        this.titul = titul;
+    public void setPrefix_title(String prefix_title) {
+        this.prefix_title = prefix_title;
+    }
+
+    public String getSuffix_title() {
+        return suffix_title;
+    }
+
+    public void setSuffix_title(String suffix_title) {
+        this.suffix_title = suffix_title;
     }
 
     @ManyToOne
