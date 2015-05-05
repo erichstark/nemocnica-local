@@ -2,10 +2,7 @@ package sk.stuba.fei.nemocnica.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.nemocnica.domain.Zariadenie;
 import sk.stuba.fei.nemocnica.service.ZariadenieService;
 
@@ -62,5 +59,25 @@ public class AdminZariadenieController {
         zariadenieService.delete(id);
 
         return "redirect:/admin/zariadenie";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST, params = {"text"})
+    public String search(@RequestParam("text") String text, Map<String, Object> model) {
+
+        Iterable<Zariadenie> zariadenia = zariadenieService.findByName(text);
+
+        model.put("pageTitle", "Admin Zariadenia");
+        model.put("search", text);
+        model.put("zariadenia", zariadenia);
+
+        return "admin/zariadenie/index";
+    }
+
+    @RequestMapping(value = "/clear")
+    public String clear(Map<String, Object> model) {
+        model.put("pageTitle", "Admin Zariadenia");
+        model.put("zariadenia", zariadenieService.findAll());
+
+        return "admin/zariadenie/index";
     }
 }

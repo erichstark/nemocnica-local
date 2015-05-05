@@ -11,6 +11,8 @@ public interface AmbulanciaService {
 
     Ambulancia findOne(Long id);
 
+    List<Ambulancia> findByName(String name);
+
     Iterable<Ambulancia> findAll();
 
     boolean exists(Long id);

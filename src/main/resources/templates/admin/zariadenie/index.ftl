@@ -12,6 +12,20 @@
 
 <h2 class="sub-header">Zariadenia</h2>
 
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" method="POST" action="<@spring.url '/admin/zariadenie/search'/>">
+            <div class="form-group">
+                <label for="text">Vyhľadanie:</label>
+                <input type="text" name="text" class="form-control" id="text" placeholder="Hľadaný text"
+                       value="${search!""}">
+            </div>
+            <input type="submit" value="Hľadaj" class="btn btn-default">
+            <a class="btn btn-default" href="<@spring.url '/admin/zariadenie/clear'/>">Reset</a>
+        </form>
+    </div>
+</div>
+
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>

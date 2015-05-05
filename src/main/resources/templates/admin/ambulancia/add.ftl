@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/ambulancia'/>" role="button">Back</a>
+        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/ambulancia'/>" role="button">Naspäť</a>
     </div>
 </div>
 

@@ -45,4 +45,54 @@
 
     </form>
 </div>
+
+<div class="row">
+
+    <h2>Poistovne ambulancie</h2>
+    <hr>
+
+    <div class="col-md-12">
+        <form class="form-inline" method="POST" action="<@spring.url '/admin/ambulancia/poistovna/add'/>">
+            <div class="form-group">
+                <label for="text">Pridanie poistovne:</label>
+                <select name="id_poistovna" class="form-control" id="ambulancia-zariadenie">
+                    <option value="-1">---</option>
+                    <#list poistovne as poistovna>
+                        <option value="${poistovna.id}">${poistovna.nazov}</option>
+                    </#list>
+                </select>
+                <input type="hidden" name="id_ambulancia" value="${ambulancia.id}">
+            </div>
+            <input type="submit" value="Pridaj" class="btn btn-success">
+        </form>
+    </div>
+
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th style="width: 60px;">#</th>
+                <th style="width: 60px;">ID</th>
+                <th>Názov poistovne</th>
+                <th style="width: 60px;">Akcia</th>
+            </tr>
+            </thead>
+            <tbody>
+                <#if ambulancia.poistovne??>
+                    <#list ambulancia.poistovne as poistovna>
+                    <tr>
+                        <td>${poistovna_index + 1}</td>
+                        <td>${poistovna.id}</td>
+                        <td>${poistovna.nazov}</td>
+                        <td>
+                            <a href="<@spring.url '/admin/ambulancia/'+ambulancia.id+'/poistovna/'+poistovna.id+'/delete' />"
+                               onclick="return confirm('Naozaj?');">Zmazať</a></td>
+                    </tr>
+                    </#list>
+                </#if>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 </@pt.dashboardPage>

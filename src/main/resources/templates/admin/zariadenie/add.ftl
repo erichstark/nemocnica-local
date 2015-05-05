@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/zariadenie'/>" role="button">Back</a>
+        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/zariadenie'/>" role="button">Naspäť</a>
     </div>
 </div>
 
@@ -14,33 +14,33 @@
 <div class="table-responsive">
     <form name="zariadenie" action="<@spring.url '/admin/zariadenie/save'/>" method="post">
         <div class="form-group">
-            <label for="ambulancia-id">ID</label>
+            <label for="zariadenie-id">ID</label>
             <input type="text" name="id" class="form-control" id="zariadenie-id" placeholder="ID"
                    value="${zariadenie.id!""}">
         </div>
         <div class="form-group">
-            <label for="ambulancia-name">Názov</label>
-            <input type="text" name="nazov" class="form-control" id="ambulancia-name" placeholder="Názov"
+            <label for="zariadenie-nazov">Názov</label>
+            <input type="text" name="nazov" class="form-control" id="zariadenie-nazov" placeholder="Názov"
                    value="${zariadenie.nazov!""}">
         </div>
         <div class="form-group">
-            <label for="ambulancia-name">Ulica</label>
-            <input type="text" name="ulica" class="form-control" id="ambulancia-name" placeholder="Ulica"
+            <label for="zariadenie-ulica">Ulica</label>
+            <input type="text" name="ulica" class="form-control" id="zariadenie-ulica" placeholder="Ulica"
                    value="${zariadenie.ulica!""}">
         </div>
         <div class="form-group">
-            <label for="ambulancia-name">Číslo</label>
-            <input type="text" name="cislo" class="form-control" id="ambulancia-name" placeholder="Číslo"
+            <label for="zariadenie-cislo">Číslo</label>
+            <input type="text" name="cislo" class="form-control" id="zariadenie-cislo" placeholder="Číslo"
                    value="${zariadenie.cislo!""}">
         </div>
         <div class="form-group">
-            <label for="ambulancia-name">PSČ</label>
-            <input type="text" name="psc" class="form-control" id="ambulancia-name" placeholder="PSČ"
+            <label for="zariadenie-psc">PSČ</label>
+            <input type="text" name="psc" class="form-control" id="zariadenie-psc" placeholder="PSČ"
                    value="${zariadenie.psc!""}">
         </div>
         <div class="form-group">
-            <label for="ambulancia-name">Mesto</label>
-            <input type="text" name="mesto" class="form-control" id="ambulancia-name" placeholder="Mesto"
+            <label for="zariadenie-mesto">Mesto</label>
+            <input type="text" name="mesto" class="form-control" id="zariadenie-mesto" placeholder="Mesto"
                    value="${zariadenie.mesto!""}">
         </div>
 

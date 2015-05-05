@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.nemocnica.domain.Ambulancia;
+import sk.stuba.fei.nemocnica.domain.Poistovna;
 import sk.stuba.fei.nemocnica.domain.Zariadenie;
 import sk.stuba.fei.nemocnica.formEntity.FormAmbulancia;
 import sk.stuba.fei.nemocnica.service.AmbulanciaService;
+import sk.stuba.fei.nemocnica.service.PoistovnaService;
 import sk.stuba.fei.nemocnica.service.ZariadenieService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +25,8 @@ public class AdminAmbulanciaController {
     private AmbulanciaService ambulanciaService;
     @Autowired
     private ZariadenieService zariadenieService;
+    @Autowired
+    private PoistovnaService poistovnaService;
 
     @RequestMapping("")
     public String index(Map<String, Object> model) {
@@ -38,6 +43,7 @@ public class AdminAmbulanciaController {
         model.put("pageTitle", "Admin Ambulancia");
         model.put("ambulancia", new Ambulancia());
         model.put("zariadenia", zariadenieService.findAll());
+        model.put("poistovne", poistovnaService.findAll());
 
         return "admin/ambulancia/add";
     }
@@ -51,6 +57,7 @@ public class AdminAmbulanciaController {
 
         model.put("ambulancia", amb);
         model.put("zariadenia", zariadenieService.findAll());
+        model.put("poistovne", poistovnaService.findAll());
 
         return "admin/ambulancia/edit";
     }
@@ -71,9 +78,6 @@ public class AdminAmbulanciaController {
 
         ambulanciaService.save(newAmb);
 
-        //zariadenie.getAmbulancie().add(newAmb);
-        //zariadenieService.save(zariadenie);
-
         return "redirect:/admin/ambulancia";
     }
 
@@ -83,5 +87,58 @@ public class AdminAmbulanciaController {
         ambulanciaService.delete(id);
 
         return "redirect:/admin/ambulancia";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST, params = {"text"})
+    public String search(@RequestParam("text") String text, Map<String, Object> model) {
+
+        Iterable<Ambulancia> ambulancie;
+        if (text == "")
+            ambulancie = ambulanciaService.findAll();
+        else
+            ambulancie = ambulanciaService.findByName(text);
+
+        model.put("pageTitle", "Admin Ambulancia");
+        model.put("search", text);
+        model.put("ambulancie", ambulancie);
+
+        return "admin/ambulancia/index";
+    }
+
+    @RequestMapping(value = "/clear")
+    public String clear(Map<String, Object> model) {
+        model.put("pageTitle", "Admin Ambulancia");
+        model.put("ambulancie", ambulanciaService.findAll());
+
+        return "admin/ambulancia/index";
+    }
+
+    @RequestMapping(value = "/poistovna/add", method = RequestMethod.POST, params = {"id_poistovna", "id_ambulancia"})
+    public String poistovnaAdd(@RequestParam("id_poistovna") Long id_poistovna, @RequestParam("id_ambulancia") Long id_ambulancia) {
+
+        Ambulancia ambulancia = ambulanciaService.findOne(id_ambulancia);
+        Poistovna poistovna = poistovnaService.findOne(id_poistovna);
+
+        ambulancia.getPoistovne().add(poistovna);
+        poistovna.getAmbulancie().add(ambulancia);
+
+        ambulanciaService.save(ambulancia);
+
+        return "redirect:/admin/ambulancia/edit/" + id_ambulancia;
+    }
+
+    @RequestMapping(value = "{id_ambulancia}/poistovna/{id_poistovna}/delete")
+    public String poistovnaDelete(@PathVariable("id_ambulancia") Long id_ambulancia, @PathVariable("id_poistovna") Long id_poistovna) {
+
+        Ambulancia ambulancia = ambulanciaService.findOne(id_ambulancia);
+        for (Poistovna p : ambulancia.getPoistovne()) {
+            if (p.getId() == id_poistovna) {
+                ambulancia.getPoistovne().remove(p);
+            }
+        }
+
+        ambulanciaService.save(ambulancia);
+
+        return "redirect:/admin/ambulancia/edit/" + id_ambulancia;
     }
 }
