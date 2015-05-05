@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -22,6 +21,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import sk.stuba.fei.nemocnica.domain.Zamestnanec;
+import sk.stuba.fei.nemocnica.security.CustomUserDetailService;
+import sk.stuba.fei.nemocnica.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.nemocnica.service.ZamestnanecService;
 
 import javax.sql.DataSource;
@@ -100,6 +101,9 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         @Autowired
         private DataSource dataSource;
 
+        @Autowired
+        private ZamestnanecService zamestnanecService;
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
@@ -115,9 +119,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
 
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
-            JdbcUserDetailsManager userDetailsService = new JdbcUserDetailsManager();
-            userDetailsService.setDataSource(dataSource);
-            auth.userDetailsService(userDetailsService).passwordEncoder(new PBKDF2WithHmacSHA1());
+            auth.userDetailsService(new CustomUserDetailService(zamestnanecService)).passwordEncoder(new PBKDF2WithHmacSHA1());
             auth.jdbcAuthentication().dataSource(dataSource);
         }
     }
