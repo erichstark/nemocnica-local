@@ -1,3 +1,5 @@
+<#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
+<#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
 <#import "/spring.ftl" as spring />
 <#macro genericPage>
 <html>
@@ -23,32 +25,37 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="<@spring.url '/'/>">Nemocnica Local</a>
+                <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
             </div>
             <div class="navbar-header pull-right">
-                <form action="<@spring.url '/logout'/>" method="post">
-                    <input type="submit" value="Logout"/>
-                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-cog"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> Log
+                                    Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="<@spring.url '/admin'/>">Admin</a></li>
-                    <li><a href="#">Link1</a></li>
-                    <li><a href="#">Link2</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-expanded="false">Dropdown
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action1</a></li>
-                            <li><a href="#">Action2</a></li>
-                            <li><a href="#">Action3</a></li>
-                            <li class="divider"></li>
-                            <li class="dropdown-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    <ul class="nav navbar-nav">
+                        <li><a href="<@spring.url '/admin'/>">Admin</a></li>
+                    </ul>
                 </ul>
             </div>
         </div>
@@ -76,43 +83,43 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<@spring.url '/'/>">Nemocnica Local</a>
+                <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Help</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-cog"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> Log
+                                    Out</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-                <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Search...">
-                </form>
             </div>
         </div>
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div id="side-navbar" class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="<@spring.url '/admin'/>">Overview <span class="sr-only">(current)</span></a></li>
+                    <li><a href="<@spring.url '/admin'/>">Prehľad</a></li>
                     <li><a href="<@spring.url '/admin/zamestnanci'/>">Zamestnanci</a></li>
-                    <li><a href="#">Reports</a></li>
-                    <li><a href="#">Analytics</a></li>
-                    <li><a href="#">Export</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li><a href="">Nav item</a></li>
-                    <li><a href="">Nav item again</a></li>
-                    <li><a href="">One more nav</a></li>
-                    <li><a href="">Another nav item</a></li>
-                    <li><a href="">More navigation</a></li>
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li><a href="">Nav item again</a></li>
-                    <li><a href="">One more nav</a></li>
-                    <li><a href="">Another nav item</a></li>
+                    <li><a href="<@spring.url '/admin/zariadenie'/>">Zariadenia</a></li>
+                    <li><a href="<@spring.url '/admin/ambulancia'/>">Ambulancie</a></li>
+                    <li><a href="<@spring.url '/admin/poistovna'/>">Poistovne</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
