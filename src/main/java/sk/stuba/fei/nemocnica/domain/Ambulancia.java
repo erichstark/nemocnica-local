@@ -14,7 +14,7 @@ public class Ambulancia implements Serializable {
     private Zariadenie zariadenie;
     private Set<Zamestnanec> zamestnanci;
     private Set<Poistovna> poistovne;
-//    private Set<Specializacia> specializacie;
+    private Set<Specializacia> specializacie;
 
     @Id
     public Long getId() {
@@ -70,19 +70,19 @@ public class Ambulancia implements Serializable {
         this.poistovne = poistovne;
     }
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "ambulancia_specializacia",
-//            joinColumns =
-//            @JoinColumn(name = "ambulancia", referencedColumnName = "id"),
-//            inverseJoinColumns =
-//            @JoinColumn(name = "specializacia", referencedColumnName = "id")
-//    )
-//    public Set<Specializacia> getSpecializacie() {
-//        return specializacie;
-//    }
-//
-//    public void setSpecializacie(Set<Specializacia> specializacie) {
-//        this.specializacie = specializacie;
-//    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ambulancia_specializacia",
+            joinColumns =
+            @JoinColumn(name = "ambulancia", referencedColumnName = "id"),
+            inverseJoinColumns =
+            @JoinColumn(name = "specializacia", referencedColumnName = "id")
+    )
+    public Set<Specializacia> getSpecializacie() {
+        return specializacie;
+    }
+
+    public void setSpecializacie(Set<Specializacia> specializacie) {
+        this.specializacie = specializacie;
+    }
 }
