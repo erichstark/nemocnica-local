@@ -14,7 +14,7 @@
 </head>
 <body>
     <#nested>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<@spring.url '/js/jquery-2.1.4.min.js'/>"></script>
 <script src="<@spring.url '/js/bootstrap.min.js'/>"></script>
 </body>
 </html>
@@ -44,8 +44,7 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> Log
-                                    Out</a>
+                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> <@spring.message "SignOut" /></a>
                             </li>
                         </ul>
                     </li>
@@ -54,7 +53,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <ul class="nav navbar-nav">
-                        <li><a href="<@spring.url '/admin'/>">Admin</a></li>
+                        <li><a href="<@spring.url '/admin'/>">Administrácia</a></li>
                     </ul>
                 </ul>
             </div>
@@ -116,10 +115,9 @@
             <div id="side-navbar" class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     <li><a href="<@spring.url '/admin'/>">Prehľad</a></li>
-                    <li><a href="<@spring.url '/admin/zamestnanci'/>">Zamestnanci</a></li>
-                    <li><a href="<@spring.url '/admin/zariadenie'/>">Zariadenia</a></li>
-                    <li><a href="<@spring.url '/admin/ambulancia'/>">Ambulancie</a></li>
-                    <li><a href="<@spring.url '/admin/poistovna'/>">Poistovne</a></li>
+                    <li><a href="<@spring.url '/admin/facility'/>">Zariadenia</a></li>
+                    <li><a href="<@spring.url '/admin/office'/>">Ambulancie</a></li>
+                    <li><a href="<@spring.url '/admin/insurance'/>">Poistovne</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
