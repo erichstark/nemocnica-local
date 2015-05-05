@@ -1,3 +1,5 @@
+<#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
+<#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
 <#import "/spring.ftl" as spring />
 <#macro genericPage>
 <html>
@@ -26,14 +28,34 @@
                 <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
             </div>
             <div class="navbar-header pull-right">
-                <ul class="nav navbar-nav">
-                    <li><a href="<@spring.url '/#'/>"><strong>USERNAME</strong></a></li>
-                    <li><a href="<@spring.url '/logout'/>">Logout</a></li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-cog"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> Log
+                                    Out</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="<@spring.url '/admin'/>">Admin</a></li>
+                    <ul class="nav navbar-nav">
+                        <li><a href="<@spring.url '/admin'/>">Admin</a></li>
+                    </ul>
                 </ul>
             </div>
         </div>
@@ -65,17 +87,35 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="<@spring.url '/#'/>"><strong>USERNAME</strong></a></li>
-                    <li><a href="<@spring.url '/logout'/>">Logout</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-cog"></i> Settings</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> Log
+                                    Out</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div id="side-navbar" class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="<@spring.url '/admin'/>">Overview</a></li>
+                    <li><a href="<@spring.url '/admin'/>">Prehľad</a></li>
                     <li><a href="<@spring.url '/admin/zamestnanci'/>">Zamestnanci</a></li>
                     <li><a href="<@spring.url '/admin/zariadenie'/>">Zariadenia</a></li>
                     <li><a href="<@spring.url '/admin/ambulancia'/>">Ambulancie</a></li>

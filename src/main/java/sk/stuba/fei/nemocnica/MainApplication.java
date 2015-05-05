@@ -28,7 +28,6 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -40,9 +39,6 @@ public class MainApplication extends WebMvcConfigurerAdapter {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
         initializeUsers(context);
-        String path = context.getEnvironment().getProperty("logging.path");
-        System.out.println(path);
-        LOGGER.log(Level.INFO, path);
     }
 
     private static void initializeUsers(ConfigurableApplicationContext context) {
