@@ -1,6 +1,5 @@
 package sk.stuba.fei.team.local.security;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +27,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if (z.getAuthorities() == null || z.getAuthorities().isEmpty()) {
             throw new UsernameNotFoundException("User has no granted authorities.");
         }
-        return new User(
+        return new CustomUser(
                 z.getUsername(),
                 z.getPassword(),
                 z.isEnabled(),
