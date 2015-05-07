@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="user" type="sk.stuba.fei.team.local.security.CustomUser" -->
 <#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
 <#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
 <#import "/spring.ftl" as spring />
@@ -31,7 +32,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                                class="glyphicon glyphicon-user"></i>
+                            <#if user??>${user.getUsername()}</#if>
+                            <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
@@ -44,7 +47,8 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> <@spring.message "SignOut" /></a>
+                                <a href="<@spring.url '/logout'/>"><i
+                                        class="glyphicon glyphicon-log-out"></i> <@spring.message "SignOut" /></a>
                             </li>
                         </ul>
                     </li>
@@ -52,9 +56,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <ul class="nav navbar-nav">
-                        <li><a href="<@spring.url '/admin'/>">Administrácia</a></li>
-                    </ul>
+                    <#if user.stringAuthorities?seq_contains("ADMIN")>
+                        <li><a href="<@spring.url '/admin'/>">Admin</a></li>
+                    </#if>
                 </ul>
             </div>
         </div>
@@ -88,7 +92,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                                class="glyphicon glyphicon-user"></i>
+                            <#if user??>${user.getUsername()}</#if>
+                            <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
@@ -101,8 +107,8 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="<@spring.url '/logout'/>"><i class="glyphicon glyphicon-log-out"></i> Log
-                                    Out</a>
+                                <a href="<@spring.url '/logout'/>"><i
+                                        class="glyphicon glyphicon-log-out"></i> <@spring.message "SignOut" /></a>
                             </li>
                         </ul>
                     </li>
