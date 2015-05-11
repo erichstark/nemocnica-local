@@ -100,7 +100,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
         this.authorities = authorities;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "authority")
     @CollectionTable(
             name = "authorities",

@@ -49,12 +49,12 @@
             <tr>
                 <td>${patient_index + 1}</td>
                 <td>${patient.id}</td>
-                <td>${patient.prefix_title}</td>
+                <td>${patient.prefix_title!""}</td>
                 <td><a href="<@spring.url '/admin/patient/edit/' + patient.id />">${patient.firstName}</a></td>
-                <td>${patient.surname}</td>
-                <td>${patient.suffix_title}</td>
-                <td>${patient.phone}</td>
-                <td>${patient.email}</td>
+                <td>${patient.surname!""}</td>
+                <td>${patient.suffix_title!""}</td>
+                <td>${patient.phone!""}</td>
+                <td>${patient.email!""}</td>
                 <td>${patient.insurance.name}</td>
                 <td><a href="<@spring.url '/admin/patient/delete/' + patient.id />"
                        onclick="return confirm('Naozaj?');">Zmazať</a></td>
