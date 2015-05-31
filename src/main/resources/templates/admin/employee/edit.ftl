@@ -14,7 +14,7 @@
 <br>
 
 <div class="table-responsive">
-    <form name="patient" action="<@spring.url '/admin/employee/save'/>" method="post">
+    <form name="patient" action="<@spring.url '/admin/employee/edit'/>" method="post">
         <div class="form-group" style="display: none;">
             <label for="employee-username">Prihlasovacie meno</label>
             <input type="text" name="username" class="form-control" id="employee-id" placeholder="Prihlasovacie meno"
@@ -101,7 +101,7 @@
                 </td>
             </tr>
         </table>
-
+        <br>
         <div class="form-group">
             <label for="patient-autority">Autorita</label>
             <select name="autority" class="form-control" id="patient-autority">

@@ -60,6 +60,23 @@ public class AdminEmployeeController {
         return "admin/employee/edit";
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(@ModelAttribute("employee") Employee employee, @RequestParam String autority) {
+
+        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(autority));
+        employee.setPassword(encoder.encode(employee.getPassword()));
+        employee.setAuthorities(authorities);
+
+        Employee temp = employeeService.findByUsername(employee.getUsername());
+        employee.setOffices(temp.getOffices());
+
+        employeeService.save(employee);
+
+        return "redirect:/admin/employee";
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("employee") Employee employee, @RequestParam String autority) {
 
@@ -120,12 +137,14 @@ public class AdminEmployeeController {
     public String officeDelete(@PathVariable("username") String username, @PathVariable("id_office") Long id_office) {
 
         Employee employee = employeeService.findOne(username);
+        Office removeOff = null;
         for (Office o : employee.getOffices()) {
             if (o.getId() == id_office) {
-                employee.getOffices().remove(o);
+                removeOff = o;
             }
         }
 
+        employee.getOffices().remove(removeOff);
         employeeService.save(employee);
 
         return "redirect:/admin/employee/edit/" + username;

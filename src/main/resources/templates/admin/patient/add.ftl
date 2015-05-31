@@ -3,7 +3,13 @@
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
 <@pt.dashboardPage>
-<h1 class="page-header">Pridanie nového pacienta</h1>
+<h1 class="page-header">
+    <#if patient.id??>
+        Editácia pacienta
+    <#else>
+        Pridanie nového pacienta
+    </#if>
+</h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -19,7 +25,11 @@
     <#else>
     <div class="table-responsive">
         <form name="patient" action="<@spring.url '/admin/patient/save'/>" method="post">
+            <#if patient.id??>
+            <div class="form-group" style="display: none;">
+            <#else>
             <div class="form-group">
+            </#if>
                 <label for="patient-id">ID</label>
                 <input type="text" name="id" class="form-control" id="patient-id" placeholder="ID"
                        value="${patient.id!""}">

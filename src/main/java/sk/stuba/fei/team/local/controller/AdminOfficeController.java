@@ -11,7 +11,7 @@ import sk.stuba.fei.team.local.service.OfficeService;
 import sk.stuba.fei.team.local.service.InsuranceService;
 import sk.stuba.fei.team.local.service.FacilityService;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by pallo on 5/2/15.
@@ -61,21 +61,27 @@ public class AdminOfficeController {
         return "admin/office/edit";
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(@ModelAttribute("office") Office office, @RequestParam Long id_facility) {
+
+        Office temp = officeService.findOne(office.getId());
+        office.setInsurances(temp.getInsurances());
+
+        Facility facility = facilityService.findOne(id_facility);
+        office.setFacility(facility);
+
+        officeService.save(office);
+
+        return "redirect:/admin/office";
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("office") FormOffice office, Map<String, Object> model) {
+    public String save(@ModelAttribute("office") Office office, @RequestParam Long id_facility) {
 
-        Office newAmb = new Office();
-        if (officeService.exists(office.getId())) {
-            newAmb = officeService.findOne(office.getId());
-        } else {
-            newAmb.setId(office.getId());
-        }
-        newAmb.setName(office.getName());
+        Facility facility = facilityService.findOne(id_facility);
+        office.setFacility(facility);
 
-        Facility facility = facilityService.findOne(office.getId_facility());
-        newAmb.setFacility(facility);
-
-        officeService.save(newAmb);
+        officeService.save(office);
 
         return "redirect:/admin/office";
     }
@@ -130,12 +136,14 @@ public class AdminOfficeController {
     public String insuranceDelete(@PathVariable("id_office") Long id_office, @PathVariable("id_insurance") Long id_insurance) {
 
         Office office = officeService.findOne(id_office);
+        Insurance removeIns = null;
         for (Insurance p : office.getInsurances()) {
             if (p.getId() == id_insurance) {
-                office.getInsurances().remove(p);
+                removeIns = p;
             }
         }
 
+        office.getInsurances().remove(removeIns);
         officeService.save(office);
 
         return "redirect:/admin/office/edit/" + id_office;
