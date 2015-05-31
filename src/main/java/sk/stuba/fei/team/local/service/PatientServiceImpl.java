@@ -9,10 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by pallo on 5/11/15.
- */
-
 @Component("patientService")
 @Transactional
 public class PatientServiceImpl implements PatientService {

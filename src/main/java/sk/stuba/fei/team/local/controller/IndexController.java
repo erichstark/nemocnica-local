@@ -16,11 +16,7 @@ public class IndexController {
     @RequestMapping("/")
     public String index(Map<String, Object> model) {
         model.put("pageTitle", "Hello Title");
-        model.put("user", "USER");
-
-        //example of using jms Producer
-        jmsProducer.sendTopicMessage("This is message form Topic");
-        jmsProducer.sendQueueMessage("This is message from Queue");
+        jmsProducer.sendMessage("MASAGE");
         return "index";
     }
 }

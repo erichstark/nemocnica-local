@@ -17,6 +17,7 @@
     <#nested>
 <script src="<@spring.url '/js/jquery-2.1.4.min.js'/>"></script>
 <script src="<@spring.url '/js/bootstrap.min.js'/>"></script>
+<script src="<@spring.url '/js/custom.js'/>"></script>
 </body>
 </html>
 </#macro>
@@ -127,6 +128,7 @@
                     <li><a href="<@spring.url '/admin/specialization'/>">Špecializácie</a></li>
                     <li><a href="<@spring.url '/admin/patient'/>">Pacienti</a></li>
                     <li><a href="<@spring.url '/admin/employee'/>">Zamestnanci</a></li>
+                    <li><a href="<@spring.url '/admin/rpiconfig'/>">Obrazovky</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

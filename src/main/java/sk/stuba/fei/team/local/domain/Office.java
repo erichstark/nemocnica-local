@@ -16,6 +16,13 @@ public class Office implements Serializable {
     private Set<Insurance> insurances;
     private Set<Specialization> specializations;
 
+    public Office() {
+    }
+
+    public Office(String name) {
+        this.name = name;
+    }
+
     @Id
     public Long getId() {
         return id;
