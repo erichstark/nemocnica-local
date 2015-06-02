@@ -2,7 +2,7 @@
 <#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
 <#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
 <#import "/spring.ftl" as spring />
-<#macro genericPage>
+<#macro genericPage pageTitle>
 <html>
 <head>
     <meta charset="utf-8">
@@ -22,8 +22,8 @@
 </html>
 </#macro>
 
-<#macro menuFooterPage>
-    <@genericPage>
+<#macro menuFooterPage pageTitle>
+    <@genericPage pageTitle=pageTitle>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -75,8 +75,8 @@
     </@genericPage>
 </#macro>
 
-<#macro dashboardPage>
-    <@genericPage>
+<#macro dashboardPage pageTitle>
+    <@genericPage pageTitle=pageTitle>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -128,10 +128,11 @@
                     <li><a href="<@spring.url '/admin/specialization'/>">Špecializácie</a></li>
                     <li><a href="<@spring.url '/admin/patient'/>">Pacienti</a></li>
                     <li><a href="<@spring.url '/admin/employee'/>">Zamestnanci</a></li>
-                    <li><a href="<@spring.url '/admin/rpiconfig'/>">Obrazovky</a></li>
+                    <li><a href="<@spring.url '/admin/display'/>">Obrazovky</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 class="page-header">${pageTitle}</h1>
                 <#nested>
             </div>
         </div>

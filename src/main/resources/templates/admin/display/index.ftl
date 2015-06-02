@@ -1,9 +1,9 @@
+<#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
 <#-- @ftlvariable name="rpiList" type="java.util.List<sk.stuba.fei.team.local.domain.Rpi_Office>" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<@pt.dashboardPage>
-<h1 class="page-header">Administrácia obrazoviek</h1>
-
+<#assign pageTitle>Administrácia obrazoviek</#assign>
+<@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
         tu budu nejake globalne nastavenia obrazoviek...

@@ -9,9 +9,6 @@ import sk.stuba.fei.team.local.service.PatientService;
 
 import java.util.Map;
 
-/**
- * Created by pallo on 5/11/15.
- */
 @Controller
 @RequestMapping("/admin/patient")
 public class AdminPatientController {
@@ -23,67 +20,48 @@ public class AdminPatientController {
 
     @RequestMapping("")
     public String index(Map<String, Object> model) {
-
-        model.put("pageTitle", "Admin Patients");
         model.put("patients", patientService.findAll());
-
         return "admin/patient/index";
     }
 
     @RequestMapping(value = "/add")
     public String add(Map<String, Object> model) {
-
-        model.put("pageTitle", "Admin Patients");
         model.put("patient", new Patient());
         model.put("insurances", insuranceService.findAll());
-
         return "admin/patient/add";
     }
 
     @RequestMapping(value = "/edit/{id}")
     public String edit(@PathVariable Long id, Map<String, Object> model) {
-
-        model.put("pageTitle", "Admin Patients");
         model.put("patient", patientService.findOne(id));
         model.put("insurances", insuranceService.findAll());
-
         return "admin/patient/edit";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveAdd(@ModelAttribute("patient") Patient patient, @RequestParam Long id_insurance) {
-
         patient.setInsurance(insuranceService.findOne(id_insurance));
         patientService.save(patient);
-
         return "redirect:/admin/patient";
     }
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable Long id) {
-
         patientService.delete(id);
-
         return "redirect:/admin/patient";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@RequestParam("text") String text, Map<String, Object> model) {
-
         Iterable<Patient> patients = patientService.findPatientByFirstOrSurname(text);
-
-        model.put("pageTitle", "Admin Patients");
         model.put("search", text);
         model.put("patients", patients);
-
         return "admin/patient/index";
     }
 
     @RequestMapping(value = "/clear")
     public String clear(Map<String, Object> model) {
-        model.put("pageTitle", "Admin Patients");
         model.put("patients", patientService.findAll());
-
         return "admin/patient/index";
     }
 }

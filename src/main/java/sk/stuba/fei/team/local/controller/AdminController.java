@@ -10,7 +10,6 @@ public class AdminController {
 
     @RequestMapping("/admin")
     public String index(Map<String, Object> model) {
-        model.put("pageTitle", "Admin Dashboard");
         return "admin/index";
     }
 }

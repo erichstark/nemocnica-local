@@ -1,10 +1,10 @@
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Editácia ambulancie</#assign>
-<@pt.dashboardPage pageTitle=pageTitle>
+<#assign title>Editácia obrazovky</#assign>
+<@pt.dashboardPage pageTitle=title>
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office'/>" role="button">Back</a>
+        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/rpiconfig'/>" role="button">Back</a>
     </div>
 </div>
 
@@ -12,7 +12,7 @@
 
 <div class="table-responsive">
 
-    <form name="office" action="<@spring.url '/admin/office/save'/>" method="post">
+    <form name="office" action="<@spring.url '/admin/rpiconfig/save'/>" method="post">
         <div class="form-group">
             <label for="office-id">ID</label>
             <input type="text" name="id" class="form-control" id="office-id" placeholder="ID"
