@@ -1,4 +1,4 @@
-package sk.stuba.fei.team.local.domain;
+package sk.stuba.fei.team.local.jms;
 
 import java.io.Serializable;
 import java.util.List;

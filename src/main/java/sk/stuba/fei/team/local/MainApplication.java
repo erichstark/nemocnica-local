@@ -2,7 +2,6 @@ package sk.stuba.fei.team.local;
 
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory;
-import org.hornetq.core.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -112,16 +111,14 @@ public class MainApplication extends WebMvcConfigurerAdapter {
             params.put("port", "5445");
             TransportConfiguration tc = new TransportConfiguration(NettyAcceptorFactory.class.getName(), params);
             acceptors.add(tc);
-            Map<String, Set<Role>> securityRoles = configuration.getSecurityRoles();
-            System.out.println("ola bitches");
         };
     }
 
     @Bean
     JmsTemplate jmsTopicTemplate(ConnectionFactory connectionFactory) {
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-        jmsTemplate.setPubSubNoLocal(true);
-        jmsTemplate.setDefaultDestinationName("test");
+        jmsTemplate.setPubSubDomain(true);
+        jmsTemplate.setDefaultDestinationName("displayCallIn");
         return jmsTemplate;
     }
 
@@ -141,7 +138,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
             http.csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/admin/**", "/manage").hasAuthority("ADMIN")
-                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**").permitAll()
+                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()

@@ -5,17 +5,9 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Rpi_Office implements Serializable {
+public class DisplayConfiguration implements Serializable {
     private String id;
     private Set<Office> offices;
-
-    public Rpi_Office() {
-    }
-
-    public Rpi_Office(String id, Set<Office> offices) {
-        this.id = id;
-        this.offices = offices;
-    }
 
     @Id
     public String getId() {
@@ -28,9 +20,9 @@ public class Rpi_Office implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "rpiconfiguration_office",
+            name = "displayConfiguration_office",
             joinColumns =
-            @JoinColumn(name = "rpiconfiguration", referencedColumnName = "id"),
+            @JoinColumn(name = "displayConfiguration", referencedColumnName = "id"),
             inverseJoinColumns =
             @JoinColumn(name = "office", referencedColumnName = "id")
     )
@@ -41,4 +33,5 @@ public class Rpi_Office implements Serializable {
     public void setOffices(Set<Office> offices) {
         this.offices = offices;
     }
+
 }
