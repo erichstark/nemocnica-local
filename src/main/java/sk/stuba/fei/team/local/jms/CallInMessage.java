@@ -1,28 +1,32 @@
 package sk.stuba.fei.team.local.jms;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class CallInMessage implements Serializable {
     private Long office;
     private String patient;
-    private List<String> nextPatients;
 
-    public CallInMessage(Long office, String patient, List<String> nextPatients) {
+    public CallInMessage() {
+    }
+
+    public CallInMessage(Long office, String patient) {
         this.office = office;
         this.patient = patient;
-        this.nextPatients = nextPatients;
     }
 
     public Long getOffice() {
         return office;
     }
 
+    public void setOffice(Long office) {
+        this.office = office;
+    }
+
     public String getPatient() {
         return patient;
     }
 
-    public List<String> getNextPatients() {
-        return nextPatients;
+    public void setPatient(String patient) {
+        this.patient = patient;
     }
 }

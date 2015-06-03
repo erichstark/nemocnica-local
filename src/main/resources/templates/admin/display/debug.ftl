@@ -1,17 +1,17 @@
 <#-- @ftlvariable name="rpiList" type="java.util.List<sk.stuba.fei.team.local.domain.Rpi_Office>" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Testovanie vyvolávania</#assign>
+<#assign pageTitle>DEBUG - Vyvolávanie pacientov</#assign>
 <@pt.dashboardPage pageTitle=pageTitle>
-<div class="row">
-    <div class="col-md-12">
-        tu budu nejake globalne nastavenia obrazoviek...
+<form name="callIn" action="<@spring.url '/admin/display/debug'/>" method="post">
+    <div class="form-group">
+        <label for="office">Ambulancia</label>
+        <input type="text" name="office" id="office" class="form-control">
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/rpiconfig/add'/>" role="button">Pridať obrazovku</a>
+    <div class="form-group">
+        <label for="patient">Pacient</label>
+        <input type="text" name="patient" id="patient" class="form-control">
     </div>
-</div>
-
+    <button class="btn btn-default">Odoslať</button>
+</form>
 </@pt.dashboardPage>
