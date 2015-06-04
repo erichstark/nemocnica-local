@@ -1,8 +1,7 @@
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<@pt.dashboardPage>
-<h1 class="page-header">Administracia ambulancií</h1>
-
+<#assign pageTitle>Administracia ambulancií</#assign>
+<@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office/add'/>" role="button">Vytvoriť

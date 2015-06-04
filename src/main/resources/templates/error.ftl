@@ -1,7 +1,9 @@
+<#-- @ftlvariable name="error" type="java.lang.String" -->
+<#-- @ftlvariable name="status" type="java.lang.String" -->
 <#import "lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle in pt>${status} ${error}</#assign>
-<@pt.genericPage>
+<#assign pageTitle>${status} ${error}</#assign>
+<@pt.genericPage pageTitle=pageTitle>
 <div class="container">
     <div class="row">
         <div class="col-md-12">

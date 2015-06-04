@@ -9,9 +9,6 @@ import sk.stuba.fei.team.local.repository.SpecializationRepository;
 
 import java.util.List;
 
-/**
- * Created by pallo on 5/11/15.
- */
 @Component("specializationService")
 @Transactional
 public class SpecializationServiceImpl implements SpecializationService {

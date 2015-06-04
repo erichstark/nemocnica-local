@@ -1,8 +1,7 @@
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<@pt.dashboardPage>
-<h1 class="page-header">Pridanie novej offices</h1>
-
+<#assign pageTitle>Pridanie novej ambulancie</#assign>
+<@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office'/>" role="button">Naspäť</a>
@@ -12,7 +11,7 @@
 <br>
 
     <#if facilities?size == 0>
-    <h2>Najskôr treba vytvoriť facilities!</h2>
+    <h2>Najskôr treba vytvoriť ambulancie!</h2>
     <br>
     <a class="btn btn-warning btn-sm" href="<@spring.url '/admin/facility/add'/>" role="button">Pridať facility</a>
     <#else>

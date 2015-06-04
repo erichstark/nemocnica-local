@@ -34,7 +34,6 @@ repositories {
 
 
 dependencies {
-
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-freemarker")
@@ -63,17 +62,3 @@ eclipse {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
-
-import org.apache.tools.ant.taskdefs.condition.Os
-
-task stopServer(type: Exec) {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        //todo check if its working
-        //commandLine 'stopServer.bat'
-    }
-    if (Os.isFamily(Os.FAMILY_UNIX)) {
-        commandLine './stopServer.sh'
-    }
-}
-
-bootRun.dependsOn stopServer

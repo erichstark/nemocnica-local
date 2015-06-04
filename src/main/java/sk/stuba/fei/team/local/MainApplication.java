@@ -1,13 +1,17 @@
 package sk.stuba.fei.team.local;
 
+import org.hornetq.api.core.TransportConfiguration;
+import org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jms.hornetq.HornetQConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,12 +35,11 @@ import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
 
+import javax.jms.ConnectionFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @SpringBootApplication
 @EnableJms
@@ -83,11 +86,6 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         return new UserDetailsInterceptor();
     }
 
-    @Bean
-    public JmsProducer jmsProducer() {
-        return new JmsProducer();
-    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
@@ -104,12 +102,34 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         return new ApplicationSecurity();
     }
 
+    @Bean
+    public HornetQConfigurationCustomizer hornetCustomizer() {
+        return configuration -> {
+            Set<TransportConfiguration> acceptors = configuration.getAcceptorConfigurations();
+            Map<String, Object> params = new HashMap<>();
+            params.put("host", "172.17.0.139");
+            params.put("port", "5445");
+            TransportConfiguration tc = new TransportConfiguration(NettyAcceptorFactory.class.getName(), params);
+            acceptors.add(tc);
+        };
+    }
+
+    @Bean
+    JmsTemplate jmsTopicTemplate(ConnectionFactory connectionFactory) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setPubSubDomain(true);
+        jmsTemplate.setDefaultDestinationName("displayCallIn");
+        return jmsTemplate;
+    }
+
     @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
     protected static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
+        @SuppressWarnings("SpringJavaAutowiringInspection")
         @Autowired
         private DataSource dataSource;
 
+        @SuppressWarnings("SpringJavaAutowiringInspection")
         @Autowired
         private EmployeeService employeeService;
 
@@ -118,7 +138,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
             http.csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/admin/**", "/manage").hasAuthority("ADMIN")
-                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**").permitAll()
+                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
@@ -140,12 +160,14 @@ public class MainApplication extends WebMvcConfigurerAdapter {
                                final HttpServletResponse response, final Object handler,
                                final ModelAndView modelAndView) throws Exception {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                CustomUser userDetails = (CustomUser) principal;
-                if (modelAndView != null) {
-                    modelAndView.getModelMap().
-                            addAttribute("user", userDetails);
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UserDetails) {
+                    CustomUser userDetails = (CustomUser) principal;
+                    if (modelAndView != null) {
+                        modelAndView.getModelMap().
+                                addAttribute("user", userDetails);
+                    }
                 }
             }
         }
