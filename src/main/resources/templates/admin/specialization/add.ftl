@@ -1,8 +1,14 @@
 <#-- @ftlvariable name="specialization" type="sk.stuba.fei.team.local.domain.Specialization" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Pridanie novej špecializácie</#assign>
-<@pt.dashboardPage pageTitle=pageTitle>
+<#if specialization.id??>
+    <#assign pageTitle>Editácia špecializácie</#assign>
+<#else>
+    <#assign pageTitle>Pridanie novej špecializácie</#assign>
+</#if>
+<@pt.dashboardPage>
+<h1 class="page-header">Pridanie novej specializations</h1>
+
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/specialization'/>" role="button">Naspäť</a>
@@ -13,7 +19,11 @@
 
 <div class="table-responsive">
     <form name="specialization" action="<@spring.url '/admin/specialization/save'/>" method="post">
+        <#if specialization.id??>
+        <div class="form-group" style="display: none;">
+        <#else>
         <div class="form-group">
+        </#if>
             <label for="specialization-id">ID</label>
             <input type="text" name="id" class="form-control" id="specialization-id" placeholder="ID"
                    value="${specialization.id!""}">

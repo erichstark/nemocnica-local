@@ -35,7 +35,8 @@ public class AdminPatientController {
     public String edit(@PathVariable Long id, Map<String, Object> model) {
         model.put("patient", patientService.findOne(id));
         model.put("insurances", insuranceService.findAll());
-        return "admin/patient/edit";
+
+        return "admin/patient/add";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)

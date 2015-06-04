@@ -1,6 +1,12 @@
+<#-- @ftlvariable name="insurance" type="sk.stuba.fei.team.local.domain.Insurance" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Pridanie novej poisťovne</#assign>
+<#if insurance.id??>
+    <#assign pageTitle>Editácia poisťovne</#assign>
+<#else>
+    <#assign pageTitle>Pridanie novej poisťovne</#assign>
+</#if>
+
 <@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
@@ -12,7 +18,11 @@
 
 <div class="table-responsive">
     <form name="insurance" action="<@spring.url '/admin/insurance/save'/>" method="post">
+        <#if insurance.id??>
+        <div class="form-group" style="display: none;">
+        <#else>
         <div class="form-group">
+        </#if>
             <label for="insurance-id">ID</label>
             <input type="text" name="id" class="form-control" id="insurance-id" placeholder="ID"
                    value="${insurance.id!""}">

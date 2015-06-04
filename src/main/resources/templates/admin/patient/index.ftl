@@ -33,10 +33,7 @@
         <tr>
             <th style="width: 60px;">#</th>
             <th>ID</th>
-            <th>Titul pred</th>
-            <th>Meno</th>
-            <th>Priezvisko</th>
-            <th>Titul za</th>
+            <th>Meno pacienta</th>
             <th>Telefón</th>
             <th>Email</th>
             <th>Poisťovňa</th>
@@ -48,10 +45,12 @@
             <tr>
                 <td>${patient_index + 1}</td>
                 <td>${patient.id}</td>
-                <td>${patient.prefix_title!""}</td>
-                <td><a href="<@spring.url '/admin/patient/edit/' + patient.id />">${patient.firstName}</a></td>
-                <td>${patient.surname!""}</td>
-                <td>${patient.suffix_title!""}</td>
+                <td>
+                    <a href="<@spring.url '/admin/patient/edit/' + patient.id />">
+                    ${patient.prefix_title + ' ' + patient.firstName + ' ' + patient.surname}
+                    <#if patient.suffix_title?length gt 0>${', ' + patient.suffix_title}</#if>
+                    </a>
+                </td>
                 <td>${patient.phone!""}</td>
                 <td>${patient.email!""}</td>
                 <td>${patient.insurance.name}</td>

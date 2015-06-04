@@ -33,10 +33,7 @@
         <tr>
             <th style="width: 60px;">#</th>
             <th>Prihlasovacie meno</th>
-            <th>Titul pred</th>
-            <th>Meno</th>
-            <th>Priezvisko</th>
-            <th>Titul za</th>
+            <th>Meno zamestnanca</th>
             <th>Autorita</th>
             <th>Aktivovaný účet</th>
             <th style="width: 60px;">Akcia</th>
@@ -47,10 +44,10 @@
             <tr>
                 <td>${employee_index + 1}</td>
                 <td><a href="<@spring.url '/admin/employee/edit/' + employee.username />">${employee.username}</a></td>
-                <td>${employee.prefix_title!""}</td>
-                <td>${employee.firstName!""}</td>
-                <td>${employee.lastName!""}</td>
-                <td>${employee.suffix_title!""}</td>
+                <td>
+                ${employee.prefix_title!""} ${employee.firstName!""} ${employee.lastName!""}
+                    <#if employee.suffix_title??><#if employee.suffix_title?length gt 0>${', ' + employee.suffix_title}</#if></#if>
+                </td>
                 <#if employee.getStringAuthorities()?seq_contains("USER")>
                     <td>USER</td>
                 <#else>

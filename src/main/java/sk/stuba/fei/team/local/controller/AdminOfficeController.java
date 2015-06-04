@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.team.local.domain.Facility;
 import sk.stuba.fei.team.local.domain.Insurance;
 import sk.stuba.fei.team.local.domain.Office;
-import sk.stuba.fei.team.local.formEntity.FormOffice;
 import sk.stuba.fei.team.local.service.FacilityService;
 import sk.stuba.fei.team.local.service.InsuranceService;
 import sk.stuba.fei.team.local.service.OfficeService;
@@ -26,15 +25,14 @@ public class AdminOfficeController {
 
     @RequestMapping("")
     public String index(Map<String, Object> model) {
-
         model.put("pageTitle", "Admin Ambulancia");
         model.put("offices", officeService.findAll());
-
         return "admin/office/index";
     }
 
     @RequestMapping(value = "/add")
     public String add(Map<String, Object> model) {
+        model.put("pageTitle", "Admin Ambulancia");
         model.put("office", new Office());
         model.put("facilities", facilityService.findAll());
         model.put("insurances", insuranceService.findAll());
@@ -43,6 +41,7 @@ public class AdminOfficeController {
 
     @RequestMapping(value = "/edit/{id}")
     public String edit(@PathVariable Long id, Map<String, Object> model) {
+        model.put("pageTitle", "Admin Ambulancia");
         Office off = officeService.findOne(id);
         model.put("office", off);
         model.put("facilities", facilityService.findAll());
@@ -50,18 +49,21 @@ public class AdminOfficeController {
         return "admin/office/edit";
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String edit(@ModelAttribute("office") Office office, @RequestParam Long id_facility) {
+        Office temp = officeService.findOne(office.getId());
+        office.setInsurances(temp.getInsurances());
+        Facility facility = facilityService.findOne(id_facility);
+        office.setFacility(facility);
+        officeService.save(office);
+        return "redirect:/admin/office";
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("office") FormOffice office, Map<String, Object> model) {
-        Office newAmb = new Office();
-        if (officeService.exists(office.getId())) {
-            newAmb = officeService.findOne(office.getId());
-        } else {
-            newAmb.setId(office.getId());
-        }
-        newAmb.setName(office.getName());
-        Facility facility = facilityService.findOne(office.getId_facility());
-        newAmb.setFacility(facility);
-        officeService.save(newAmb);
+    public String save(@ModelAttribute("office") Office office, @RequestParam Long id_facility) {
+        Facility facility = facilityService.findOne(id_facility);
+        office.setFacility(facility);
+        officeService.save(office);
         return "redirect:/admin/office";
     }
 
@@ -79,6 +81,7 @@ public class AdminOfficeController {
         } else {
             offices = officeService.findByName(text);
         }
+        model.put("pageTitle", "Admin Ambulancia");
         model.put("search", text);
         model.put("offices", offices);
         return "admin/office/index";
@@ -86,6 +89,7 @@ public class AdminOfficeController {
 
     @RequestMapping(value = "/clear")
     public String clear(Map<String, Object> model) {
+        model.put("pageTitle", "Admin Ambulancia");
         model.put("offices", officeService.findAll());
         return "admin/office/index";
     }
@@ -103,7 +107,13 @@ public class AdminOfficeController {
     @RequestMapping(value = "{id_office}/insurance/{id_insurance}/delete")
     public String insuranceDelete(@PathVariable("id_office") Long id_office, @PathVariable("id_insurance") Long id_insurance) {
         Office office = officeService.findOne(id_office);
-        office.getInsurances().stream().filter(p -> p.getId().equals(id_insurance)).forEach(p -> office.getInsurances().remove(p));
+        Insurance removeIns = null;
+        for (Insurance p : office.getInsurances()) {
+            if (p.getId().equals(id_insurance)) {
+                removeIns = p;
+            }
+        }
+        office.getInsurances().remove(removeIns);
         officeService.save(office);
         return "redirect:/admin/office/edit/" + id_office;
     }

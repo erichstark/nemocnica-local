@@ -2,8 +2,14 @@
 <#-- @ftlvariable name="patient" type="sk.stuba.fei.team.local.domain.Patient" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Pridanie nového pacienta</#assign>
-<@pt.dashboardPage pageTitle=pageTitle>
+<#if patient.id??>
+    <#assign pageTitle>Editácia pacienta</#assign>
+<#else>
+    <#assign pageTitle>Pridanie nového pacienta</#assign>
+</#if>
+<@pt.dashboardPage>
+<h1 class="page-header">Pridanie nového pacienta</h1>
+
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/patient'/>" role="button">Naspäť</a>
@@ -18,7 +24,11 @@
     <#else>
     <div class="table-responsive">
         <form name="patient" action="<@spring.url '/admin/patient/save'/>" method="post">
+            <#if patient.id??>
+            <div class="form-group" style="display: none;">
+            <#else>
             <div class="form-group">
+            </#if>
                 <label for="patient-id">ID</label>
                 <input type="text" name="id" class="form-control" id="patient-id" placeholder="ID"
                        value="${patient.id!""}">

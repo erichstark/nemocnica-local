@@ -2,6 +2,8 @@
 <#import "/spring.ftl" as spring>
 <#assign pageTitle>Pridanie novej ambulancie</#assign>
 <@pt.dashboardPage pageTitle=pageTitle>
+<h1 class="page-header">Pridanie novej ambulancie</h1>
+
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office'/>" role="button">Naspäť</a>
@@ -11,9 +13,9 @@
 <br>
 
     <#if facilities?size == 0>
-    <h2>Najskôr treba vytvoriť ambulancie!</h2>
+    <h2>Najskôr treba vytvoriť zariadenie!</h2>
     <br>
-    <a class="btn btn-warning btn-sm" href="<@spring.url '/admin/facility/add'/>" role="button">Pridať facility</a>
+    <a class="btn btn-warning btn-sm" href="<@spring.url '/admin/facility/add'/>" role="button">Pridať zariadenie</a>
     <#else>
     <div class="table-responsive">
 
@@ -29,7 +31,7 @@
                        value="${office.name!""}">
             </div>
             <div class="form-group">
-                <label for="office-facility">Facility</label>
+                <label for="office-facility">Zariadenie</label>
                 <select name="id_facility" class="form-control" id="office-facility">
                     <#list facilities as facility>
                         <option value="${facility.id}">${facility.name}</option>
