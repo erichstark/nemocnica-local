@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="alertMessage" type="sk.stuba.fei.team.local.AlertMessage" -->
 <#-- @ftlvariable name="user" type="sk.stuba.fei.team.local.security.CustomUser" -->
 <#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
 <#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
@@ -75,6 +76,19 @@
     </@genericPage>
 </#macro>
 
+<#macro alert>
+    <#if alertMessage??>
+    <div class="alert alert-dismissible
+    <#if alertMessage.type==0>alert-warning</#if>
+    <#if alertMessage.type==1>alert-danger</#if>
+    <#if alertMessage.type==2>alert-success</#if>
+    <#if alertMessage.type==3>alert-info</#if>">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+    ${alertMessage.message}
+    </div>
+    </#if>
+</#macro>
+
 <#macro dashboardPage pageTitle>
     <@genericPage pageTitle=pageTitle>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -132,10 +146,12 @@
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1  class="page-header">${pageTitle}</h1>
+                <h1 class="page-header">${pageTitle}</h1>
+                <@alert/>
                 <#nested>
             </div>
         </div>
     </div>
     </@genericPage>
 </#macro>
+

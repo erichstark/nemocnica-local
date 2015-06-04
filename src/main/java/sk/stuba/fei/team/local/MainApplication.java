@@ -107,7 +107,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         return configuration -> {
             Set<TransportConfiguration> acceptors = configuration.getAcceptorConfigurations();
             Map<String, Object> params = new HashMap<>();
-            params.put("host", "localhost");
+            params.put("host", "172.17.0.139");
             params.put("port", "5445");
             TransportConfiguration tc = new TransportConfiguration(NettyAcceptorFactory.class.getName(), params);
             acceptors.add(tc);

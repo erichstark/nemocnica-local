@@ -8,22 +8,9 @@
     DEBUG - Vyvolávanie pacientov
 </a>
 <h2 class="sub-header">Obrazovky</h2>
-
-
-<form class="form-inline" method="POST" action="<@spring.url '#'/>">
-    <a class="btn btn-success" href="<@spring.url '/admin/display/add'/>" role="button">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Pridať
-    </a>
-    <#if displayList??>
-        <#--<div class="form-group">-->
-            <#--<label for="text">Vyhľadanie:</label>-->
-            <#--<input type="text" name="text" class="form-control" id="text" placeholder="Hľadaný text"-->
-                   <#--value="${search!""}">-->
-        <#--</div>-->
-        <#--<input type="submit" value="Hľadaj" class="btn btn-default">-->
-    </#if>
-</form>
-
+<a class="btn btn-success" href="<@spring.url '/admin/display/new'/>" role="button">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Pridať
+</a>
     <#if displayList??>
     <div class="table-responsive">
         <table class="table table-striped table-hover">

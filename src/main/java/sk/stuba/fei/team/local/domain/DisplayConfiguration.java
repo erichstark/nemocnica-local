@@ -2,12 +2,18 @@ package sk.stuba.fei.team.local.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class DisplayConfiguration implements Serializable {
     private String id;
     private Set<Office> offices;
+
+    public DisplayConfiguration() {
+        id = "";
+        offices = new HashSet<>();
+    }
 
     @Id
     public String getId() {
