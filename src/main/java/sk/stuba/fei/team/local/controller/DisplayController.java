@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sk.stuba.fei.team.local.AlertMessage;
 import sk.stuba.fei.team.local.domain.DisplayConfiguration;
-import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.jms.CallInMessage;
 import sk.stuba.fei.team.local.jms.JmsProducer;
 import sk.stuba.fei.team.local.service.DisplayConfigurationService;
@@ -16,7 +16,6 @@ import sk.stuba.fei.team.local.service.OfficeService;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin/display")
@@ -68,58 +67,79 @@ public class DisplayController {
         return "admin/display/edit";
     }
 
-
-    @RequestMapping(value = "/addOffice/{id}/{isNew}")
-    public String addOffice(@ModelAttribute("display") DisplayConfiguration display, @ModelAttribute("display") Set<Office> displayOffices,  @PathVariable Long id, @PathVariable Boolean isNew, Map<String, Object> model) {
-        displayOffices.add(officeService.findOne(id));
-        model.put("display", display);
-        model.put("officeList", officeService.findAll());
-        model.put("isNew", isNew);
-        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Ambulancia pridaná."));
+    @RequestMapping(value = "/submit")
+    public String submit(@ModelAttribute("display") DisplayConfiguration display, @ModelAttribute("submit") String submit, @ModelAttribute("isNew") Boolean isNew, Map<String, Object> model, RedirectAttributes redirectAttributes) {
+        String action = submit.split("/")[0];
+        switch (action) {
+            case "save":
+                if (isNew && displayConfigurationService.exists(display.getId())) {
+                    model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Zvolene ID je uz pouzite."));
+                    break;
+                }
+                displayConfigurationService.save(display);
+                redirectAttributes.addFlashAttribute("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka uložená"));
+                return "redirect:/admin/display";
+            case "remove":
+                break;
+            case "add":
+                break;
+            default:
+                model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Neznama akcia."));
+        }
         return "admin/display/edit";
     }
 
-    @RequestMapping(value = "/removeOffice/{id}/{isNew}")
-    public String removeOffice(@ModelAttribute("display") DisplayConfiguration displayConfiguration, @PathVariable Long id, @PathVariable Boolean isNew, Map<String, Object> model) {
-        for (Office office : displayConfiguration.getOffices()) {
-            if (id.equals(office.getId())) {
-                displayConfiguration.getOffices().remove(office);
-                model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Ambulancia odstránená."));
-            }
-        }
-        model.put("display", displayConfiguration);
-        model.put("officeList", officeService.findAll());
-        model.put("isNew", isNew);
-        return "admin/display/edit";
-    }
-
-    @RequestMapping(value = "/update")
-    public String update(@ModelAttribute("display") DisplayConfiguration displayConfiguration, Map<String, Object> model) {
-        displayConfigurationService.save(displayConfiguration);
-        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Zmeny uložené."));
-        return "redirect:/admin/display";
-    }
-
-    @RequestMapping(value = "/create")
-    public String create(@ModelAttribute("display") DisplayConfiguration displayConfiguration, Map<String, Object> model) {
-        if (displayConfigurationService.exists(displayConfiguration.getId())) {
-            model.put("display", displayConfiguration);
-            model.put("officeList", officeService.findAll());
-            model.put("isNew", true);
-            model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Zvolené ID obrazovky je už použité."));
-            return "admin/display/edit";
-        } else {
-            displayConfigurationService.save(displayConfiguration);
-            model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka vytvorená."));
-            return "redirect:/admin/display";
-        }
-    }
-
-    @RequestMapping(value = "/delete/{id}")
-    public String save(@PathVariable String id, Map<String, Object> model) {
-        displayConfigurationService.delete(id);
-        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka zmazaná."));
-        return "redirect:/admin/display";
-    }
+//    @RequestMapping(value = "/addOffice/{id}/{isNew}")
+//    public String addOffice(@ModelAttribute("display") DisplayConfiguration display, @PathVariable Long id, @PathVariable Boolean isNew, Map<String, Object> model) {
+//        display.getOffices().add(officeService.findOne(id));
+//        model.put("display", display);
+//        model.put("officeList", officeService.findAll());
+//        model.put("isNew", isNew);
+//        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Ambulancia pridaná."));
+//        return "admin/display/edit";
+//    }
+//
+//    @RequestMapping(value = "/removeOffice/{id}/{isNew}")
+//    public String removeOffice(@ModelAttribute("display") DisplayConfiguration display, @PathVariable Long id, @PathVariable Boolean isNew, Map<String, Object> model) {
+//        for (Office office : display.getOffices()) {
+//            if (id.equals(office.getId())) {
+//                display.getOffices().remove(office);
+//                model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Ambulancia odstránená."));
+//            }
+//        }
+//        model.put("display", display);
+//        model.put("officeList", officeService.findAll());
+//        model.put("isNew", isNew);
+//        return "admin/display/edit";
+//    }
+//
+//    @RequestMapping(value = "/update")
+//    public String update(@ModelAttribute("display") DisplayConfiguration displayConfiguration, Map<String, Object> model) {
+//        displayConfigurationService.save(displayConfiguration);
+//        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Zmeny uložené."));
+//        return "redirect:/admin/display";
+//    }
+//
+//    @RequestMapping(value = "/create")
+//    public String create(@ModelAttribute("display") DisplayConfiguration displayConfiguration, Map<String, Object> model) {
+//        if (displayConfigurationService.exists(displayConfiguration.getId())) {
+//            model.put("display", displayConfiguration);
+//            model.put("officeList", officeService.findAll());
+//            model.put("isNew", true);
+//            model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Zvolené ID obrazovky je už použité."));
+//            return "admin/display/edit";
+//        } else {
+//            displayConfigurationService.save(displayConfiguration);
+//            model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka vytvorená."));
+//            return "redirect:/admin/display";
+//        }
+//    }
+//
+//    @RequestMapping(value = "/delete/{id}")
+//    public String save(@PathVariable String id, Map<String, Object> model) {
+//        displayConfigurationService.delete(id);
+//        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka zmazaná."));
+//        return "redirect:/admin/display";
+//    }
 
 }

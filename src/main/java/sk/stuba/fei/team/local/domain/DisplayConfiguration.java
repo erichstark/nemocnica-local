@@ -24,7 +24,7 @@ public class DisplayConfiguration implements Serializable {
         this.id = id;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "displayConfiguration_office",
             joinColumns =
