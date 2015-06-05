@@ -49,4 +49,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> findPatientByUsernameOrFirstOrSurname(String text) {
         return employeeRepository.findByUsernameOrFirstnameOrSerunameCustomQuery(text);
     }
+
+    @Override
+    public List<Employee> findByFirstNameOrLastName(String text) {
+        return employeeRepository.findByFirstNameContainingOrLastNameContainingAllIgnoreCase(text, text);
+    }
 }

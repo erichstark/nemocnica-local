@@ -8,15 +8,15 @@ import sk.stuba.fei.team.local.repository.OfficeRepository;
 
 import java.util.List;
 
-/**
- * Created by pallo on 5/2/15.
- */
 @Component("officeService")
 @Transactional
 public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
     private OfficeRepository officeRepository;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Override
     public Office findOne(Long id) {
@@ -46,5 +46,16 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public void delete(Long id) {
         officeRepository.delete(id);
+    }
+
+    @Override
+    public List<Office> findByIdOrNameOrEmployeesName(String searchTerm) {
+        Long id;
+        try {
+            id = Long.parseLong(searchTerm);
+        } catch (NumberFormatException ex) {
+            id = (long) -1;
+        }
+        return officeRepository.findDistinctOfficesByNameContainingIgnoreCaseOrIdOrEmployeesIn(searchTerm, id, employeeService.findByFirstNameOrLastName(searchTerm));
     }
 }
