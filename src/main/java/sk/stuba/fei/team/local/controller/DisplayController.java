@@ -78,18 +78,34 @@ public class DisplayController {
         String[] tokens = submit.split("/");
         String action = tokens[0];
         String actionId = tokens.length == 2 ? tokens[1] : "";
+
+        //nasty hack to fix freemarker bug returning empty set with size of 1
+        if (display.getOffices().size() == 1 && display.getOffices().iterator().next() == null) {
+            display.getOffices().clear();
+        }
+
         switch (action) {
             case "save":
                 if (!"".equals(originalID) && !originalID.equals(display.getId()) && displayConfigurationService.exists(display.getId())) {
                     model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Zvolene ID je uz pouzite."));
                     break;
                 }
-                displayConfigurationService.save(display);
-                redirectAttributes.addFlashAttribute("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka uložená"));
-                return "redirect:/admin/display";
+                if (display.getId() != null) {
+                    displayConfigurationService.save(display);
+                    redirectAttributes.addFlashAttribute("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka uložená"));
+                    return "redirect:/admin/display";
+                }
+                model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "ID ambulancie nesmie byť prázdne."));
+                break;
             case "remove":
                 Long removeID = Long.parseLong(actionId);
-                display.getOffices().stream().filter(office -> office.getId().equals(removeID)).forEach(office -> display.getOffices().remove(office));
+                Office toRemove = null;
+                for (Office office : display.getOffices()) {
+                    if (office.getId().equals(removeID)) {
+                        toRemove = office;
+                    }
+                }
+                display.getOffices().remove(toRemove);
                 break;
             case "add":
                 Long addID = Long.parseLong(actionId);
@@ -101,7 +117,11 @@ public class DisplayController {
                 }
                 break;
             case "search":
-                model.put("searchResults", officeService.findByIdOrNameOrEmployeesName(searchTerm));
+                if (searchTerm.isEmpty()) {
+                    model.put("alertMessage", new AlertMessage(AlertMessage.WARNING, "Vyhladavaný výraz nesmie byť prázdny."));
+                } else {
+                    model.put("searchResults", officeService.findByIdOrNameOrEmployeesName(searchTerm));
+                }
                 break;
             default:
                 model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Neznama akcia."));
