@@ -3,6 +3,7 @@ package sk.stuba.fei.team.local;
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.hornetq.HornetQConfigurationCustomizer;
@@ -44,6 +45,9 @@ import java.util.*;
 @SpringBootApplication
 @EnableJms
 public class MainApplication extends WebMvcConfigurerAdapter {
+
+    @Value("${server.address:localhost}")
+    String serverAddress;
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
@@ -107,8 +111,9 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         return configuration -> {
             Set<TransportConfiguration> acceptors = configuration.getAcceptorConfigurations();
             Map<String, Object> params = new HashMap<>();
-            params.put("host", "172.17.0.139");
+            params.put("host", serverAddress);
             params.put("port", "5445");
+            System.out.println("Starting JMS acceptor on " + serverAddress + ":5445");
             TransportConfiguration tc = new TransportConfiguration(NettyAcceptorFactory.class.getName(), params);
             acceptors.add(tc);
         };
