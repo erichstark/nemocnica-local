@@ -34,7 +34,7 @@
                     </td>
                     <td class="text-center">
                         <a class="btn btn-danger btn-sm" href="<@spring.url '/admin/display/delete/${display.id}'/>"
-                           role="button">
+                           role="button" onclick="return customConfirm('Naozaj chcete odstrániť túto obrazovku?')">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                     </td>
                 </tr>

@@ -15,7 +15,6 @@ import sk.stuba.fei.team.local.jms.JmsProducer;
 import sk.stuba.fei.team.local.service.DisplayConfigurationService;
 import sk.stuba.fei.team.local.service.OfficeService;
 
-import java.util.HashSet;
 import java.util.Map;
 
 @Controller
@@ -38,7 +37,7 @@ public class DisplayController {
     }
 
     @RequestMapping(value = "/debug", method = RequestMethod.GET)
-    public String debug(Map<String, Object> model) {
+    public String debug() {
         return "admin/display/debug";
     }
 
@@ -53,8 +52,6 @@ public class DisplayController {
     public String editDisplay(@PathVariable String id, Map<String, Object> model) {
         DisplayConfiguration displayConfiguration = displayConfigurationService.findOne(id);
         model.put("display", displayConfiguration);
-        model.put("displayOffices", displayConfiguration.getOffices());
-        model.put("officeList", officeService.findAll());
         model.put("originalID", id);
         return "admin/display/edit";
     }
@@ -62,8 +59,6 @@ public class DisplayController {
     @RequestMapping(value = "/new")
     public String newDisplay(Map<String, Object> model) {
         model.put("display", new DisplayConfiguration());
-        model.put("displayOffices", new HashSet<>());
-        model.put("officeList", officeService.findAll());
         return "admin/display/edit";
     }
 
@@ -129,4 +124,11 @@ public class DisplayController {
         return "admin/display/edit";
     }
 
+
+    @RequestMapping(value = "/delete/{id}")
+    public String save(@PathVariable String id, Map<String, Object> model) {
+        displayConfigurationService.delete(id);
+        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka zmazaná."));
+        return "redirect:/admin/display";
+    }
 }
