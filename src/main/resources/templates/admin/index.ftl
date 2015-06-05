@@ -1,8 +1,7 @@
 <#import "../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<@pt.dashboardPage>
-<h1 class="page-header">Dashboard</h1>
-
+<#assign pageTitle>Administrácia</#assign>
+<@pt.dashboardPage pageTitle=pageTitle>
 <div class="row placeholders">
     <div class="col-xs-6 col-sm-3 placeholder">
         <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="200x200"

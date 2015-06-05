@@ -8,9 +8,6 @@ import sk.stuba.fei.team.local.repository.InsuranceRepository;
 
 import java.util.List;
 
-/**
- * Created by pallo on 5/3/15.
- */
 @Component("insuranceService")
 @Transactional
 public class InsuranceServiceImpl implements InsuranceService {

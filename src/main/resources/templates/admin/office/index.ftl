@@ -1,8 +1,8 @@
+<#-- @ftlvariable name="offices" type="sk.stuba.fei.team.local.domain.Office[]" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<@pt.dashboardPage>
-<h1 class="page-header">Administracia ambulancií</h1>
-
+<#assign pageTitle>Administracia ambulancií</#assign>
+<@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office/add'/>" role="button">Vytvoriť
@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<h2 class="sub-header">Offices</h2>
+<h2 class="sub-header">Ambulancie</h2>
 
 <div class="row">
     <div class="col-md-12">
@@ -21,7 +21,7 @@
                        value="${search!""}">
             </div>
             <input type="submit" value="Hľadaj" class="btn btn-default">
-            <a class="btn btn-default" href="<@spring.url '/admin/office/clear'/>">Reset</a>
+            <a class="btn btn-default" href="<@spring.url '/admin/office/clear'/>">Zruš</a>
         </form>
     </div>
 </div>
@@ -32,9 +32,9 @@
         <tr>
             <th style="width: 60px;">#</th>
             <th style="width: 60px;">ID</th>
-            <th>Názov offices</th>
-            <th>Názov facilities</th>
-            <th>Adresa facilities</th>
+            <th>Názov ambulancie</th>
+            <th>Názov zariadenia</th>
+            <th>Adresa zariadenia</th>
             <th style="width: 60px;">Akcia</th>
         </tr>
         </thead>

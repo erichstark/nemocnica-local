@@ -1,7 +1,7 @@
 <#import "lib/pageTemplates.ftl" as g>
 <#import "/spring.ftl" as spring>
 <#assign pageTitle in g><@spring.message "SignIn"/></#assign>
-<@g.genericPage>
+<@g.genericPage pageTitle=g.pageTitle>
 <div class="container">
     <div id="login-panel" class="panel panel-default">
         <div class="panel-heading"><h3 class="panel-title"><strong><@spring.message "SignIn"/></strong></h3></div>

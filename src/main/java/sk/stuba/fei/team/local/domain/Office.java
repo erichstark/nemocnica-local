@@ -15,6 +15,14 @@ public class Office implements Serializable {
     private Set<Employee> employees;
     private Set<Insurance> insurances;
     private Set<Specialization> specializations;
+    private Set<DisplayConfiguration> displayConfigurations;
+
+    public Office() {
+    }
+
+    public Office(String name) {
+        this.name = name;
+    }
 
     @Id
     public Long getId() {
@@ -84,5 +92,14 @@ public class Office implements Serializable {
 
     public void setSpecializations(Set<Specialization> specializations) {
         this.specializations = specializations;
+    }
+
+    @ManyToMany(mappedBy = "offices")
+    public Set<DisplayConfiguration> getDisplayConfigurations() {
+        return displayConfigurations;
+    }
+
+    public void setDisplayConfigurations(Set<DisplayConfiguration> displayConfigurations) {
+        this.displayConfigurations = displayConfigurations;
     }
 }

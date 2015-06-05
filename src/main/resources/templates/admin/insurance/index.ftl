@@ -1,16 +1,15 @@
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<@pt.dashboardPage>
-<h1 class="page-header">Administracia poistovni</h1>
-
+<#assign pageTitle>Administracia poistovní</#assign>
+<@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-info btn-sm" href="<@spring.url '/admin/insurance/add'/>" role="button">Vytvoriť
-            poistovnu</a>
+            poisťovnu</a>
     </div>
 </div>
 
-<h2 class="sub-header">Insurances</h2>
+<h2 class="sub-header">Poisťovne</h2>
 
 <div class="row">
     <div class="col-md-12">
@@ -21,7 +20,7 @@
                        value="${search!""}">
             </div>
             <input type="submit" value="Hľadaj" class="btn btn-default">
-            <a class="btn btn-default" href="<@spring.url '/admin/insurance/clear'/>">Reset</a>
+            <a class="btn btn-default" href="<@spring.url '/admin/insurance/clear'/>">Zruš</a>
         </form>
     </div>
 </div>
@@ -32,7 +31,7 @@
         <tr>
             <th style="width: 60px;">#</th>
             <th style="width: 60px;">ID</th>
-            <th>Názov insurances</th>
+            <th>Názov poisťovne</th>
             <th style="width: 60px;">Akcia</th>
         </tr>
         </thead>

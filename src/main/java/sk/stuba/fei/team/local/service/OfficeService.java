@@ -4,9 +4,6 @@ import sk.stuba.fei.team.local.domain.Office;
 
 import java.util.List;
 
-/**
- * Created by pallo on 5/2/15.
- */
 public interface OfficeService {
 
     Office findOne(Long id);
@@ -20,4 +17,6 @@ public interface OfficeService {
     void save(Office office);
 
     void delete(Long id);
+
+    List<Office> findByIdOrNameOrEmployeesName(String searchTerm);
 }
