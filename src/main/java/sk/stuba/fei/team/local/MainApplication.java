@@ -35,8 +35,6 @@ import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.jms.ConnectionFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -170,24 +168,6 @@ public class MainApplication extends WebMvcConfigurerAdapter {
                         modelAndView.getModelMap().
                                 addAttribute("user", userDetails);
                     }
-                }
-            }
-        }
-    }
-
-    public class UserDetailsInterceptor extends HandlerInterceptorAdapter {
-
-        @Override
-        public void postHandle(final HttpServletRequest request,
-                               final HttpServletResponse response, final Object handler,
-                               final ModelAndView modelAndView) throws Exception {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                CustomUser userDetails = (CustomUser) principal;
-                if (modelAndView != null) {
-                    modelAndView.getModelMap().
-                            addAttribute("user", userDetails);
                 }
             }
         }
