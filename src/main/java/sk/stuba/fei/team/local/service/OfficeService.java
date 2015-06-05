@@ -17,4 +17,6 @@ public interface OfficeService {
     void save(Office office);
 
     void delete(Long id);
+
+    List<Office> findByIdOrNameOrEmployeesName(String searchTerm);
 }
