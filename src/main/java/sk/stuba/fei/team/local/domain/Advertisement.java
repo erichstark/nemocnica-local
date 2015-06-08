@@ -1,19 +1,21 @@
 package sk.stuba.fei.team.local.domain;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@XmlRootElement
 public class Advertisement implements Serializable {
     private Long id;
     private String name;
     private String description;
     private String filename;
     private Set<Specialization> specializations;
-    private Set<Facility> facilities;
 
     @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -65,19 +67,4 @@ public class Advertisement implements Serializable {
         this.specializations = specializations;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "advertisement_facility",
-            joinColumns =
-            @JoinColumn(name = "advertisement", referencedColumnName = "id"),
-            inverseJoinColumns =
-            @JoinColumn(name = "facility", referencedColumnName = "id")
-    )
-    public Set<Facility> getFacilities() {
-        return facilities;
-    }
-
-    public void setFacilities(Set<Facility> facilities) {
-        this.facilities = facilities;
-    }
 }

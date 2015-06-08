@@ -15,16 +15,13 @@ public class Office implements Serializable {
     private Set<Employee> employees;
     private Set<Insurance> insurances;
     private Set<Specialization> specializations;
+    private Set<OpeningHours> hours;
+    private Set<Order> orders;
     private Set<DisplayConfiguration> displayConfigurations;
-
-    public Office() {
-    }
-
-    public Office(String name) {
-        this.name = name;
-    }
+    private Boolean enabled;
 
     @Id
+    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -94,6 +91,33 @@ public class Office implements Serializable {
         this.specializations = specializations;
     }
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
+    public Set<OpeningHours> getHours() {
+        return hours;
+    }
+
+    public void setHours(Set<OpeningHours> hours) {
+        this.hours = hours;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
+    @Column(nullable = false)
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
     @ManyToMany(mappedBy = "offices")
     public Set<DisplayConfiguration> getDisplayConfigurations() {
         return displayConfigurations;

@@ -20,7 +20,7 @@
         <input type="text" name="id" class="form-control" id="office-id" placeholder="ID"
                value="${display.id}">
     </div>
-    <input name="originalID" type="hidden" value="${originalID!""}"/>
+    <input name="originalID" type="hidden" value="${originalID}"/>
 
     <input name="offices" type="hidden" value="
         <#if display.offices?? && display.offices?has_content><#list display.offices as office>
