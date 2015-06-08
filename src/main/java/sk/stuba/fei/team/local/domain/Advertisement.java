@@ -15,7 +15,6 @@ public class Advertisement implements Serializable {
     private Set<Specialization> specializations;
 
     @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }

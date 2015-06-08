@@ -21,7 +21,6 @@ public class Office implements Serializable {
     private Boolean enabled;
 
     @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }

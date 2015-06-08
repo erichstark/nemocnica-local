@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Entity(name = "Employee")
+@Entity
 @XmlRootElement
 public class Employee implements Serializable, UserDetails, CredentialsContainer {
 

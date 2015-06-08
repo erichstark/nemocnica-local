@@ -24,7 +24,6 @@ public class Insurance implements Serializable {
     }
 
     @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }
