@@ -39,20 +39,35 @@ import java.util.*;
 @EnableJms
 public class MainApplication extends WebMvcConfigurerAdapter {
 
-    private static Boolean maintance;
-    private static Boolean isSetUp;
-
     @Value("${server.address:localhost}")
     String serverAddress;
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     CustomInterceptor customInterceptor;
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
+        initializeUsers(context);
     }
 
 
+    private static void initializeUsers(ConfigurableApplicationContext context) {
+        EmployeeService employeeService = context.getBean(EmployeeService.class);
+        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
+        if (employeeService.findByUsername("user") == null) {
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority("USER"));
+            Employee userDetails = new Employee("user", encoder.encode("user123"), authorities);
+            employeeService.save(userDetails);
+        }
+        if (employeeService.findByUsername("admin") == null) {
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
+            employeeService.save(userDetails);
+        }
+    }
 
 
     @Bean

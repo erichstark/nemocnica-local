@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @XmlRootElement
-public class Order implements Serializable {
+public class Appointment implements Serializable {
 
     private Long id;
     private Patient patient;
@@ -18,7 +18,6 @@ public class Order implements Serializable {
     private Date updated;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }

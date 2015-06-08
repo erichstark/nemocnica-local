@@ -36,6 +36,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //docasne vypnute
+        /*
         String requestURI = request.getRequestURI();
         if (!isSetUp() && !requestURI.startsWith("/setup")) {
             response.sendRedirect("/setup");
@@ -44,7 +46,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         if (isSetUp() && requestURI.startsWith("/setup") && !requestURI.equals("/setup?finished")) {
             response.sendRedirect("/setup?finished");
             return false;
-        }
+        }*/
         return true;
     }
 

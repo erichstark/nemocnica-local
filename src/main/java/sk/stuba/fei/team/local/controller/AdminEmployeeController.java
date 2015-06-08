@@ -126,7 +126,8 @@ public class AdminEmployeeController {
     @RequestMapping(value = "/specialization/add", method = RequestMethod.POST)
     public String specializationAdd(@RequestParam("username") String username, @RequestParam("specialization") String specialization) {
         Employee employee = employeeService.findOne(username);
-        employee.getSpecializations().add(specialization);
+        //TODO fix this
+//        employee.getSpecializations().add(specialization);
         employeeService.save(employee);
         return "redirect:/admin/employee/edit/" + username;
     }

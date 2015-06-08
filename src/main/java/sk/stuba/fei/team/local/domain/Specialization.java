@@ -25,7 +25,6 @@ public class Specialization implements Serializable {
     }
 
     @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -33,7 +32,6 @@ public class Specialization implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     @Column(nullable = false)
     public String getName() {
