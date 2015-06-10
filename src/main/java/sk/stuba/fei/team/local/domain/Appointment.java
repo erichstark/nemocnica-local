@@ -15,7 +15,6 @@ public class Appointment implements Serializable {
     private Date date;
     private int intervalStart;
     private String note;
-    private Date updated;
 
     @Id
     public Long getId() {
@@ -72,25 +71,5 @@ public class Appointment implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated", nullable = false)
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        updated = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
     }
 }

@@ -1,11 +1,8 @@
 package sk.stuba.fei.team.local.api.domain;
 
-import org.springframework.security.core.GrantedAuthority;
 import sk.stuba.fei.team.local.domain.Patient;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PatientWrapper {
     private String password;
@@ -29,8 +26,6 @@ public class PatientWrapper {
     public PatientWrapper(Patient patient) {
         password = patient.getPassword();
         username = patient.getUsername();
-        authorities = new HashSet<>(patient.getAuthorities().size());
-        authorities.addAll(patient.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         accountNonExpired = patient.isAccountNonExpired();
         accountNonLocked = patient.isAccountNonLocked();
         credentialsNonExpired = patient.isCredentialsNonExpired();

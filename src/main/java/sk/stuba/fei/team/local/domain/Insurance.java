@@ -3,7 +3,6 @@ package sk.stuba.fei.team.local.domain;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -13,7 +12,6 @@ public class Insurance implements Serializable {
     private String name;
     private Set<Office> offices;
     private Set<Patient> patients;
-    private Date updated;
     private Boolean enabled;
 
     public Insurance() {
@@ -59,16 +57,6 @@ public class Insurance implements Serializable {
         this.patients = patients;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated", nullable = false)
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
     @Column(nullable = false)
     public Boolean getEnabled() {
         return enabled;
@@ -78,13 +66,4 @@ public class Insurance implements Serializable {
         this.enabled = enabled;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        updated = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
-    }
 }

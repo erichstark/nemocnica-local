@@ -30,7 +30,6 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     private String suffix_title;
     private Set<Office> offices;
     private Set<Specialization> specializations;
-    private Date updated;
 
     public Employee() {
         password = "";
@@ -223,26 +222,6 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     @Override
     public void eraseCredentials() {
         password = null;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated", nullable = false)
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        updated = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
