@@ -2,12 +2,9 @@ package sk.stuba.fei.team.local.api.domain;
 
 import sk.stuba.fei.team.local.domain.Patient;
 
-import java.util.Set;
-
 public class PatientWrapper {
     private String password;
     private String username;
-    private Set<String> authorities;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -53,14 +50,6 @@ public class PatientWrapper {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Set<String> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<String> authorities) {
-        this.authorities = authorities;
     }
 
     public boolean isAccountNonExpired() {
