@@ -1,8 +1,11 @@
 package sk.stuba.fei.team.local.api.domain;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.domain.Specialization;
+import sk.stuba.fei.team.local.service.EmployeeService;
+import sk.stuba.fei.team.local.service.SpecializationService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +32,7 @@ public class EmployeeWrapper {
         password = employee.getPassword();
         username = employee.getUsername();
         authorities = new HashSet<>(employee.getAuthorities().size());
-        authorities.addAll(employee.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        authorities.addAll(employee.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
         accountNonExpired = employee.isAccountNonExpired();
         accountNonLocked = employee.isAccountNonLocked();
         credentialsNonExpired = employee.isCredentialsNonExpired();
@@ -39,7 +42,30 @@ public class EmployeeWrapper {
         prefix_title = employee.getPrefix_title();
         suffix_title = employee.getSuffix_title();
         specializations = new HashSet<>(employee.getSpecializations().size());
-        specializations.addAll(employee.getSpecializations().stream().map(Specialization::getId).collect(Collectors.toList()));
+        specializations.addAll(employee.getSpecializations().stream().map(Specialization::getId).collect(Collectors.toSet()));
+    }
+
+    public Employee build(SpecializationService specializationService, EmployeeService employeeService) {
+        Employee employee = new Employee();
+        employee.setPassword(password);
+        employee.setUsername(username);
+        Set<GrantedAuthority> authorities = new HashSet<>(this.authorities.size());
+        authorities.addAll(this.authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        employee.setAuthorities(authorities);
+        employee.setAccountNonExpired(accountNonExpired);
+        employee.setAccountNonLocked(accountNonLocked);
+        employee.setCredentialsNonExpired(credentialsNonExpired);
+        employee.setEnabled(enabled);
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        employee.setPrefix_title(prefix_title);
+        employee.setSuffix_title(suffix_title);
+        employee.getSpecializations().addAll(this.specializations.stream().map(specializationService::findOne).collect(Collectors.toSet()));
+        Employee oldEmployee = employeeService.findOne(username);
+        if (oldEmployee != null) {
+            employee.getOffices().addAll(oldEmployee.getOffices());
+        }
+        return employee;
     }
 
     public String getPassword() {

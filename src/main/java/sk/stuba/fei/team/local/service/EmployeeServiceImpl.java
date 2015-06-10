@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.team.local.api.RestConsumer;
 import sk.stuba.fei.team.local.api.UpdateWrapper;
+import sk.stuba.fei.team.local.api.domain.EmployeeWrapper;
 import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.repository.EmployeeRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Component("employeeService")
@@ -30,22 +30,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private FacilityService facilityService;
 
-    @Override
-    public Employee findByUsername(String username) {
-        return employeeRepository.findOne(username);
-//        return (Employee) restConsumer.get(String.format(FIND_BY_USERNAME, username), Employee.class);
-    }
+    @Autowired
+    private SpecializationService specializationService;
+
 
     @Override
     public void save(Employee employee) {
         employeeRepository.save(employee);
-        employee.setAuthorities(Collections.emptySet());
-        restConsumer.post(SAVE, employee, String.class);
+        restConsumer.post(SAVE, new EmployeeWrapper(employee), String.class);
     }
 
     @Override
     public Employee findOne(String username) {
-        return employeeRepository.findOne(username);
+        Employee employee = employeeRepository.findOne(username);
+        if (employee != null) {
+            return employee;
+        } else {
+            EmployeeWrapper employeeWrapper = (EmployeeWrapper) restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class);
+            return employeeWrapper.build(specializationService, this);
+        }
     }
 
     @Override
@@ -55,17 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean exists(String username) {
-        return restConsumer.get(FIND_BY_USERNAME + username, Employee.class) != null;
-    }
-
-    @Override
-    public void delete(String username) {
-        employeeRepository.delete(username);
-    }
-
-    @Override
-    public List<Employee> findPatientByUsernameOrFirstOrSurname(String text) {
-        return employeeRepository.findByUsernameOrFirstnameOrSerunameCustomQuery(text);
+        return restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class) != null;
     }
 
     @Override
@@ -79,14 +72,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (Employee em : employeeRepository.findAll()) {
             usernames.add(em.getUsername());
         }
-        Employee[] employees = (Employee[]) restConsumer.post(UPDATE, new UpdateWrapper<>(usernames, facilityService.getEmployeesUpdateDate()), Employee[].class);
-        for (Employee newEmployee : employees) {
-            Employee oldEmployee = employeeRepository.findByUsername(newEmployee.getUsername());
-            if (oldEmployee != null) {
-                newEmployee.setAuthorities(oldEmployee.getAuthorities());
-                newEmployee.setOffices(oldEmployee.getOffices());
-            }
-            employeeRepository.save(newEmployee);
+        EmployeeWrapper[] employees = (EmployeeWrapper[]) restConsumer.post(UPDATE, new UpdateWrapper<>(usernames, facilityService.getEmployeesUpdateDate()), EmployeeWrapper[].class);
+        for (EmployeeWrapper employeeWrapper : employees) {
+            employeeRepository.save(employeeWrapper.build(specializationService, this));
         }
         facilityService.employeesUpdated();
     }

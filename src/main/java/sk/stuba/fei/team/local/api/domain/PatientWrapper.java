@@ -1,6 +1,8 @@
 package sk.stuba.fei.team.local.api.domain;
 
 import sk.stuba.fei.team.local.domain.Patient;
+import sk.stuba.fei.team.local.service.InsuranceService;
+import sk.stuba.fei.team.local.service.PatientService;
 
 public class PatientWrapper {
     private String password;
@@ -34,6 +36,28 @@ public class PatientWrapper {
         prefix_title = patient.getPrefix_title();
         suffix_title = patient.getSuffix_title();
         insurance = patient.getInsurance().getId();
+    }
+
+    public Patient build(PatientService patientService, InsuranceService insuranceService) {
+        Patient patient = new Patient();
+        patient.setPassword(password);
+        patient.setUsername(username);
+        patient.setAccountNonExpired(accountNonExpired);
+        patient.setAccountNonLocked(accountNonLocked);
+        patient.setCredentialsNonExpired(credentialsNonExpired);
+        patient.setEnabled(enabled);
+        patient.setFirstName(firstName);
+        patient.setSurname(surname);
+        patient.setPhone(phone);
+        patient.setEmail(email);
+        patient.setPrefix_title(prefix_title);
+        patient.setSuffix_title(suffix_title);
+        patient.setInsurance(insuranceService.findOne(insurance));
+        Patient oldPatient = patientService.findOne(username);
+        if (oldPatient != null) {
+            patient.getAppointments().addAll(oldPatient.getAppointments());
+        }
+        return patient;
     }
 
     public String getPassword() {

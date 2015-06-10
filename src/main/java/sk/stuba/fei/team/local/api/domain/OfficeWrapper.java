@@ -4,6 +4,7 @@ import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.domain.Insurance;
 import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.domain.Specialization;
+import sk.stuba.fei.team.local.service.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,12 +28,30 @@ public class OfficeWrapper {
         name = office.getName();
         facility = office.getFacility().getId();
         employees = new HashSet<>(office.getEmployees().size());
-        employees.addAll(office.getEmployees().stream().map(Employee::getUsername).collect(Collectors.toList()));
+        employees.addAll(office.getEmployees().stream().map(Employee::getUsername).collect(Collectors.toSet()));
         insurances = new HashSet<>(office.getInsurances().size());
-        insurances.addAll(office.getInsurances().stream().map(Insurance::getId).collect(Collectors.toList()));
+        insurances.addAll(office.getInsurances().stream().map(Insurance::getId).collect(Collectors.toSet()));
         specializations = new HashSet<>(office.getSpecializations().size());
-        specializations.addAll(office.getSpecializations().stream().map(Specialization::getId).collect(Collectors.toList()));
+        specializations.addAll(office.getSpecializations().stream().map(Specialization::getId).collect(Collectors.toSet()));
         enabled = office.getEnabled();
+    }
+
+    Office build(OfficeService officeService, FacilityService facilityService, EmployeeService employeeService, InsuranceService insuranceService, SpecializationService specializationService) {
+        Office office = new Office();
+        office.setId(id);
+        office.setName(name);
+        office.setFacility(facilityService.findOne(facility));
+        office.getEmployees().addAll(employees.stream().map(employeeService::findOne).collect(Collectors.toSet()));
+        office.getInsurances().addAll(insurances.stream().map(insuranceService::findOne).collect(Collectors.toSet()));
+        office.getSpecializations().addAll(specializations.stream().map(specializationService::findOne).collect(Collectors.toSet()));
+        Office oldOffice = officeService.findOne(id);
+        if (oldOffice != null) {
+            office.getHours().addAll(oldOffice.getHours());
+            office.getAppointments().addAll(oldOffice.getAppointments());
+            office.getDisplayConfigurations().addAll(oldOffice.getDisplayConfigurations());
+        }
+        office.setEnabled(enabled);
+        return office;
     }
 
     public Long getId() {

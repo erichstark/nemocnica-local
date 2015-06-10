@@ -3,6 +3,7 @@ package sk.stuba.fei.team.local.domain;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,15 @@ public class Office implements Serializable {
     private Set<Appointment> appointments;
     private Set<DisplayConfiguration> displayConfigurations;
     private Boolean enabled;
+
+    public Office() {
+        employees = new HashSet<>();
+        insurances = new HashSet<>();
+        specializations = new HashSet<>();
+        hours = new HashSet<>();
+        appointments = new HashSet<>();
+        displayConfigurations = new HashSet<>();
+    }
 
     @Id
     public Long getId() {
@@ -117,6 +127,7 @@ public class Office implements Serializable {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
     @ManyToMany(mappedBy = "offices")
     public Set<DisplayConfiguration> getDisplayConfigurations() {
         return displayConfigurations;

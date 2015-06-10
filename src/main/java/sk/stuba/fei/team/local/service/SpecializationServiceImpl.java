@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.team.local.api.RestConsumer;
+import sk.stuba.fei.team.local.api.domain.SpecializationWrapper;
 import sk.stuba.fei.team.local.domain.Specialization;
 import sk.stuba.fei.team.local.repository.SpecializationRepository;
 
@@ -44,9 +45,10 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Override
     public void update() {
-        Specialization[] specializations = (Specialization[]) restConsumer.post("insurance/update", facilityService.getSpecializationsUpdateDate(), Specialization[].class);
-        for (Specialization newSpecialization : specializations) {
-            Specialization oldSpecialization = specializationRepository.findOne(newSpecialization.getId());
+        SpecializationWrapper[] specializations = (SpecializationWrapper[]) restConsumer.post("insurance/update", facilityService.getSpecializationsUpdateDate(), SpecializationWrapper[].class);
+        for (SpecializationWrapper specializationWrapper : specializations) {
+            Specialization oldSpecialization = specializationRepository.findOne(specializationWrapper.getId());
+            Specialization newSpecialization = specializationWrapper.build();
             if (oldSpecialization != null) {
                 newSpecialization.setEmployees(oldSpecialization.getEmployees());
                 newSpecialization.setOffices(oldSpecialization.getOffices());

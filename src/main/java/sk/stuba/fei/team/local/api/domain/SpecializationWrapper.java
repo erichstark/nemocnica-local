@@ -16,6 +16,13 @@ public class SpecializationWrapper {
         enabled = specialization.getEnabled();
     }
 
+    public Specialization build() {
+        Specialization specialization = new Specialization();
+        specialization.setId(id);
+        specialization.setName(name);
+        specialization.setEnabled(enabled);
+        return specialization;
+    }
 
     public Long getId() {
         return id;

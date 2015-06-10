@@ -3,6 +3,7 @@ package sk.stuba.fei.team.local.domain;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,10 +16,14 @@ public class Insurance implements Serializable {
     private Boolean enabled;
 
     public Insurance() {
+        offices = new HashSet<>();
+        patients = new HashSet<>();
     }
 
     public Insurance(String name) {
         this.name = name;
+        offices = new HashSet<>();
+        patients = new HashSet<>();
     }
 
     @Id

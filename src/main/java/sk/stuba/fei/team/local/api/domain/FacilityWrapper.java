@@ -22,7 +22,6 @@ public class FacilityWrapper {
         enabled = facility.getEnabled();
     }
 
-
     public Long getId() {
         return id;
     }

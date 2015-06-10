@@ -30,4 +30,6 @@ public interface FacilityService {
 
     Facility getFacility();
 
+    Facility findOne(Long id);
+
 }

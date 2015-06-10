@@ -5,7 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @XmlRootElement
@@ -24,7 +25,7 @@ public class Patient {
     private String prefix_title;
     private String suffix_title;
     private Insurance insurance;
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments;
 
     public Patient() {
         password = "";
@@ -39,6 +40,7 @@ public class Patient {
         suffix_title = "";
         phone = "";
         email = "";
+        appointments = new HashSet<>();
     }
 
     public Patient(String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
@@ -54,6 +56,7 @@ public class Patient {
         suffix_title = "";
         phone = "";
         this.email = email;
+        appointments = new HashSet<>();
     }
 
     @Id
@@ -172,11 +175,11 @@ public class Patient {
     }
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "patient")
-    public List<Appointment> getAppointments() {
+    public Set<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(List<Appointment> appointments) {
+    public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
     }
 }

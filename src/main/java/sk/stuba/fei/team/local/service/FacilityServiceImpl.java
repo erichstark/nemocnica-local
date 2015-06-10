@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.team.local.api.RestConsumer;
+import sk.stuba.fei.team.local.api.domain.FacilityWrapper;
 import sk.stuba.fei.team.local.domain.Facility;
 import sk.stuba.fei.team.local.repository.FacilityRepository;
 
@@ -21,7 +22,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public void save(Facility facility) {
-        Long id = (Long) restConsumer.post("", facility, Long.class);
+        Long id = (Long) restConsumer.post("", new FacilityWrapper(facility), Long.class);
         facility.setId(id);
         facilityRepository.save(facility);
     }
@@ -89,5 +90,10 @@ public class FacilityServiceImpl implements FacilityService {
     @Override
     public Facility getFacility() {
         return facilityRepository.findAll().iterator().next();
+    }
+
+    @Override
+    public Facility findOne(Long id) {
+        return facilityRepository.findOne(id);
     }
 }
