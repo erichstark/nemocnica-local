@@ -2,7 +2,6 @@ package sk.stuba.fei.team.local.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,7 +55,7 @@ public class AdminFacilityController {
 
     private void createAdminAccount(ConfigurableApplicationContext context) {
         PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        if (employeeService.findByUsername("admin") == null) {
+        if (employeeService.findOne("admin") == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
             Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);

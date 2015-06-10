@@ -24,7 +24,7 @@ public class RestConsumer {
         BASE_URL = String.format("http://%s:%d/", globalHost, globalPort);
         ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
         details.setAccessTokenUri(BASE_URL + "oauth/token");
-
+        //todo fix facility
        /*Facility facility = facilityService.findAll().iterator().next();
         details.setUsername(facility.getUsername());
         details.setPassword(facility.getPassword());

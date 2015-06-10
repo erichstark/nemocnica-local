@@ -64,7 +64,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
             if (principal instanceof UserDetails) {
                 CustomUser userDetails = (CustomUser) principal;
                 if (modelAndView != null) {
-                    modelAndView.getModelMap().addAttribute("user", employeeService.findByUsername(userDetails.getUsername()));
+                    modelAndView.getModelMap().addAttribute("user", employeeService.findOne(userDetails.getUsername()));
                 }
             }
         }

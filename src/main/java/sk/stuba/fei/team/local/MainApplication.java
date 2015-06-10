@@ -55,13 +55,13 @@ public class MainApplication extends WebMvcConfigurerAdapter {
     private static void initializeUsers(ConfigurableApplicationContext context) {
         EmployeeService employeeService = context.getBean(EmployeeService.class);
         PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        if (employeeService.findByUsername("user") == null) {
+        if (employeeService.findOne("user") == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("USER"));
             Employee userDetails = new Employee("user", encoder.encode("user123"), authorities);
             employeeService.save(userDetails);
         }
-        if (employeeService.findByUsername("admin") == null) {
+        if (employeeService.findOne("admin") == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
             Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);

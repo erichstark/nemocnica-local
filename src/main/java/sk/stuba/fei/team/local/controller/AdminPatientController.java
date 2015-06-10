@@ -33,7 +33,8 @@ public class AdminPatientController {
 
     @RequestMapping(value = "/edit/{id}")
     public String edit(@PathVariable Long id, Map<String, Object> model) {
-        model.put("patient", patientService.findOne(id));
+        //todo Id je string username
+//        model.put("patient", patientService.findOne(id));
         model.put("insurances", insuranceService.findAll());
 
         return "admin/patient/add";
@@ -48,7 +49,8 @@ public class AdminPatientController {
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable Long id) {
-        patientService.delete(id);
+        //todo Id je string username
+//        patientService.delete(id);
         return "redirect:/admin/patient";
     }
 
