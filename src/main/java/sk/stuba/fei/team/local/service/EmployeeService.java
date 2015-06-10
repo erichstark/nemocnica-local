@@ -20,4 +20,6 @@ public interface EmployeeService {
     List<Employee> findPatientByUsernameOrFirstOrSurname(String text);
 
     List<Employee> findByFirstNameOrLastName(String text);
+
+    void update();
 }

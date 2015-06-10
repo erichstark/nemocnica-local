@@ -1,39 +1,36 @@
 package sk.stuba.fei.team.local.domain;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @XmlRootElement
 public class OpeningHours implements Serializable {
-    private Long Id;
-    private Date date;
+    private Long id;
+    private String date;
+    private Long reservationMorningFrom;
+    private Long reservationMorningTo;
     private Long reservationFrom;
     private Long reservationTo;
     private Office office;
-    private int free;
 
     @Id
     public Long getId() {
-        return Id;
+        return id;
     }
 
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     @Column
-    @Type(type = "date")
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -66,12 +63,22 @@ public class OpeningHours implements Serializable {
     }
 
     @Column
-    public int getFree() {
-        return free;
+    public Long getReservationMorningFrom() {
+        return reservationMorningFrom;
     }
 
-    public void setFree(int free) {
-        this.free = free;
+    public void setReservationMorningFrom(Long reservationMorningFrom) {
+        this.reservationMorningFrom = reservationMorningFrom;
     }
+
+    @Column
+    public Long getReservationMorningTo() {
+        return reservationMorningTo;
+    }
+
+    public void setReservationMorningTo(Long reservationMorningTo) {
+        this.reservationMorningTo = reservationMorningTo;
+    }
+
 
 }

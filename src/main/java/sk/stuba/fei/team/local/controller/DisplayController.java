@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import sk.stuba.fei.team.local.AlertMessage;
+import sk.stuba.fei.team.local.api.AlertMessage;
 import sk.stuba.fei.team.local.domain.DisplayConfiguration;
 import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.jms.CallInMessage;

@@ -13,7 +13,5 @@ public interface SpecializationService {
 
     boolean exists(Long id);
 
-    void save(Specialization specialization);
-
-    void delete(Long id);
+    void update();
 }

@@ -29,7 +29,8 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     private String prefix_title;
     private String suffix_title;
     private Set<Office> offices;
-    private List<Specialization> specializations;
+    private Set<Specialization> specializations;
+    private Date updated;
 
     public Employee() {
         password = "";
@@ -42,7 +43,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
         firstName = "";
         lastName = "";
         offices = new HashSet<>();
-        specializations = new ArrayList<>();
+        specializations = new HashSet<>();
     }
 
     public Employee(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -56,7 +57,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
         firstName = username;
         lastName = "";
         offices = new HashSet<>();
-        specializations = new ArrayList<>();
+        specializations = new HashSet<>();
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
@@ -211,17 +212,37 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
             inverseJoinColumns =
             @JoinColumn(name = "specialization", referencedColumnName = "id")
     )
-    public List<Specialization> getSpecializations() {
+    public Set<Specialization> getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(List<Specialization> specializations) {
+    public void setSpecializations(Set<Specialization> specializations) {
         this.specializations = specializations;
     }
 
     @Override
     public void eraseCredentials() {
         password = null;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated", nullable = false)
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        updated = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updated = new Date();
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {

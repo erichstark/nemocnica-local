@@ -22,3 +22,29 @@ function setNavigation() {
         }
     });
 }
+
+
+$("#facility").submit(function () {
+    var form = $("#facility");
+    var spinner = $("#spinner");
+    var admin = $("#create-admin");
+    var success = $("#success");
+    var error = $("#error");
+    form.hide();
+    spinner.show();
+    $.ajax({
+        type: "POST",
+        url: "/setup/facility",
+        data: form.serialize(),
+        success: function (data) {
+            spinner.hide();
+            admin.show();
+        },
+        error: function (data) {
+            spinner.hide();
+            error.show();
+            error.set(data);
+        }
+    });
+    return false;
+});

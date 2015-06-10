@@ -1,5 +1,6 @@
 package sk.stuba.fei.team.local.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;

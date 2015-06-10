@@ -137,8 +137,6 @@
                     <li><a href="<@spring.url '/admin'/>">Prehľad</a></li>
                     <li><a href="<@spring.url '/admin/facility'/>">Zariadenia</a></li>
                     <li><a href="<@spring.url '/admin/office'/>">Ambulancie</a></li>
-                    <li><a href="<@spring.url '/admin/insurance'/>">Poistovne</a></li>
-                    <li><a href="<@spring.url '/admin/specialization'/>">Špecializácie</a></li>
                     <li><a href="<@spring.url '/admin/patient'/>">Pacienti</a></li>
                     <li><a href="<@spring.url '/admin/employee'/>">Zamestnanci</a></li>
                     <li><a href="<@spring.url '/admin/display'/>">Obrazovky</a></li>

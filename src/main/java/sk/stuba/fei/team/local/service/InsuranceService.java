@@ -4,9 +4,6 @@ import sk.stuba.fei.team.local.domain.Insurance;
 
 import java.util.List;
 
-/**
- * Created by pallo on 5/3/15.
- */
 public interface InsuranceService {
 
     Insurance findOne(Long id);
@@ -17,7 +14,5 @@ public interface InsuranceService {
 
     boolean exists(Long id);
 
-    void save(Insurance insurance);
-
-    void delete(Long id);
+    void update();
 }

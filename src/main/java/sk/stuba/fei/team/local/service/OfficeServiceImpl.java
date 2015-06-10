@@ -40,6 +40,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public void save(Office office) {
+        office.setId(0L);
         officeRepository.save(office);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import sk.stuba.fei.team.local.security.CustomUser;
+import sk.stuba.fei.team.local.service.EmployeeService;
 import sk.stuba.fei.team.local.service.FacilityService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,13 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     FacilityService facilityService;
 
+    @Autowired
+    EmployeeService employeeService;
+
     public boolean isSetUp() {
         if (initFlag) {
             initFlag = false;
-            setupRequired = facilityService.findAll().iterator().hasNext();
+            setupRequired = facilityService.getFacility() == null;
         }
         return setupRequired;
     }
@@ -60,8 +64,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
             if (principal instanceof UserDetails) {
                 CustomUser userDetails = (CustomUser) principal;
                 if (modelAndView != null) {
-                    modelAndView.getModelMap().
-                            addAttribute("user", userDetails);
+                    modelAndView.getModelMap().addAttribute("user", employeeService.findByUsername(userDetails.getUsername()));
                 }
             }
         }

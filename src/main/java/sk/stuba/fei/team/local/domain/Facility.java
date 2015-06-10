@@ -3,6 +3,7 @@ package sk.stuba.fei.team.local.domain;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,11 @@ public class Facility implements Serializable {
     private String username;
     private String password;
     private Boolean enabled;
+    private Date employeesUpdated;
+    private Date patientsUpdated;
+    private Date appointmentsUpdated;
+    private Date specializationsUpdated;
+    private Date insurancesUpdated;
 
     @Id
     public Long getId() {
@@ -118,5 +124,55 @@ public class Facility implements Serializable {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getEmployeesUpdated() {
+        return employeesUpdated;
+    }
+
+    public void setEmployeesUpdated(Date employeesUpdated) {
+        this.employeesUpdated = employeesUpdated;
+    }
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getPatientsUpdated() {
+        return patientsUpdated;
+    }
+
+    public void setPatientsUpdated(Date patientsUpdated) {
+        this.patientsUpdated = patientsUpdated;
+    }
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getAppointmentsUpdated() {
+        return appointmentsUpdated;
+    }
+
+    public void setAppointmentsUpdated(Date appointmentsUpdated) {
+        this.appointmentsUpdated = appointmentsUpdated;
+    }
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getSpecializationsUpdated() {
+        return specializationsUpdated;
+    }
+
+    public void setSpecializationsUpdated(Date specializationsUpdated) {
+        this.specializationsUpdated = specializationsUpdated;
+    }
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getInsurancesUpdated() {
+        return insurancesUpdated;
+    }
+
+    public void setInsurancesUpdated(Date insurancesUpdated) {
+        this.insurancesUpdated = insurancesUpdated;
     }
 }
