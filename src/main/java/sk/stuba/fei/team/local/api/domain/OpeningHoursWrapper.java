@@ -14,7 +14,6 @@ public class OpeningHoursWrapper {
     public OpeningHoursWrapper() {
     }
 
-
     public OpeningHoursWrapper(OpeningHours openingHours) {
         id = openingHours.getId();
         date = openingHours.getDate();

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.team.local.api.RestConsumer;
+import sk.stuba.fei.team.local.api.domain.InsuranceWrapper;
 import sk.stuba.fei.team.local.domain.Insurance;
 import sk.stuba.fei.team.local.repository.InsuranceRepository;
 
@@ -44,9 +45,9 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Override
     public void update() {
-        Insurance[] insurances = (Insurance[]) restConsumer.post("insurance/update", facilityService.getInsurancesUpdateDate(), Insurance[].class);
-        for (Insurance insurance : insurances) {
-            insuranceRepository.save(insurance);
+        InsuranceWrapper[] insurances = (InsuranceWrapper[]) restConsumer.post("insurance/update", facilityService.getInsurancesUpdateDate(), InsuranceWrapper[].class);
+        for (InsuranceWrapper insurance : insurances) {
+            insuranceRepository.save(insurance.build(this));
         }
         facilityService.insurancesUpdated();
     }

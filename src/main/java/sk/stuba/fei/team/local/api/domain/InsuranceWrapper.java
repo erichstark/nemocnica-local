@@ -17,7 +17,7 @@ public class InsuranceWrapper {
         enabled = insurance.getEnabled();
     }
 
-    Insurance build(InsuranceService insuranceService) {
+    public Insurance build(InsuranceService insuranceService) {
         Insurance insurance = new Insurance();
         insurance.setId(id);
         insurance.setName(name);

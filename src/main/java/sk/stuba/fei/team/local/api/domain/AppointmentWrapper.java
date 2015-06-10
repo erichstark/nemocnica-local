@@ -27,7 +27,7 @@ public class AppointmentWrapper {
         note = appointment.getNote();
     }
 
-    Appointment build(PatientService patientService, OfficeService officeService) {
+    public Appointment build(PatientService patientService, OfficeService officeService) {
         Appointment appointment = new Appointment();
         appointment.setId(id);
         appointment.setPatient(patientService.findOne(patient));

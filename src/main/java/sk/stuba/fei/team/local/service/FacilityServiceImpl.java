@@ -22,7 +22,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public void save(Facility facility) {
-        Long id = (Long) restConsumer.post("", new FacilityWrapper(facility), Long.class);
+        Long id = (Long) restConsumer.post("facility", new FacilityWrapper(facility), Long.class);
         facility.setId(id);
         facilityRepository.save(facility);
     }

@@ -36,7 +36,7 @@ public class OfficeWrapper {
         enabled = office.getEnabled();
     }
 
-    Office build(OfficeService officeService, FacilityService facilityService, EmployeeService employeeService, InsuranceService insuranceService, SpecializationService specializationService) {
+    public Office build(OfficeService officeService, FacilityService facilityService, EmployeeService employeeService, InsuranceService insuranceService, SpecializationService specializationService) {
         Office office = new Office();
         office.setId(id);
         office.setName(name);
