@@ -83,7 +83,7 @@ public class AdminEmployeeController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@RequestParam("text") String text, Map<String, Object> model) {
-        Iterable<Employee> employees = employeeService.findByFirstNameOrLastName(text);
+        Iterable<Employee> employees = employeeService.findByFirstNameOrLastNameOrUsername(text);
         model.put("search", text);
         model.put("employees", employees);
 

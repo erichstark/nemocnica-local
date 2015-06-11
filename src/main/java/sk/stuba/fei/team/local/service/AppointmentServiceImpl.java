@@ -30,11 +30,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void delete(Long id) {
-        appointmentRepository.delete(id);
-    }
-
-    @Override
     public Iterable<Appointment> findAll() {
 
         return appointmentRepository.findAll();

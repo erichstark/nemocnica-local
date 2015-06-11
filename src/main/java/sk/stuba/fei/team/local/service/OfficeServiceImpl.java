@@ -57,6 +57,6 @@ public class OfficeServiceImpl implements OfficeService {
         } catch (NumberFormatException ex) {
             id = (long) -1;
         }
-        return officeRepository.findDistinctOfficesByNameContainingIgnoreCaseOrIdOrEmployeesIn(searchTerm, id, employeeService.findByFirstNameOrLastName(searchTerm));
+        return officeRepository.findDistinctOfficesByNameContainingIgnoreCaseOrIdOrEmployeesIn(searchTerm, id, employeeService.findByFirstNameOrLastNameOrUsername(searchTerm));
     }
 }

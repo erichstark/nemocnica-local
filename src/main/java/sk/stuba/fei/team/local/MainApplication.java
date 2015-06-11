@@ -29,7 +29,6 @@ import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
-import sk.stuba.fei.team.local.service.FacilityService;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;

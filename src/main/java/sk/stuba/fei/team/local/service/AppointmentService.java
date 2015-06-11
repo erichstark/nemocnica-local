@@ -17,8 +17,6 @@ public interface AppointmentService {
 
     Iterable<Appointment> findByPatient(Patient patient);
 
-    void delete(Long id);
-
     Appointment findById(Long id);
 
 }
