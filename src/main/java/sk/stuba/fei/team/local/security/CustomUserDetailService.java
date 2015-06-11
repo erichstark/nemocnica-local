@@ -20,7 +20,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if (employeeService == null) {
             throw new UsernameNotFoundException("Failed to autowire employeeService.");
         }
-        Employee z = employeeService.findByUsername(username);
+        Employee z = employeeService.findOne(username);
         if (z == null) {
             throw new UsernameNotFoundException("User with username " + username + " not found.");
         }

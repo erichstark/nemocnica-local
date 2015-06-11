@@ -2,10 +2,9 @@ package sk.stuba.fei.team.local.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.team.local.domain.Patient;
 import sk.stuba.fei.team.local.repository.PatientRepository;
-
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient findOne(Long id) {
+    public Patient findOne(String id) {
         return patientRepository.findOne(id);
     }
 
@@ -32,12 +31,12 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public boolean exists(Long id) {
+    public boolean exists(String id) {
         return patientRepository.exists(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String id) {
         patientRepository.delete(id);
     }
 

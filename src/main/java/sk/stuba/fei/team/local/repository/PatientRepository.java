@@ -7,7 +7,7 @@ import sk.stuba.fei.team.local.domain.Patient;
 
 import java.util.List;
 
-public interface PatientRepository extends CrudRepository<Patient, Long> {
+public interface PatientRepository extends CrudRepository<Patient, String> {
 
     @Query("select p from Patient p where p.firstName like %:text% or p.surname like %:text%")
     List<Patient> findByFirstnameOrSerunameCustomQuery(@Param("text") String text);

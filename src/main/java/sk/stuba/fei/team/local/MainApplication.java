@@ -16,29 +16,22 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import sk.stuba.fei.team.local.domain.Employee;
-import sk.stuba.fei.team.local.security.CustomUser;
 import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
+import sk.stuba.fei.team.local.service.FacilityService;
 
 import javax.jms.ConnectionFactory;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.util.*;
 
@@ -49,27 +42,33 @@ public class MainApplication extends WebMvcConfigurerAdapter {
     @Value("${server.address:localhost}")
     String serverAddress;
 
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    CustomInterceptor customInterceptor;
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
         initializeUsers(context);
     }
 
+
     private static void initializeUsers(ConfigurableApplicationContext context) {
         EmployeeService employeeService = context.getBean(EmployeeService.class);
         PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        if (employeeService.findByUsername("user") == null) {
+        if (employeeService.findOne("user") == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("USER"));
             Employee userDetails = new Employee("user", encoder.encode("user123"), authorities);
             employeeService.save(userDetails);
         }
-        if (employeeService.findByUsername("admin") == null) {
+        if (employeeService.findOne("admin") == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
             Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
             employeeService.save(userDetails);
         }
     }
+
 
     @Bean
     public LocaleResolver localeResolver() {
@@ -85,15 +84,10 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         return lci;
     }
 
-    @Bean
-    HandlerInterceptorAdapter userDetailsInterceptor() {
-        return new UserDetailsInterceptor();
-    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
-        registry.addInterceptor(userDetailsInterceptor());
+        registry.addInterceptor(customInterceptor);
     }
 
     @Override
@@ -143,7 +137,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
             http.csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/admin/**", "/manage").hasAuthority("ADMIN")
-                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**").permitAll()
+                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**", "/setup/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
@@ -158,23 +152,5 @@ public class MainApplication extends WebMvcConfigurerAdapter {
         }
     }
 
-    public class UserDetailsInterceptor extends HandlerInterceptorAdapter {
 
-        @Override
-        public void postHandle(final HttpServletRequest request,
-                               final HttpServletResponse response, final Object handler,
-                               final ModelAndView modelAndView) throws Exception {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null) {
-                Object principal = authentication.getPrincipal();
-                if (principal instanceof UserDetails) {
-                    CustomUser userDetails = (CustomUser) principal;
-                    if (modelAndView != null) {
-                        modelAndView.getModelMap().
-                                addAttribute("user", userDetails);
-                    }
-                }
-            }
-        }
-    }
 }

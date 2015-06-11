@@ -1,4 +1,4 @@
-package sk.stuba.fei.team.local;
+package sk.stuba.fei.team.local.api;
 
 public class AlertMessage {
     public static final int WARNING = 0;

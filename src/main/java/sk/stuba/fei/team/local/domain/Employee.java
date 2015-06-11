@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Entity(name = "Employee")
+@Entity
 @XmlRootElement
 public class Employee implements Serializable, UserDetails, CredentialsContainer {
 
@@ -29,7 +29,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     private String prefix_title;
     private String suffix_title;
     private Set<Office> offices;
-    private List<String> specializations;
+    private Set<Specialization> specializations;
 
     public Employee() {
         password = "";
@@ -42,7 +42,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
         firstName = "";
         lastName = "";
         offices = new HashSet<>();
-        specializations = new ArrayList<>();
+        specializations = new HashSet<>();
     }
 
     public Employee(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -56,7 +56,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
         firstName = username;
         lastName = "";
         offices = new HashSet<>();
-        specializations = new ArrayList<>();
+        specializations = new HashSet<>();
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
@@ -103,7 +103,7 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "authority")
     @CollectionTable(
-            name = "authorities",
+            name = "employee_authorities",
             joinColumns = @JoinColumn(name = "username")
     )
     public Set<String> getStringAuthorities() {
@@ -203,12 +203,19 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
         this.offices = offices;
     }
 
-    @ElementCollection
-    public List<String> getSpecializations() {
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "employee_specialization",
+            joinColumns =
+            @JoinColumn(name = "employee", referencedColumnName = "username"),
+            inverseJoinColumns =
+            @JoinColumn(name = "specialization", referencedColumnName = "id")
+    )
+    public Set<Specialization> getSpecializations() {
         return specializations;
     }
 
-    public void setSpecializations(List<String> specializations) {
+    public void setSpecializations(Set<Specialization> specializations) {
         this.specializations = specializations;
     }
 

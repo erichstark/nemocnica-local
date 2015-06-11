@@ -1,11 +1,13 @@
 package sk.stuba.fei.team.local.domain;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@XmlRootElement
 public class DisplayConfiguration implements Serializable {
     private String id;
     private Set<Office> offices;

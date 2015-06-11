@@ -1,61 +1,65 @@
 package sk.stuba.fei.team.local.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.domain.Facility;
+import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
+import sk.stuba.fei.team.local.service.EmployeeService;
 import sk.stuba.fei.team.local.service.FacilityService;
+import sk.stuba.fei.team.local.service.InsuranceService;
+import sk.stuba.fei.team.local.service.SpecializationService;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
-@RequestMapping("/admin/facility")
 public class AdminFacilityController {
 
     @Autowired
-    private FacilityService facilityService;
+    EmployeeService employeeService;
 
-    @RequestMapping("")
-    public String index(Map<String, Object> model) {
-        model.put("facilities", facilityService.findAll());
-        return "admin/facility/index";
+    @Autowired
+    FacilityService facilityService;
+
+    @Autowired
+    SpecializationService specializationService;
+
+    @Autowired
+    InsuranceService insuranceService;
+
+    @RequestMapping(value = "/setup", method = RequestMethod.GET)
+    public String setup() {
+        return "/admin/facility/setup";
     }
 
-    @RequestMapping(value = "/add")
-    public String add(Map<String, Object> model) {
-        model.put("facility", new Facility());
-        return "admin/facility/add";
+    @RequestMapping(value = "/setup/facility", method = RequestMethod.POST)
+    private
+    @ResponseBody
+    String save(@ModelAttribute("facility") Facility facility) {
+        try {
+            facilityService.save(facility);
+        } catch (Exception e) {
+            return "Zlyhala komunikacia s globálnym serverom. Skontrolujte nastavenia.";
+        }
+        return "true";
     }
 
-    @RequestMapping(value = "/edit/{id}")
-    public String edit(@PathVariable Long id, Map<String, Object> model) {
-        model.put("facility", facilityService.findOne(id));
-        return "admin/facility/add";
-    }
-
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("facility") Facility facility, Map<String, Object> model) {
-        facilityService.save(facility);
-        return "redirect:/admin/facility";
-    }
-
-    @RequestMapping(value = "/delete/{id}")
-    public String delete(@PathVariable Long id, Map<String, Object> model) {
-        facilityService.delete(id);
-        return "redirect:/admin/facility";
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.POST, params = {"text"})
-    public String search(@RequestParam("text") String text, Map<String, Object> model) {
-        Iterable<Facility> facilities = facilityService.findByName(text);
-        model.put("search", text);
-        model.put("facilities", facilities);
-        return "admin/facility/index";
-    }
-
-    @RequestMapping(value = "/clear")
-    public String clear(Map<String, Object> model) {
-        model.put("facilities", facilityService.findAll());
-        return "admin/facility/index";
+    private void createAdminAccount(ConfigurableApplicationContext context) {
+        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
+        if (employeeService.findOne("admin") == null) {
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
+            employeeService.save(userDetails);
+        }
     }
 }

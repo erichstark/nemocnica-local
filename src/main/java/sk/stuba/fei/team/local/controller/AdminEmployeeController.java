@@ -14,7 +14,6 @@ import sk.stuba.fei.team.local.service.OfficeService;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 @Controller
@@ -57,7 +56,7 @@ public class AdminEmployeeController {
         employee.setPassword(encoder.encode(employee.getPassword()));
         employee.setAuthorities(authorities);
 
-        Employee temp = employeeService.findByUsername(employee.getUsername());
+        Employee temp = employeeService.findOne(employee.getUsername());
         employee.setOffices(temp.getOffices());
 
         employeeService.save(employee);
@@ -78,13 +77,13 @@ public class AdminEmployeeController {
 
     @RequestMapping(value = "/delete/{username}")
     public String delete(@PathVariable String username) {
-        employeeService.delete(username);
+        //todo remove this request
         return "redirect:/admin/employee";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@RequestParam("text") String text, Map<String, Object> model) {
-        Iterable<Employee> employees = employeeService.findPatientByUsernameOrFirstOrSurname(text);
+        Iterable<Employee> employees = employeeService.findByFirstNameOrLastName(text);
         model.put("search", text);
         model.put("employees", employees);
 
@@ -126,7 +125,8 @@ public class AdminEmployeeController {
     @RequestMapping(value = "/specialization/add", method = RequestMethod.POST)
     public String specializationAdd(@RequestParam("username") String username, @RequestParam("specialization") String specialization) {
         Employee employee = employeeService.findOne(username);
-        employee.getSpecializations().add(specialization);
+        //TODO fix this
+//        employee.getSpecializations().add(specialization);
         employeeService.save(employee);
         return "redirect:/admin/employee/edit/" + username;
     }
@@ -134,7 +134,8 @@ public class AdminEmployeeController {
     @RequestMapping(value = "{username}/specialization/{specialization}/delete")
     public String specializationDelete(@PathVariable("username") String username, @PathVariable("specialization") int specialization) {
         Employee employee = employeeService.findOne(username);
-        employee.getSpecializations().remove(specialization);
+        //todo specializaca nieje int
+//        employee.getSpecializations().remove(specialization);
         employeeService.save(employee);
         return "redirect:/admin/employee/edit/" + username;
     }

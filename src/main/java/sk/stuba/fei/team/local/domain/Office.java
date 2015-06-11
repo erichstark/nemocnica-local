@@ -3,6 +3,7 @@ package sk.stuba.fei.team.local.domain;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,13 +16,18 @@ public class Office implements Serializable {
     private Set<Employee> employees;
     private Set<Insurance> insurances;
     private Set<Specialization> specializations;
+    private Set<OpeningHours> hours;
+    private Set<Appointment> appointments;
     private Set<DisplayConfiguration> displayConfigurations;
+    private Boolean enabled;
 
     public Office() {
-    }
-
-    public Office(String name) {
-        this.name = name;
+        employees = new HashSet<>();
+        insurances = new HashSet<>();
+        specializations = new HashSet<>();
+        hours = new HashSet<>();
+        appointments = new HashSet<>();
+        displayConfigurations = new HashSet<>();
     }
 
     @Id
@@ -92,6 +98,34 @@ public class Office implements Serializable {
 
     public void setSpecializations(Set<Specialization> specializations) {
         this.specializations = specializations;
+    }
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
+    public Set<OpeningHours> getHours() {
+        return hours;
+    }
+
+    public void setHours(Set<OpeningHours> hours) {
+        this.hours = hours;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    @Column(nullable = false)
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @ManyToMany(mappedBy = "offices")

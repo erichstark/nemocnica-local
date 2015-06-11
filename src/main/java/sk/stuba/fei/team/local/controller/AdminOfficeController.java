@@ -34,7 +34,7 @@ public class AdminOfficeController {
     public String add(Map<String, Object> model) {
         model.put("pageTitle", "Admin Ambulancia");
         model.put("office", new Office());
-        model.put("facilities", facilityService.findAll());
+//        model.put("facilities", facilityService.findAll());
         model.put("insurances", insuranceService.findAll());
         return "admin/office/add";
     }
@@ -44,7 +44,7 @@ public class AdminOfficeController {
         model.put("pageTitle", "Admin Ambulancia");
         Office off = officeService.findOne(id);
         model.put("office", off);
-        model.put("facilities", facilityService.findAll());
+//        model.put("facilities", facilityService.findAll());
         model.put("insurances", insuranceService.findAll());
         return "admin/office/edit";
     }
@@ -53,7 +53,7 @@ public class AdminOfficeController {
     public String edit(@ModelAttribute("office") Office office, @RequestParam Long id_facility) {
         Office temp = officeService.findOne(office.getId());
         office.setInsurances(temp.getInsurances());
-        Facility facility = facilityService.findOne(id_facility);
+        Facility facility = facilityService.getFacility();
         office.setFacility(facility);
         officeService.save(office);
         return "redirect:/admin/office";
@@ -61,7 +61,7 @@ public class AdminOfficeController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(@ModelAttribute("office") Office office, @RequestParam Long id_facility) {
-        Facility facility = facilityService.findOne(id_facility);
+        Facility facility = facilityService.getFacility();
         office.setFacility(facility);
         officeService.save(office);
         return "redirect:/admin/office";

@@ -8,13 +8,13 @@ public interface PatientService {
 
     void save(Patient patient);
 
-    Patient findOne(Long id);
+    Patient findOne(String id);
 
     Iterable<Patient> findAll();
 
-    boolean exists(Long id);
+    boolean exists(String id);
 
-    void delete(Long id);
+    void delete(String id);
 
     List<Patient> findPatientByFirstOrSurname(String text);
 }

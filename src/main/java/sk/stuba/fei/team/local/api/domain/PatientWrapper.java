@@ -1,17 +1,10 @@
-package sk.stuba.fei.team.local.domain;
+package sk.stuba.fei.team.local.api.domain;
 
-import org.springframework.security.core.GrantedAuthority;
+import sk.stuba.fei.team.local.domain.Patient;
+import sk.stuba.fei.team.local.service.InsuranceService;
+import sk.stuba.fei.team.local.service.PatientService;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@XmlRootElement
-public class Patient {
-
+public class PatientWrapper {
     private String password;
     private String username;
     private boolean accountNonExpired;
@@ -24,51 +17,49 @@ public class Patient {
     private String email;
     private String prefix_title;
     private String suffix_title;
-    private Insurance insurance;
-    private Set<Appointment> appointments;
+    private Long insurance;
 
-    public Patient() {
-        password = "";
-        username = "";
-        accountNonExpired = true;
-        accountNonLocked = true;
-        credentialsNonExpired = true;
-        enabled = true;
-        firstName = "";
-        surname = "";
-        prefix_title = "";
-        suffix_title = "";
-        phone = "";
-        email = "";
-        appointments = new HashSet<>();
+    public PatientWrapper() {
     }
 
-    public Patient(String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
-        this.password = password;
-        this.username = username;
-        accountNonExpired = true;
-        accountNonLocked = true;
-        credentialsNonExpired = true;
-        enabled = true;
-        firstName = "";
-        surname = "";
-        prefix_title = "";
-        suffix_title = "";
-        phone = "";
-        this.email = email;
-        appointments = new HashSet<>();
+    public PatientWrapper(Patient patient) {
+        password = patient.getPassword();
+        username = patient.getUsername();
+        accountNonExpired = patient.isAccountNonExpired();
+        accountNonLocked = patient.isAccountNonLocked();
+        credentialsNonExpired = patient.isCredentialsNonExpired();
+        enabled = patient.isEnabled();
+        firstName = patient.getFirstName();
+        surname = patient.getSurname();
+        phone = patient.getPhone();
+        email = patient.getEmail();
+        prefix_title = patient.getPrefix_title();
+        suffix_title = patient.getSuffix_title();
+        insurance = patient.getInsurance().getId();
     }
 
-    @Id
-    public String getUsername() {
-        return username;
+    public Patient build(PatientService patientService, InsuranceService insuranceService) {
+        Patient patient = new Patient();
+        patient.setPassword(password);
+        patient.setUsername(username);
+        patient.setAccountNonExpired(accountNonExpired);
+        patient.setAccountNonLocked(accountNonLocked);
+        patient.setCredentialsNonExpired(credentialsNonExpired);
+        patient.setEnabled(enabled);
+        patient.setFirstName(firstName);
+        patient.setSurname(surname);
+        patient.setPhone(phone);
+        patient.setEmail(email);
+        patient.setPrefix_title(prefix_title);
+        patient.setSuffix_title(suffix_title);
+        patient.setInsurance(insuranceService.findOne(insurance));
+        Patient oldPatient = patientService.findOne(username);
+        if (oldPatient != null) {
+            patient.getAppointments().addAll(oldPatient.getAppointments());
+        }
+        return patient;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Column
     public String getPassword() {
         return password;
     }
@@ -77,7 +68,14 @@ public class Patient {
         this.password = password;
     }
 
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public boolean isAccountNonExpired() {
         return accountNonExpired;
     }
@@ -86,7 +84,6 @@ public class Patient {
         this.accountNonExpired = accountNonExpired;
     }
 
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
     public boolean isAccountNonLocked() {
         return accountNonLocked;
     }
@@ -95,7 +92,6 @@ public class Patient {
         this.accountNonLocked = accountNonLocked;
     }
 
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
@@ -104,7 +100,6 @@ public class Patient {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
     public boolean isEnabled() {
         return enabled;
     }
@@ -113,7 +108,6 @@ public class Patient {
         this.enabled = enabled;
     }
 
-    @Column(nullable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -122,7 +116,6 @@ public class Patient {
         this.firstName = firstName;
     }
 
-    @Column(nullable = false)
     public String getSurname() {
         return surname;
     }
@@ -139,7 +132,6 @@ public class Patient {
         this.phone = phone;
     }
 
-    @Column(unique = true, nullable = false)
     public String getEmail() {
         return email;
     }
@@ -164,22 +156,11 @@ public class Patient {
         this.suffix_title = suffix_title;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "insurance")
-    public Insurance getInsurance() {
+    public Long getInsurance() {
         return insurance;
     }
 
-    public void setInsurance(Insurance insurance) {
+    public void setInsurance(Long insurance) {
         this.insurance = insurance;
-    }
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "patient")
-    public Set<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
     }
 }
