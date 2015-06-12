@@ -27,11 +27,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     EmployeeService employeeService;
 
     public boolean isSetUp() {
-        if (initFlag) {
-            initFlag = false;
-            setupRequired = facilityService.getFacility() == null;
-        }
-        return setupRequired;
+        return facilityService.getFacility() != null;
     }
 
     public void setSetupRequired(boolean setupRequired) {
@@ -40,9 +36,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //docasne vypnute
-        /*
         String requestURI = request.getRequestURI();
+        boolean isSetup = isSetUp();
         if (!isSetUp() && !requestURI.startsWith("/setup")) {
             response.sendRedirect("/setup");
             return false;
@@ -50,7 +45,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
         if (isSetUp() && requestURI.startsWith("/setup") && !requestURI.equals("/setup?finished")) {
             response.sendRedirect("/setup?finished");
             return false;
-        }*/
+        }
         return true;
     }
 

@@ -47,8 +47,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             return employee;
         } else {
             EmployeeWrapper employeeWrapper = (EmployeeWrapper) restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class);
-            return employeeWrapper.build(specializationService, this);
+            if (employeeWrapper != null) {
+                return employeeWrapper.build(specializationService, this);
+            }
         }
+        return null;
     }
 
     @Override

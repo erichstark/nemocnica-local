@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,7 @@ public class Facility implements Serializable {
 
     public Facility() {
         enabled = true;
+        offices = new HashSet<>(0);
         employeesUpdated = new Date(0);
         patientsUpdated = new Date(0);
         appointmentsUpdated = new Date(0);

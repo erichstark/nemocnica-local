@@ -31,30 +31,28 @@ public class RestConsumer {
         if (globalEnabled) {
             log.info("Starting ");
             BASE_URL = String.format("http://%s:%d/", globalHost, globalPort);
+            configure(facilityService.getFacility());
+        }
+    }
+
+    public void configure(Facility facility) {
+        if (facility != null) {
             ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
             details.setAccessTokenUri(BASE_URL + "oauth/token");
-
-            Facility facility = facilityService.getFacility();
-//            if (facility != null) {
-//                details.setUsername(facility.getUsername());
-//                details.setPassword(facility.getPassword());
-//                details.setClientId(facility.getClientID());
-//                details.setClientSecret(facility.getClientSecret());
-//            } else {
-            details.setUsername("user");
-            details.setPassword("user123");
-            details.setClientId("local");
-            details.setClientSecret("secret");
-//            }
-
+            details.setUsername(facility.getUsername());
+            details.setPassword(facility.getPassword());
+            details.setClientId(facility.getClientID());
+            details.setClientSecret(facility.getClientSecret());
             DefaultOAuth2ClientContext clientContext = new DefaultOAuth2ClientContext();
             restTemplate = new OAuth2RestTemplate(details, clientContext);
             restTemplate.setMessageConverters(Collections.singletonList(new MappingJackson2HttpMessageConverter()));
+        } else {
+            restTemplate = null;
         }
     }
 
     public Object get(String url, Class responseType) {
-        if (globalEnabled) {
+        if (restTemplate != null) {
             return restTemplate.getForObject(BASE_URL + "ws/" + url, responseType);
         } else {
             return null;
@@ -62,7 +60,7 @@ public class RestConsumer {
     }
 
     public Object post(String url, Object request, Class responseType) {
-        if (globalEnabled) {
+        if (restTemplate != null) {
             return restTemplate.postForObject(BASE_URL + "ws/" + url, request, responseType);
         } else {
             return null;

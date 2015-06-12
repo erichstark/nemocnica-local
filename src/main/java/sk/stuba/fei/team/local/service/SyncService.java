@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 public class SyncService {
     private Logger logger = LoggerFactory.getLogger(SyncService.class);
 
-    //    @Scheduled(fixedDelay = 1000 * 60 * 5, initialDelay = 1000)
-    @Scheduled(fixedDelay = 1000 * 5)
+    @Scheduled(fixedDelay = 1000 * 60 * 5, initialDelay = 1000)
+//    @Scheduled(fixedDelay = 1000 * 5)
     public void sync() {
-        logger.info("sync called");
+//        logger.info("sync called but works weirdly");
     }
 
 }

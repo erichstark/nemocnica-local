@@ -29,16 +29,22 @@ $("#facility").submit(function () {
     var spinner = $("#spinner");
     var admin = $("#create-admin");
     var success = $("#success");
-    var error = $("#error");
+    var errorContainer = $("#error-container");
     form.hide();
     spinner.show();
+    errorContainer.html("");
     $.ajax({
         type: "POST",
         url: "/setup/facility",
         data: form.serialize(),
         success: function (data) {
             spinner.hide();
-            admin.show();
+            if (data == true) {
+                admin.show();
+            } else {
+                showError("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie. RELOAD")
+                form.show();
+            }
         },
         error: function (data) {
             spinner.hide();
@@ -48,3 +54,9 @@ $("#facility").submit(function () {
     });
     return false;
 });
+
+
+function showError(message) {
+    var errorContainer = $("#error-container");
+    errorContainer.html('<div id="error" class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
+}
