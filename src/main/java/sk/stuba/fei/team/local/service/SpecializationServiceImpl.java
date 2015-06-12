@@ -47,13 +47,7 @@ public class SpecializationServiceImpl implements SpecializationService {
     public void update() {
         SpecializationWrapper[] specializations = (SpecializationWrapper[]) restConsumer.post("insurance/update", facilityService.getSpecializationsUpdateDate(), SpecializationWrapper[].class);
         for (SpecializationWrapper specializationWrapper : specializations) {
-            Specialization oldSpecialization = specializationRepository.findOne(specializationWrapper.getId());
-            Specialization newSpecialization = specializationWrapper.build();
-            if (oldSpecialization != null) {
-                newSpecialization.setEmployees(oldSpecialization.getEmployees());
-                newSpecialization.setOffices(oldSpecialization.getOffices());
-            }
-            specializationRepository.save(newSpecialization);
+            specializationRepository.save(specializationWrapper.build(this));
         }
         facilityService.specializationsUpdated();
     }

@@ -56,7 +56,7 @@ public class AdminPatientController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String search(@RequestParam("text") String text, Map<String, Object> model) {
-        Iterable<Patient> patients = patientService.findPatientByFirstOrSurname(text);
+        Iterable<Patient> patients = patientService.findBySurNameOrEmail(text);
         model.put("search", text);
         model.put("patients", patients);
         return "admin/patient/index";

@@ -9,6 +9,7 @@ import sk.stuba.fei.team.local.domain.Facility;
 import sk.stuba.fei.team.local.repository.FacilityRepository;
 
 import java.util.Date;
+import java.util.Iterator;
 
 @Component("facilityService")
 @Transactional
@@ -89,7 +90,12 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility getFacility() {
-        return facilityRepository.findAll().iterator().next();
+        Iterator<Facility> iterator = facilityRepository.findAll().iterator();
+        if (iterator.hasNext()) {
+            return iterator.next();
+        } else {
+            return null;
+        }
     }
 
     @Override

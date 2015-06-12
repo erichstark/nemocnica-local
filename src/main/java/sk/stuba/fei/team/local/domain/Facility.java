@@ -27,6 +27,15 @@ public class Facility implements Serializable {
     private Date specializationsUpdated;
     private Date insurancesUpdated;
 
+    public Facility() {
+        enabled = true;
+        employeesUpdated = new Date(0);
+        patientsUpdated = new Date(0);
+        appointmentsUpdated = new Date(0);
+        specializationsUpdated = new Date(0);
+        insurancesUpdated = new Date(0);
+    }
+
     @Id
     public Long getId() {
         return id;

@@ -2,41 +2,45 @@ package sk.stuba.fei.team.local;
 
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.hornetq.HornetQConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 @SpringBootApplication
 @EnableJms
+@EnableScheduling
 public class MainApplication extends WebMvcConfigurerAdapter {
+
+    final static Logger logger = LoggerFactory.getLogger(MainApplication.class);
 
     @Value("${server.address:localhost}")
     String serverAddress;
@@ -46,28 +50,8 @@ public class MainApplication extends WebMvcConfigurerAdapter {
     CustomInterceptor customInterceptor;
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
-        initializeUsers(context);
+        SpringApplication.run(MainApplication.class, args);
     }
-
-
-    private static void initializeUsers(ConfigurableApplicationContext context) {
-        EmployeeService employeeService = context.getBean(EmployeeService.class);
-        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        if (employeeService.findOne("user") == null) {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("USER"));
-            Employee userDetails = new Employee("user", encoder.encode("user123"), authorities);
-            employeeService.save(userDetails);
-        }
-        if (employeeService.findOne("admin") == null) {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
-            Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
-            employeeService.save(userDetails);
-        }
-    }
-
 
     @Bean
     public LocaleResolver localeResolver() {
@@ -106,7 +90,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
             Map<String, Object> params = new HashMap<>();
             params.put("host", serverAddress);
             params.put("port", "5445");
-            System.out.println("Starting JMS acceptor on " + serverAddress + ":5445");
+            logger.info("Starting new JMS acceptor on " + serverAddress + ":5445");
             TransportConfiguration tc = new TransportConfiguration(NettyAcceptorFactory.class.getName(), params);
             acceptors.add(tc);
         };

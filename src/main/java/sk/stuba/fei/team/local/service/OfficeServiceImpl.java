@@ -3,6 +3,8 @@ package sk.stuba.fei.team.local.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import sk.stuba.fei.team.local.api.RestConsumer;
+import sk.stuba.fei.team.local.api.domain.OfficeWrapper;
 import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.repository.OfficeRepository;
 
@@ -13,10 +15,17 @@ import java.util.List;
 public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
-    private OfficeRepository officeRepository;
-
+    private FacilityService facilityService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private InsuranceService insuranceService;
+    @Autowired
+    private SpecializationService specializationService;
+    @Autowired
+    private OfficeRepository officeRepository;
+    @Autowired
+    private RestConsumer restConsumer;
 
     @Override
     public Office findOne(Long id) {
@@ -40,7 +49,8 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public void save(Office office) {
-        office.setId(0L);
+        Long id = (Long) restConsumer.post("office", new OfficeWrapper(office), Long.class);
+        office.setId(id);
         officeRepository.save(office);
     }
 
