@@ -23,7 +23,6 @@ public class OpeningHoursServiceImpl implements OpeningHoursService {
 
     @Override
     public List<OpeningHours> findByOfficeId(Long id) {
-
         return openingHoursRepository.findByOfficeId(id);
     }
 

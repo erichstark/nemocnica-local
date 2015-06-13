@@ -13,7 +13,6 @@ public class DisplayConfigurationServiceImpl implements DisplayConfigurationServ
     @Autowired
     DisplayConfigurationRepository displayConfigurationRepository;
 
-
     @Override
     public DisplayConfiguration findOne(String id) {
         return displayConfigurationRepository.findOne(id);

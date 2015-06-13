@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @XmlRootElement
 public class Employee implements Serializable, UserDetails, CredentialsContainer {
 
+    private static final long serialVersionUID = -7641650723618219067L;
     private String password;
     private String username;
     private Set<GrantedAuthority> authorities;

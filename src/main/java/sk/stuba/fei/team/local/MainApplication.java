@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.hornetq.HornetQConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.EnableJms;
@@ -18,22 +19,23 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import sk.stuba.fei.team.local.domain.Employee;
+import sk.stuba.fei.team.local.repository.EmployeeRepository;
 import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
-import sk.stuba.fei.team.local.service.EmployeeService;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 @EnableJms
@@ -50,7 +52,15 @@ public class MainApplication extends WebMvcConfigurerAdapter {
     CustomInterceptor customInterceptor;
 
     public static void main(String[] args) {
-        SpringApplication.run(MainApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
+        EmployeeRepository employeeRepository = context.getBean(EmployeeRepository.class);
+        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
+        if (employeeRepository.findOne("admin") == null) {
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
+            employeeRepository.save(userDetails);
+        }
     }
 
     @Bean
@@ -113,14 +123,14 @@ public class MainApplication extends WebMvcConfigurerAdapter {
 
         @SuppressWarnings("SpringJavaAutowiringInspection")
         @Autowired
-        private EmployeeService employeeService;
+        private EmployeeRepository employeeRepository;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/admin/**", "/manage").hasAuthority("ADMIN")
-                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**", "/setup/**").permitAll()
+                    .antMatchers("/admin/**", "/manage", "/setup/**").hasAuthority("ADMIN")
+                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
@@ -130,7 +140,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
 
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(new CustomUserDetailService(employeeService)).passwordEncoder(new PBKDF2WithHmacSHA1());
+            auth.userDetailsService(new CustomUserDetailService(employeeRepository)).passwordEncoder(new PBKDF2WithHmacSHA1());
             auth.jdbcAuthentication().dataSource(dataSource);
         }
     }

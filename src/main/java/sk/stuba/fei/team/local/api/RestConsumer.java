@@ -17,28 +17,23 @@ import java.util.Collections;
 @Component("restConsumer")
 public class RestConsumer {
 
-    private static Log log = LogFactory.getLog(RestConsumer.class);
-
-    private boolean globalEnabled;
+    private static final Log logger = LogFactory.getLog(RestConsumer.class);
 
     private OAuth2RestTemplate restTemplate;
 
-    private String BASE_URL;
+    private String baseUrl;
 
     @Autowired
-    public RestConsumer(FacilityService facilityService, @Value("${global.host}") String globalHost, @Value("${global.port}") int globalPort, @Value("${global.enabled}") boolean globalEnabled) {
-        this.globalEnabled = globalEnabled;
-        if (globalEnabled) {
-            log.info("Starting ");
-            BASE_URL = String.format("http://%s:%d/", globalHost, globalPort);
-            configure(facilityService.getFacility());
-        }
+    public RestConsumer(FacilityService facilityService, @Value("${global.host}") String globalHost, @Value("${global.port}") int globalPort) {
+        logger.info("Starting ");
+        baseUrl = String.format("http://%s:%d/", globalHost, globalPort);
+        configure(facilityService.getFacility());
     }
 
     public void configure(Facility facility) {
         if (facility != null) {
             ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
-            details.setAccessTokenUri(BASE_URL + "oauth/token");
+            details.setAccessTokenUri(baseUrl + "oauth/token");
             details.setUsername(facility.getUsername());
             details.setPassword(facility.getPassword());
             details.setClientId(facility.getClientID());
@@ -53,7 +48,7 @@ public class RestConsumer {
 
     public Object get(String url, Class responseType) {
         if (restTemplate != null) {
-            return restTemplate.getForObject(BASE_URL + "ws/" + url, responseType);
+            return restTemplate.getForObject(baseUrl + "ws/" + url, responseType);
         } else {
             return null;
         }
@@ -61,7 +56,7 @@ public class RestConsumer {
 
     public Object post(String url, Object request, Class responseType) {
         if (restTemplate != null) {
-            return restTemplate.postForObject(BASE_URL + "ws/" + url, request, responseType);
+            return restTemplate.postForObject(baseUrl + "ws/" + url, request, responseType);
         } else {
             return null;
         }

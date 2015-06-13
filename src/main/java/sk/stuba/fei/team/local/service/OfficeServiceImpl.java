@@ -15,13 +15,7 @@ import java.util.List;
 public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
-    private FacilityService facilityService;
-    @Autowired
     private EmployeeService employeeService;
-    @Autowired
-    private InsuranceService insuranceService;
-    @Autowired
-    private SpecializationService specializationService;
     @Autowired
     private OfficeRepository officeRepository;
     @Autowired

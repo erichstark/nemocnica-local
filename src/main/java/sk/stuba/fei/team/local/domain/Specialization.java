@@ -10,6 +10,7 @@ import java.util.Set;
 @XmlRootElement
 public class Specialization implements Serializable {
 
+    private static final long serialVersionUID = 7118518081051227683L;
     private Long id;
     private String name;
     private Set<Office> offices;

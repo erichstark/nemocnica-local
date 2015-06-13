@@ -35,7 +35,7 @@ $("#facility").submit(function () {
     errorContainer.html("");
     $.ajax({
         type: "POST",
-        url: "/setup/facility",
+        url: "/setup",
         data: form.serialize(),
         success: function (data) {
             spinner.hide();
@@ -58,5 +58,5 @@ $("#facility").submit(function () {
 
 function showError(message) {
     var errorContainer = $("#error-container");
-    errorContainer.html('<div id="error" class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
+    errorContainer.html('<div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
 }

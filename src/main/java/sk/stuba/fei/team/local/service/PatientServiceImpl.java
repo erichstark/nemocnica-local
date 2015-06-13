@@ -36,14 +36,13 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient findOne(String username) {
-        Patient one = patientRepository.findOne(username);
-        if (one == null) {
-            PatientWrapper patientWrapper = (PatientWrapper) restConsumer.get("patient/" + username, PatientWrapper.class);
-            if (patientWrapper != null) {
-                return patientWrapper.build(this, insuranceService);
-            }
+        PatientWrapper patientWrapper = (PatientWrapper) restConsumer.get("patient/" + username, PatientWrapper.class);
+        if (patientWrapper != null) {
+            Patient patient = patientWrapper.build(this, insuranceService);
+            patientRepository.save(patient);
+            return patient;
         }
-        return one;
+        return null;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public boolean exists(String id) {
-        return patientRepository.exists(id);
+        return findOne(id) != null;
     }
 
     @Override
@@ -74,5 +73,6 @@ public class PatientServiceImpl implements PatientService {
         for (PatientWrapper patientWrapper : patientWrappers) {
             patientRepository.save(patientWrapper.build(this, insuranceService));
         }
+        facilityService.patientsUpdated();
     }
 }

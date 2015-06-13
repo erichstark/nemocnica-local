@@ -10,6 +10,7 @@ import java.util.Set;
 @XmlRootElement
 public class Office implements Serializable {
 
+    private static final long serialVersionUID = 142596241885364920L;
     private Long id;
     private String name;
     private Facility facility;

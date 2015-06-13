@@ -1,7 +1,5 @@
 package sk.stuba.fei.team.local.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +14,6 @@ import java.util.Iterator;
 @Component("facilityService")
 @Transactional
 public class FacilityServiceImpl implements FacilityService {
-    private Logger logger = LoggerFactory.getLogger(FacilityServiceImpl.class);
 
     @Autowired
     private FacilityRepository facilityRepository;
