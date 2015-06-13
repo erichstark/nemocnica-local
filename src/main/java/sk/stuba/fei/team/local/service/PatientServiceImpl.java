@@ -38,7 +38,7 @@ public class PatientServiceImpl implements PatientService {
     public Patient findOne(String username) {
         PatientWrapper patientWrapper = (PatientWrapper) restConsumer.get("patient/" + username, PatientWrapper.class);
         if (patientWrapper != null) {
-            Patient patient = patientWrapper.build(this, insuranceService);
+            Patient patient = patientWrapper.build(patientRepository, insuranceService);
             patientRepository.save(patient);
             return patient;
         }
@@ -60,7 +60,7 @@ public class PatientServiceImpl implements PatientService {
         List<Patient> patients = new ArrayList<>();
         PatientWrapper[] patientWrappers = (PatientWrapper[]) restConsumer.get("patient/find/" + searchTerm, PatientWrapper[].class);
         for (PatientWrapper patientWrapper : patientWrappers) {
-            patients.add(patientWrapper.build(this, insuranceService));
+            patients.add(patientWrapper.build(patientRepository, insuranceService));
         }
         return patients;
     }
@@ -71,7 +71,7 @@ public class PatientServiceImpl implements PatientService {
         patientRepository.findAll().forEach(p -> usernames.add(p.getUsername()));
         PatientWrapper[] patientWrappers = (PatientWrapper[]) restConsumer.post("patient/update", new UpdateWrapper<>(usernames, facilityService.getPatientsUpdateDate()), PatientWrapper[].class);
         for (PatientWrapper patientWrapper : patientWrappers) {
-            patientRepository.save(patientWrapper.build(this, insuranceService));
+            patientRepository.save(patientWrapper.build(patientRepository, insuranceService));
         }
         facilityService.patientsUpdated();
     }

@@ -22,8 +22,6 @@ public class SyncService {
     private FacilityService facilityService;
     @Autowired
     private InsuranceService insuranceService;
-    @Autowired
-    private AppointmentService appointmentService;
 
     @Scheduled(fixedDelay = 1000 * 60 * MIN_WAIT_TIME / 2, initialDelay = 1000)
     public void sync() {

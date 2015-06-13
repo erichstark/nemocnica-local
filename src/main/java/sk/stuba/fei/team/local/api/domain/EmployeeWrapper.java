@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.domain.Specialization;
+import sk.stuba.fei.team.local.repository.EmployeeRepository;
 import sk.stuba.fei.team.local.service.EmployeeService;
 import sk.stuba.fei.team.local.service.SpecializationService;
 
@@ -45,7 +46,7 @@ public class EmployeeWrapper {
         specializations.addAll(employee.getSpecializations().stream().map(Specialization::getId).collect(Collectors.toSet()));
     }
 
-    public Employee build(SpecializationService specializationService, EmployeeService employeeService) {
+    public Employee build(SpecializationService specializationService, EmployeeRepository employeeRepository) {
         Employee employee = new Employee();
         employee.setPassword(password);
         employee.setUsername(username);
@@ -61,7 +62,7 @@ public class EmployeeWrapper {
         employee.setPrefix_title(prefix_title);
         employee.setSuffix_title(suffix_title);
         employee.getSpecializations().addAll(this.specializations.stream().map(specializationService::findOne).collect(Collectors.toSet()));
-        Employee oldEmployee = employeeService.findOne(username);
+        Employee oldEmployee = employeeRepository.findOne(username);
         if (oldEmployee != null) {
             employee.getOffices().addAll(oldEmployee.getOffices());
         }

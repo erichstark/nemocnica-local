@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findOne(String username) {
         EmployeeWrapper employeeWrapper = (EmployeeWrapper) restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class);
         if (employeeWrapper != null) {
-            Employee employee = employeeWrapper.build(specializationService, this);
+            Employee employee = employeeWrapper.build(specializationService, employeeRepository);
             employeeRepository.save(employee);
             return employee;
         }
@@ -74,7 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         EmployeeWrapper[] employees = (EmployeeWrapper[]) restConsumer.post(UPDATE, new UpdateWrapper<>(usernames, facilityService.getEmployeesUpdateDate()), EmployeeWrapper[].class);
         for (EmployeeWrapper employeeWrapper : employees) {
-            employeeRepository.save(employeeWrapper.build(specializationService, this));
+            employeeRepository.save(employeeWrapper.build(specializationService, employeeRepository));
         }
         facilityService.employeesUpdated();
     }
