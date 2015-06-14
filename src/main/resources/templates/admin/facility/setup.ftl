@@ -5,8 +5,10 @@
 <div class="container">
     <h1>${pageTitle}</h1>
 
-    <form id="facility" name="facility" action="<@spring.url '/setup'/>" method="post">
-        <h3>Informácie o zariadení</h3>
+    <div id="error-container">
+    </div>
+    <form id="facility" name="facility" method="post">
+        <span class="text-muted" style="padding-bottom: 10px">* Povinné údaje</span>
 
         <div class="form-group">
             <label for="name">Názov*</label>
@@ -24,6 +26,7 @@
             <label for="city">Mesto</label>
             <input type="text" name="city" class="form-control" id="city">
         </div>
+
         <h3>Parametre synchronizácie s Globálnym serverom</h3>
 
         <div class="form-group">
@@ -48,12 +51,6 @@
             </div>
         </div>
     </form>
-    <div id="create-admin">
-        <h3>Vytvorenie administrátorského konta</h3>
-    </div>
-    <div id="error">
-        instalacia zlyhala
-    </div>
     <div id="spinner" class="spinner">
         <div class="spinner-container container1">
             <div class="circle1"></div>
@@ -73,6 +70,9 @@
             <div class="circle3"></div>
             <div class="circle4"></div>
         </div>
+    </div>
+    <div>
+
     </div>
 </div>
 </@pt.genericPage>

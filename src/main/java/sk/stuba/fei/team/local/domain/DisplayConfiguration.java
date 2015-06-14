@@ -9,6 +9,7 @@ import java.util.Set;
 @Entity
 @XmlRootElement
 public class DisplayConfiguration implements Serializable {
+    private static final long serialVersionUID = 5544689712045519962L;
     private String id;
     private Set<Office> offices;
 

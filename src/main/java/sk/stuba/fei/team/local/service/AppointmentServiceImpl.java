@@ -35,7 +35,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void save(Appointment appointment) {
         Long id = (Long) restConsumer.post("appointment", new AppointmentWrapper(appointment), Long.class);
-        //todo some logic for bad save
         appointment.setId(id);
         appointmentRepository.save(appointment);
     }

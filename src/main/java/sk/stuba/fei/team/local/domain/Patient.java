@@ -4,14 +4,16 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @XmlRootElement
-public class Patient {
+public class Patient implements Serializable {
 
+    private static final long serialVersionUID = 1124023639612447072L;
     private String password;
     private String username;
     private boolean accountNonExpired;

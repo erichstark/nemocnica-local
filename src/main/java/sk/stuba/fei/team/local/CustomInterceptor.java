@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import sk.stuba.fei.team.local.repository.EmployeeRepository;
 import sk.stuba.fei.team.local.security.CustomUser;
-import sk.stuba.fei.team.local.service.EmployeeService;
 import sk.stuba.fei.team.local.service.FacilityService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,40 +17,28 @@ import javax.servlet.http.HttpServletResponse;
 @Component("customInterceptor")
 public class CustomInterceptor extends HandlerInterceptorAdapter {
 
-    private static boolean setupRequired = true;
-    private static boolean initFlag = true;
-
     @Autowired
     FacilityService facilityService;
 
     @Autowired
-    EmployeeService employeeService;
+    EmployeeRepository employeeRepository;
 
     public boolean isSetUp() {
-        if (initFlag) {
-            initFlag = false;
-            setupRequired = facilityService.getFacility() == null;
-        }
-        return setupRequired;
-    }
-
-    public void setSetupRequired(boolean setupRequired) {
-        CustomInterceptor.setupRequired = setupRequired;
+        return facilityService.getFacility() != null;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //docasne vypnute
-        /*
         String requestURI = request.getRequestURI();
-        if (!isSetUp() && !requestURI.startsWith("/setup")) {
-            response.sendRedirect("/setup");
+        String url = "/setup";
+        if (!isSetUp() && !requestURI.startsWith(url) && !requestURI.startsWith("/login")) {
+            response.sendRedirect(url);
             return false;
         }
-        if (isSetUp() && requestURI.startsWith("/setup") && !requestURI.equals("/setup?finished")) {
-            response.sendRedirect("/setup?finished");
+        if (isSetUp() && requestURI.startsWith(url) && !(url + "?finished").equals(requestURI)) {
+            response.sendRedirect(url + "?finished");
             return false;
-        }*/
+        }
         return true;
     }
 
@@ -64,7 +52,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
             if (principal instanceof UserDetails) {
                 CustomUser userDetails = (CustomUser) principal;
                 if (modelAndView != null) {
-                    modelAndView.getModelMap().addAttribute("user", employeeService.findOne(userDetails.getUsername()));
+                    modelAndView.getModelMap().addAttribute("user", employeeRepository.findOne(userDetails.getUsername()));
                 }
             }
         }

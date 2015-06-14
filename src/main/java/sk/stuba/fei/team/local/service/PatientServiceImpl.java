@@ -36,14 +36,13 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient findOne(String username) {
-        Patient one = patientRepository.findOne(username);
-        if (one == null) {
-            PatientWrapper patientWrapper = (PatientWrapper) restConsumer.get("patient/" + username, PatientWrapper.class);
-            if (patientWrapper != null) {
-                return patientWrapper.build(this, insuranceService);
-            }
+        PatientWrapper patientWrapper = (PatientWrapper) restConsumer.get("patient/" + username, PatientWrapper.class);
+        if (patientWrapper != null) {
+            Patient patient = patientWrapper.build(patientRepository, insuranceService);
+            patientRepository.save(patient);
+            return patient;
         }
-        return one;
+        return null;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public boolean exists(String id) {
-        return patientRepository.exists(id);
+        return findOne(id) != null;
     }
 
     @Override
@@ -61,7 +60,7 @@ public class PatientServiceImpl implements PatientService {
         List<Patient> patients = new ArrayList<>();
         PatientWrapper[] patientWrappers = (PatientWrapper[]) restConsumer.get("patient/find/" + searchTerm, PatientWrapper[].class);
         for (PatientWrapper patientWrapper : patientWrappers) {
-            patients.add(patientWrapper.build(this, insuranceService));
+            patients.add(patientWrapper.build(patientRepository, insuranceService));
         }
         return patients;
     }
@@ -72,7 +71,8 @@ public class PatientServiceImpl implements PatientService {
         patientRepository.findAll().forEach(p -> usernames.add(p.getUsername()));
         PatientWrapper[] patientWrappers = (PatientWrapper[]) restConsumer.post("patient/update", new UpdateWrapper<>(usernames, facilityService.getPatientsUpdateDate()), PatientWrapper[].class);
         for (PatientWrapper patientWrapper : patientWrappers) {
-            patientRepository.save(patientWrapper.build(this, insuranceService));
+            patientRepository.save(patientWrapper.build(patientRepository, insuranceService));
         }
+        facilityService.patientsUpdated();
     }
 }

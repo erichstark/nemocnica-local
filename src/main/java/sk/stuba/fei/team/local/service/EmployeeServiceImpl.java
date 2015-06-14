@@ -42,13 +42,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findOne(String username) {
-        Employee employee = employeeRepository.findOne(username);
-        if (employee != null) {
+        EmployeeWrapper employeeWrapper = (EmployeeWrapper) restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class);
+        if (employeeWrapper != null) {
+            Employee employee = employeeWrapper.build(specializationService, employeeRepository);
+            employeeRepository.save(employee);
             return employee;
-        } else {
-            EmployeeWrapper employeeWrapper = (EmployeeWrapper) restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class);
-            return employeeWrapper.build(specializationService, this);
         }
+        return null;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean exists(String username) {
-        return restConsumer.get(String.format(FIND_BY_USERNAME, username), EmployeeWrapper.class) != null;
+        return findOne(username) != null;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         EmployeeWrapper[] employees = (EmployeeWrapper[]) restConsumer.post(UPDATE, new UpdateWrapper<>(usernames, facilityService.getEmployeesUpdateDate()), EmployeeWrapper[].class);
         for (EmployeeWrapper employeeWrapper : employees) {
-            employeeRepository.save(employeeWrapper.build(specializationService, this));
+            employeeRepository.save(employeeWrapper.build(specializationService, employeeRepository));
         }
         facilityService.employeesUpdated();
     }

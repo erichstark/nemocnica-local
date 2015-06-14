@@ -285,6 +285,6 @@ body > .container {
     }
 }
 
-#spinner, #success, #error {
+#spinner, #success, #create-admin {
     display: none;
 }

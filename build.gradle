@@ -1,44 +1,38 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
-//apply plugin: 'io.spring.dependency-management'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 buildscript {
     ext {
         springBootVersion = '1.2.3.RELEASE'
     }
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("io.spring.gradle:dependency-management-plugin:0.5.0.RELEASE")
-        classpath("org.springframework:springloaded:${springBootVersion}")
     }
 }
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "sonar-runner"
 
 jar {
     baseName = 'nemocnica-local'
     version = '0.0.1-SNAPSHOT'
 }
 
-idea {
-    module {
-        inheritOutputDirs = false
-        outputDir = file("$buildDir/classes/main/")
-    }
-}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         url "https://repository.jboss.org/"
     }
 }
+
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
@@ -68,4 +62,14 @@ eclipse {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
+}
+
+sonarRunner {
+    sonarProperties {
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.jdbc.url", "jdbc:postgresql://localhost:5432/sonar"
+        property "sonar.jdbc.driverClassName", " org.postgresql.Driver"
+        property "sonar.jdbc.username", "postgres"
+        property "sonar.jdbc.password", "postgres"
+    }
 }

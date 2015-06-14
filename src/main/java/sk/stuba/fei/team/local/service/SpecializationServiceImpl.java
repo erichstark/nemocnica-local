@@ -45,7 +45,7 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Override
     public void update() {
-        SpecializationWrapper[] specializations = (SpecializationWrapper[]) restConsumer.post("insurance/update", facilityService.getSpecializationsUpdateDate(), SpecializationWrapper[].class);
+        SpecializationWrapper[] specializations = (SpecializationWrapper[]) restConsumer.post("specialization/update", facilityService.getSpecializationsUpdateDate(), SpecializationWrapper[].class);
         for (SpecializationWrapper specializationWrapper : specializations) {
             specializationRepository.save(specializationWrapper.build(this));
         }

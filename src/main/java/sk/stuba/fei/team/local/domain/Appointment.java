@@ -9,6 +9,7 @@ import java.util.Date;
 @XmlRootElement
 public class Appointment implements Serializable {
 
+    private static final long serialVersionUID = 1421512442419014237L;
     private Long id;
     private Patient patient;
     private Office office;

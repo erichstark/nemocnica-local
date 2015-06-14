@@ -1,8 +1,8 @@
 package sk.stuba.fei.team.local.api.domain;
 
 import sk.stuba.fei.team.local.domain.Patient;
+import sk.stuba.fei.team.local.repository.PatientRepository;
 import sk.stuba.fei.team.local.service.InsuranceService;
-import sk.stuba.fei.team.local.service.PatientService;
 
 public class PatientWrapper {
     private String password;
@@ -38,7 +38,7 @@ public class PatientWrapper {
         insurance = patient.getInsurance().getId();
     }
 
-    public Patient build(PatientService patientService, InsuranceService insuranceService) {
+    public Patient build(PatientRepository patientRepository, InsuranceService insuranceService) {
         Patient patient = new Patient();
         patient.setPassword(password);
         patient.setUsername(username);
@@ -53,7 +53,7 @@ public class PatientWrapper {
         patient.setPrefix_title(prefix_title);
         patient.setSuffix_title(suffix_title);
         patient.setInsurance(insuranceService.findOne(insurance));
-        Patient oldPatient = patientService.findOne(username);
+        Patient oldPatient = patientRepository.findOne(username);
         if (oldPatient != null) {
             patient.getAppointments().addAll(oldPatient.getAppointments());
         }
