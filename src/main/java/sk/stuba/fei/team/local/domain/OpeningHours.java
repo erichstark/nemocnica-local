@@ -21,7 +21,6 @@ public class OpeningHours implements Serializable {
         return id;
     }
 
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -80,6 +79,5 @@ public class OpeningHours implements Serializable {
     public void setReservationMorningTo(Long reservationMorningTo) {
         this.reservationMorningTo = reservationMorningTo;
     }
-
 
 }
