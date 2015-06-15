@@ -17,7 +17,13 @@ function setNavigation() {
     });
 }
 
+function stopClickPropagation() {
+    var evt = window.event || arguments.callee.caller.arguments[0];
+    evt.stopPropagation();
+}
+
 function showMessage(message, type) {
+
     var alertType = "alert-";
     switch (type) {
         default:
@@ -37,28 +43,6 @@ function showMessage(message, type) {
     $("#alertContainer").append('<div class="alert alert-dismissible ' + alertType + '"><button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
 }
 
-
-function deleteDisplay(id) {
-    $.ajax({
-        type: "POST",
-        url: "/setup",
-        data: form.serialize(),
-        success: function (data) {
-            spinner.hide();
-            if (data == true) {
-                admin.show();
-            } else {
-                showMessage("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie. RELOAD");
-                form.show();
-            }
-        },
-        error: function (data) {
-            spinner.hide();
-            error.show();
-            error.set(data);
-        }
-    });
-}
 
 $("#facility").submit(function () {
     var form = $("#facility");
@@ -90,6 +74,13 @@ $("#facility").submit(function () {
     });
     return false;
 });
+
+function loginCheck(data) {
+    if (typeof data == 'string' && data.indexOf("<html>") == 0) {
+        location.reload();
+    }
+
+}
 
 
 

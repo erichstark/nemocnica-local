@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sk.stuba.fei.team.local.api.RestConsumer;
 import sk.stuba.fei.team.local.api.domain.OfficeWrapper;
+import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.domain.Office;
+import sk.stuba.fei.team.local.domain.Specialization;
 import sk.stuba.fei.team.local.repository.OfficeRepository;
 
 import java.util.List;
@@ -18,6 +20,8 @@ public class OfficeServiceImpl implements OfficeService {
     private EmployeeService employeeService;
     @Autowired
     private OfficeRepository officeRepository;
+    @Autowired
+    private SpecializationService specializationService;
     @Autowired
     private RestConsumer restConsumer;
 
@@ -54,13 +58,9 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
-    public List<Office> findByIdOrNameOrEmployeesName(String searchTerm) {
-        Long id;
-        try {
-            id = Long.parseLong(searchTerm);
-        } catch (NumberFormatException ex) {
-            id = (long) -1;
-        }
-        return officeRepository.findDistinctOfficesByNameContainingIgnoreCaseOrIdOrEmployeesIn(searchTerm, id, employeeService.findByFirstNameOrLastNameOrUsername(searchTerm));
+    public List<Office> findByNameOrEmployeeOrSpecialization(String searchTerm) {
+        List<Employee> employees = employeeService.findByFirstNameOrLastNameOrUsername(searchTerm);
+        List<Specialization> specializations = specializationService.findByName(searchTerm);
+        return officeRepository.findDistinctOfficesByNameContainingIgnoreCaseOrEmployeesInOrSpecializationsIn(searchTerm, employees, specializations);
     }
 }
