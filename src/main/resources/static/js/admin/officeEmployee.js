@@ -72,10 +72,30 @@ function addEmployee(id) {
 function removeEmployee(id) {
     var employees = $("#employees");
     var noEmployees = $("#no-employees");
-    $("#employee-" + id).remove();
-    if (employees.has('tr').length == 0) {
-        noEmployees.show();
-    }
+
+    $.ajax({
+        type: "POST",
+        timeout: 5000,
+        dataType: 'json',
+        url: "/admin/office/employee/remove",
+        data: {
+            id: $("input[name=office_id]").val(),
+            username: id
+        },
+        success: function (data) {
+            loginCheck(data);
+            $("#employee-" + id).remove();
+            if (employees.has('tr').length == 0) {
+                noEmployees.show();
+            }
+            showMessage(data.message, data.type);
+        },
+        error: function () {
+            showMessage("Zlyhala komunikácia so serverom.", 1);
+        }
+    });
+
+
 }
 
 function save() {

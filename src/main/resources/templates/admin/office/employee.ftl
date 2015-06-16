@@ -38,7 +38,7 @@
                     <td>${employee.prefix_title!""} ${employee.firstName!""} ${employee.lastName!""} ${employee.suffix_title!""}</td>
                     <td class="text-center">
                         <button name="submit" class="btn btn-sm btn-danger"
-                                onclick="removeEmployees(${employee.username})">
+                                onclick="removeEmployee('${employee.username}')">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                         </button>
                     </td>

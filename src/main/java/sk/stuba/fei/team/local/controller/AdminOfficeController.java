@@ -167,14 +167,32 @@ public class AdminOfficeController {
 
         Office office = officeService.findOne(id);
 
-        office.getEmployees().clear();
-        for (String specId : employees.split(",")) {
-            if (!specId.isEmpty())
-                office.getEmployees().add(employeeService.findOne(specId));
+        for (String username : employees.split(",")) {
+            if (!username.isEmpty()) {
+                Employee employee = employeeService.findOne(username);
+                employee.getOffices().add(office);
+                employeeService.save(employee);
+            }
         }
 
-        officeService.save(office);
         return new AlertMessage(AlertMessage.SUCCESS, "Zamestnanci uložený.", office.getId());
+    }
+
+    @RequestMapping(value = "employee/remove")
+    public
+    @ResponseBody
+    AlertMessage removeEmployee(@RequestParam("id") Long id, @RequestParam("username") String username) {
+
+        Employee employee = employeeService.findOne(username);
+        for (Office office : employee.getOffices()) {
+            if (office.getId() == id) {
+                employee.getOffices().remove(office);
+            }
+        }
+
+        employeeService.save(employee);
+
+        return new AlertMessage(AlertMessage.SUCCESS, "Zamestnanec vymazaný.");
     }
 
     @RequestMapping(value = "/insurance/search")
