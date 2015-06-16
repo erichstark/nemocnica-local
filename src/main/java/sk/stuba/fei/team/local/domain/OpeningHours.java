@@ -16,6 +16,13 @@ public class OpeningHours implements Serializable {
     private Long reservationTo;
     private Office office;
 
+    public OpeningHours() {
+    }
+
+    public OpeningHours(int date) {
+        this.date = date;
+    }
+
     @Id
     public Long getId() {
         return Id;

@@ -27,6 +27,11 @@ public class OpeningHoursServiceImpl implements OpeningHoursService {
     }
 
     @Override
+    public OpeningHours findOne(Long id) {
+        return openingHoursRepository.findOne(id);
+    }
+
+    @Override
     public void save(OpeningHours openingHours) {
         Long id = (Long) restConsumer.post("hours", new OpeningHoursWrapper(openingHours), Long.class);
         openingHours.setId(id);

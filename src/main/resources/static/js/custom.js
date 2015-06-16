@@ -3,6 +3,12 @@ jQuery(document).ready(function ($) {
         window.document.location = $(this).data("href");
     });
     setNavigation();
+
+    if (window.location.href.indexOf("admin/office/edit") > -1) {
+        minutesToHour();
+    } else if (window.location.href.indexOf("admin/office/hours/") > -1) {
+        loadHours();
+    }
 });
 
 function setNavigation() {
