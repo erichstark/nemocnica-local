@@ -47,8 +47,10 @@ function check(element) {
 
 function minutesToHour() {
     $.each($('td span'), function (index, value) {
-        var num = parseInt($(value).text().replace(/\s+/g, ''));
-        $(value).text(minutesToStr(num));
+        if ($(value).text() != "") {
+            var num = parseInt($(value).text().replace(/\s+/g, ''));
+            $(value).text(minutesToStr(num));
+        }
     });
 }
 

@@ -1,6 +1,4 @@
 <#-- @ftlvariable name="offices" type="sk.stuba.fei.team.local.domain.Office[]" -->
-<#-- @ftlvariable name="employee" type="sk.stuba.fei.team.local.domain.Employee" -->
-<#-- @ftlvariable name="searchResults" type="java.util.Collection<sk.stuba.fei.team.local.domain.Specialization>" -->
 <#-- @ftlvariable name="searchTerm" type="java.lang.String" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
