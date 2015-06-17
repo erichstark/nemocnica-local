@@ -8,15 +8,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sk.stuba.fei.team.local.api.AlertMessage;
 import sk.stuba.fei.team.local.domain.Employee;
-import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.domain.Specialization;
 import sk.stuba.fei.team.local.domain.ajax.JsonEmployee;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
-import sk.stuba.fei.team.local.service.OfficeService;
 import sk.stuba.fei.team.local.service.SpecializationService;
 
 import java.util.HashSet;
@@ -46,8 +43,6 @@ public class AdminEmployeeController {
     @RequestMapping(value = "/add")
     public String add(Map<String, Object> model) {
         model.put("employee", new Employee());
-        //specializationService.update();
-        model.put("specializations", specializationService.findAll());
         return "admin/employee/edit";
     }
 
@@ -66,9 +61,10 @@ public class AdminEmployeeController {
         Employee employee;
         PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
 
-        if(!employeeService.exists(data.getEmployee().getUsername()))
+        if (!employeeService.exists(data.getEmployee().getUsername())) {
             employee = data.getEmployee();
-        else {
+
+        } else {
             employee = employeeService.findOne(data.getEmployee().getUsername());
             employee.setAccountNonLocked(data.getEmployee().isAccountNonLocked());
             employee.setAccountNonExpired(data.getEmployee().isAccountNonExpired());
@@ -80,11 +76,12 @@ public class AdminEmployeeController {
             employee.setSuffix_title(data.getEmployee().getSuffix_title());
         }
 
+        if (data.getEmployee().getPassword() != null)
+            employee.setPassword(encoder.encode(data.getEmployee().getPassword()));
+
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(data.getAutority()));
         employee.setAuthorities(authorities);
-        if(!data.getEmployee().getPassword().startsWith("1000:"))
-            employee.setPassword(encoder.encode(employee.getPassword()));
 
         employee.getSpecializations().clear();
         for (String specId : data.getSpecializations().split(",")) {
@@ -98,7 +95,6 @@ public class AdminEmployeeController {
     @RequestMapping(value = "/edit/{username}")
     public String edit(@PathVariable String username, Map<String, Object> model) {
         Employee employee = employeeService.findOne(username);
-        model.put("specializations", specializationService.findAll());
         model.put("employee", employee);
         return "admin/employee/edit";
     }
