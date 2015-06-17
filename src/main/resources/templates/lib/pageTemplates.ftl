@@ -69,6 +69,7 @@
         </div>
     </nav>
     <div class="container">
+        <div id="alertContainer"><@alert/></div>
         <#nested>
     </div>
     <footer class="footer">
