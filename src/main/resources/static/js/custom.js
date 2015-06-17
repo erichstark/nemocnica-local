@@ -64,20 +64,21 @@ $("#facility").submit(function () {
         success: function (data) {
             spinner.hide();
             if (data == true) {
-                admin.show();
+                spinner.hide();
+                success.show();
             } else {
-                showMessage("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie.",1);
+                showMessage("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie.", 1);
                 form.show();
             }
         },
         error: function (data) {
             spinner.hide();
-            error.show();
-            error.set(data);
+            showMessage("Zlyhala komunikácia so serverom.", 1);
         }
     });
     return false;
 });
+
 
 function loginCheck(data) {
     if (typeof data == 'string' && data.indexOf("<html>") == 0) {

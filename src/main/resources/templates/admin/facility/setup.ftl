@@ -71,8 +71,11 @@
             <div class="circle4"></div>
         </div>
     </div>
-    <div>
-
+    <div id="success">
+        <h3>Inštalácia prebehla úspešne.</h3>
+        <a href="<@spring.url '/'/>" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-home"></span> Home
+        </a>
     </div>
 </div>
 </@pt.genericPage>

@@ -3,13 +3,17 @@ package sk.stuba.fei.team.local.api;
 import java.util.Set;
 
 public class RpiConfigMessage extends RestMessage {
-    private final Set<Long> offices;
+    private Set<RpiOffice> offices;
 
-    public RpiConfigMessage(Set<Long> offices) {
+    public RpiConfigMessage(Set<RpiOffice> offices) {
         this.offices = offices;
     }
 
-    public Set<Long> getOffices() {
+    public Set<RpiOffice> getOffices() {
         return offices;
+    }
+
+    public void setOffices(Set<RpiOffice> offices) {
+        this.offices = offices;
     }
 }
