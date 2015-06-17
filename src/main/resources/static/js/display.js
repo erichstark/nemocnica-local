@@ -108,7 +108,7 @@ function save() {
     var spinner = Ladda.create(document.querySelector("#saveButton"));
     var offices = [];
     $("#offices tr").each(function () {
-        var id = $(this).attr('id')
+        var id = $(this).attr('id');
         offices.push(id.replace('office-', ''));
     });
     spinner.start();

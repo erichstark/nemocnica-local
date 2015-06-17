@@ -25,6 +25,8 @@ public class SyncService {
     private FacilityService facilityService;
     @Autowired
     private InsuranceService insuranceService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Scheduled(fixedDelay = 1000 * 60 * MIN_WAIT_TIME / 2, initialDelay = 1000)
     public void sync() {
@@ -62,6 +64,14 @@ public class SyncService {
                 logger.info("Sync of Patients: DONE");
             } else {
                 logger.info("Sync of Patiens: SKIPPED");
+            }
+
+            diff = now.getTime() - facilityService.getAppointmentsUpdateDate().getTime();
+            if ((diff / (60 * 1000)) > MIN_WAIT_TIME) {
+                appointmentService.update();
+                logger.info("Sync of Appointments: DONE");
+            } else {
+                logger.info("Sync of Appointments: SKIPPED");
             }
         }
     }

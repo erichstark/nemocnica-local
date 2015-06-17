@@ -71,7 +71,7 @@ $("#facility-setup").submit(function () {
                 form.show();
             }
         },
-        error: function (data) {
+        error: function () {
             spinner.hide();
             showMessage("Zlyhala komunikácia so serverom.", 1);
         }
@@ -95,7 +95,7 @@ function saveFacility() {
                 showMessage("Nepodarilo sa uložiť zmeny.", 1);
             }
         },
-        error: function (data) {
+        error: function () {
             spinner.stop();
             showMessage("Zlyhala komunikácia so serverom.", 1);
         }

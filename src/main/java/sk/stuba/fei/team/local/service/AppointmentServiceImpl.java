@@ -12,9 +12,9 @@ import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.domain.Patient;
 import sk.stuba.fei.team.local.repository.AppointmentRepository;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component("appointmentService")
 @Transactional
@@ -31,6 +31,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private RestConsumer restConsumer;
+
+    @Autowired
+    private FacilityService facilityService;
 
     @Override
     public void save(Appointment appointment) {
@@ -61,10 +64,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void update(Date date, Office office) {
-        AppointmentWrapper[] appointmentWrappers = (AppointmentWrapper[]) restConsumer.post("appointment/update", new UpdateWrapper<>(Collections.singleton(office.getId()), date), AppointmentWrapper[].class);
+    public void update() {
+        AppointmentWrapper[] appointmentWrappers = (AppointmentWrapper[]) restConsumer.post("appointment/update", new UpdateWrapper<>(facilityService.getFacility().getOffices().stream().map(Office::getId).collect(Collectors.toSet()), facilityService.getAppointmentsUpdateDate()), AppointmentWrapper[].class);
         for (AppointmentWrapper appointmentWrapper : appointmentWrappers) {
             appointmentRepository.save(appointmentWrapper.build(patientService, officeService));
         }
+        facilityService.appointmentsUpdated();
     }
 }

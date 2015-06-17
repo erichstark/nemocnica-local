@@ -19,6 +19,6 @@ public interface AppointmentService {
 
     Appointment findById(Long id);
 
-    void update(Date date, Office office);
+    void update();
 
 }
