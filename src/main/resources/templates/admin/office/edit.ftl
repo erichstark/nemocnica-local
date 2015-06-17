@@ -38,6 +38,9 @@
         <label for="office-name">Názov</label>
         <input type="text" name="name" class="form-control" id="office-name" placeholder="Názov"
                value="${office.name!""}">
+        <label for="office-phone">Telefón</label>
+        <input type="text" name="name" class="form-control" id="office-phone" placeholder="Telefón"
+               value="${office.phone!""}">
     </div>
     <div style="padding-top: 30px" class="form-group">
         <div>
