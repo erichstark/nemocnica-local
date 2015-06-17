@@ -31,12 +31,12 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         String url = "/setup";
-        if (!isSetUp() && !requestURI.startsWith(url) && !requestURI.startsWith("/login")) {
+        if (!isSetUp() && !requestURI.startsWith(url)) {
             response.sendRedirect(url);
             return false;
         }
-        if (isSetUp() && requestURI.startsWith(url) && !(url + "?finished").equals(requestURI)) {
-            response.sendRedirect(url + "?finished");
+        if (isSetUp() && requestURI.startsWith(url)) {
+            response.sendRedirect("/");
             return false;
         }
         return true;
@@ -56,7 +56,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         }
-        if (modelAndView != null) {
+        if (modelAndView != null && facilityService.getFacility() != null) {
             modelAndView.getModelMap().addAttribute("headerText", facilityService.getFacility().getName());
         }
     }
