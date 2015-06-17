@@ -29,7 +29,6 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
     private String lastName;
     private String prefix_title;
     private String suffix_title;
-    private String phone;
     private Set<Office> offices;
     private Set<Specialization> specializations;
 
@@ -242,13 +241,5 @@ public class Employee implements Serializable, UserDetails, CredentialsContainer
 
             return g1.getAuthority().compareTo(g2.getAuthority());
         }
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }

@@ -15,6 +15,7 @@ public class OfficeWrapper {
     private Long id;
     private String name;
     private Long facility;
+    private String phone;
     private Set<String> employees;
     private Set<Long> insurances;
     private Set<Long> specializations;
@@ -26,6 +27,7 @@ public class OfficeWrapper {
     public OfficeWrapper(Office office) {
         id = office.getId();
         name = office.getName();
+        phone = office.getPhone();
         facility = office.getFacility().getId();
         employees = new HashSet<>(office.getEmployees().size());
         employees.addAll(office.getEmployees().stream().map(Employee::getUsername).collect(Collectors.toSet()));
@@ -40,6 +42,7 @@ public class OfficeWrapper {
         Office office = new Office();
         office.setId(id);
         office.setName(name);
+        office.setPhone(phone);
         office.setFacility(facilityService.findOne(facility));
         office.getEmployees().addAll(employees.stream().map(employeeService::findOne).collect(Collectors.toSet()));
         office.getInsurances().addAll(insurances.stream().map(insuranceService::findOne).collect(Collectors.toSet()));
@@ -108,5 +111,13 @@ public class OfficeWrapper {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

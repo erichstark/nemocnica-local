@@ -15,7 +15,6 @@ public class EmployeeWrapper {
     private boolean enabled;
     private String firstName;
     private String lastName;
-    private String phone;
     private String prefix_title;
     private String suffix_title;
     private Set<Long> specializations;
@@ -43,7 +42,6 @@ public class EmployeeWrapper {
         employee.setAccountNonLocked(true);
         employee.setCredentialsNonExpired(true);
         employee.setEnabled(enabled);
-        employee.setPhone(phone);
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
         employee.setPrefix_title(prefix_title);
@@ -119,13 +117,5 @@ public class EmployeeWrapper {
 
     public void setSpecializations(Set<Long> specializations) {
         this.specializations = specializations;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }
