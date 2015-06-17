@@ -50,7 +50,7 @@ function showMessage(message, type) {
 }
 
 
-$("#facility").submit(function () {
+$("#facility-setup").submit(function () {
     var form = $("#facility");
     var spinner = $("#spinner");
     var admin = $("#create-admin");
@@ -79,12 +79,33 @@ $("#facility").submit(function () {
     return false;
 });
 
+function saveFacility() {
+    var form = $("#facility");
+    var spinner = Ladda.create(document.querySelector("#saveButton"));
+    spinner.start();
+    $.ajax({
+        type: "POST",
+        url: "/admin/facility",
+        data: form.serialize(),
+        success: function (data) {
+            spinner.stop();
+            if (data == true) {
+                showMessage("Zmeny uložené.", 2);
+            } else {
+                showMessage("Nepodarilo sa uložiť zmeny.", 1);
+            }
+        },
+        error: function (data) {
+            spinner.stop();
+            showMessage("Zlyhala komunikácia so serverom.", 1);
+        }
+    });
+}
 
 function loginCheck(data) {
     if (typeof data == 'string' && data.indexOf("<html>") == 0) {
         location.reload();
     }
-
 }
 
 

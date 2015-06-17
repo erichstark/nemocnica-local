@@ -56,5 +56,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         }
+        if (modelAndView != null) {
+            modelAndView.getModelMap().addAttribute("headerText", facilityService.getFacility().getName());
+        }
     }
 }

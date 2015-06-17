@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="headerText" type="java.lang.String" -->
 <#-- @ftlvariable name="user" type="sk.stuba.fei.team.local.security.CustomUser" -->
 <#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
 <#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
@@ -30,7 +31,7 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
+                <a class="navbar-brand" href="<@spring.url '/'/>">${headerText}</a>
             </div>
             <div class="navbar-header pull-right">
                 <ul class="nav navbar-nav navbar-right">
@@ -103,7 +104,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
+                <a class="navbar-brand" href="<@spring.url '/'/>">${headerText}</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">

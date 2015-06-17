@@ -15,6 +15,8 @@ import sk.stuba.fei.team.local.service.FacilityService;
 import sk.stuba.fei.team.local.service.InsuranceService;
 import sk.stuba.fei.team.local.service.SpecializationService;
 
+import java.util.Map;
+
 @Controller
 public class AdminFacilityController {
 
@@ -39,7 +41,7 @@ public class AdminFacilityController {
     @RequestMapping(value = "/setup", method = RequestMethod.POST)
     private
     @ResponseBody
-    Boolean save(@ModelAttribute("facility") Facility facility) {
+    Boolean setup(@ModelAttribute("facility") Facility facility) {
         try {
             restConsumer.configure(facility);
             facilityService.save(facility);
@@ -49,6 +51,30 @@ public class AdminFacilityController {
             logger.error("Failed to setup system.", e);
             return false;
         }
+        return true;
+    }
+
+    @RequestMapping(value = "admin/facility", method = RequestMethod.GET)
+    public String edit(Map<String, Object> model) {
+        model.put("facility", facilityService.getFacility());
+        return "admin/facility/index";
+    }
+
+
+    @RequestMapping(value = "admin/facility", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    boolean save(@ModelAttribute(value = "facility") Facility facility) {
+        Facility oldFacility = facilityService.getFacility();
+        oldFacility.setName(facility.getName());
+        oldFacility.setStreetAndNumber(facility.getStreetAndNumber());
+        oldFacility.setZip(facility.getZip());
+        oldFacility.setCity(facility.getCity());
+        oldFacility.setClientID(facility.getClientID());
+        oldFacility.setClientSecret(facility.getClientSecret());
+        oldFacility.setUsername(facility.getUsername());
+        oldFacility.setPassword(facility.getPassword());
+        facilityService.save(oldFacility);
         return true;
     }
 }

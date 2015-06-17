@@ -7,7 +7,7 @@
 
     <div id="alertContainer">
     </div>
-    <form id="facility" name="facility" method="post">
+    <form id="facility-setup" name="facility" method="post">
         <span class="text-muted" style="padding-bottom: 10px">* Povinné údaje</span>
 
         <div class="form-group">
@@ -30,19 +30,19 @@
         <h3>Parametre synchronizácie s Globálnym serverom</h3>
 
         <div class="form-group">
-            <label for="city">Client ID*</label>
+            <label for="clientID">Client ID*</label>
             <input type="text" name="clientID" class="form-control" id="clientID" required>
         </div>
         <div class="form-group">
-            <label for="city">Client Secret*</label>
+            <label for="clientSecret">Client Secret*</label>
             <input type="text" name="clientSecret" class="form-control" id="clientSecret" required>
         </div>
         <div class="form-group">
-            <label for="city">Meno*</label>
+            <label for="username">Meno*</label>
             <input type="text" name="username" class="form-control" id="username" required>
         </div>
         <div class="form-group">
-            <label for="city">Heslo*</label>
+            <label for="password">Heslo*</label>
             <input type="text" name="password" class="form-control" id="password" required>
         </div>
         <div class="form-group">

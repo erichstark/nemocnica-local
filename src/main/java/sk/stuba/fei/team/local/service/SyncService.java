@@ -33,7 +33,7 @@ public class SyncService {
             logger.info("Starting synchronization...");
 
             long diff = now.getTime() - facilityService.getInsurancesUpdateDate().getTime();
-            if ((diff / (60 * 1000) % 60) > MIN_WAIT_TIME) {
+            if ((diff / (60 * 1000)) > MIN_WAIT_TIME) {
                 insuranceService.update();
                 logger.info("Sync of Insurances: DONE");
             } else {
@@ -41,7 +41,7 @@ public class SyncService {
             }
 
             diff = now.getTime() - facilityService.getSpecializationsUpdateDate().getTime();
-            if ((diff / (60 * 1000) % 60) > MIN_WAIT_TIME) {
+            if ((diff / (60 * 1000)) > MIN_WAIT_TIME) {
                 specializationService.update();
                 logger.info("Sync of Specializations: DONE");
             } else {
@@ -49,7 +49,7 @@ public class SyncService {
             }
 
             diff = now.getTime() - facilityService.getEmployeesUpdateDate().getTime();
-            if ((diff / (60 * 1000) % 60) > MIN_WAIT_TIME) {
+            if ((diff / (60 * 1000)) > MIN_WAIT_TIME) {
                 employeeService.update();
                 logger.info("Sync of Employees: DONE");
             } else {
@@ -57,7 +57,7 @@ public class SyncService {
             }
 
             diff = now.getTime() - facilityService.getPatientsUpdateDate().getTime();
-            if ((diff / (60 * 1000) % 60) > MIN_WAIT_TIME) {
+            if ((diff / (60 * 1000)) > MIN_WAIT_TIME) {
                 patientService.update();
                 logger.info("Sync of Patients: DONE");
             } else {
