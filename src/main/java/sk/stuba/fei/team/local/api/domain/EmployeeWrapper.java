@@ -12,9 +12,6 @@ import java.util.stream.Collectors;
 public class EmployeeWrapper {
     private String password;
     private String username;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
     private boolean enabled;
     private String firstName;
     private String lastName;
@@ -28,9 +25,6 @@ public class EmployeeWrapper {
     public EmployeeWrapper(Employee employee) {
         password = employee.getPassword();
         username = employee.getUsername();
-        accountNonExpired = employee.isAccountNonExpired();
-        accountNonLocked = employee.isAccountNonLocked();
-        credentialsNonExpired = employee.isCredentialsNonExpired();
         enabled = employee.isEnabled();
         firstName = employee.getFirstName();
         lastName = employee.getLastName();
@@ -44,9 +38,9 @@ public class EmployeeWrapper {
         Employee employee = new Employee();
         employee.setPassword(password);
         employee.setUsername(username);
-        employee.setAccountNonExpired(accountNonExpired);
-        employee.setAccountNonLocked(accountNonLocked);
-        employee.setCredentialsNonExpired(credentialsNonExpired);
+        employee.setAccountNonExpired(true);
+        employee.setAccountNonLocked(true);
+        employee.setCredentialsNonExpired(true);
         employee.setEnabled(enabled);
         employee.setFirstName(firstName);
         employee.setLastName(lastName);
@@ -75,30 +69,6 @@ public class EmployeeWrapper {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
     }
 
     public boolean isEnabled() {
