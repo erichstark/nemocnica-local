@@ -100,5 +100,5 @@
         </div>
     </div>
 </div>
-<script src="<@spring.url '/js/profil/employee.js'/>"></script>
+<script src="<@spring.url '/js/profile/employee.js'/>"></script>
 </@pt.menuFooterPage>
