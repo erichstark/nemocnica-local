@@ -1,8 +1,10 @@
 package sk.stuba.fei.team.local.api.domain;
 
 import sk.stuba.fei.team.local.domain.Employee;
+import sk.stuba.fei.team.local.domain.Office;
 import sk.stuba.fei.team.local.domain.Specialization;
 import sk.stuba.fei.team.local.repository.EmployeeRepository;
+import sk.stuba.fei.team.local.service.OfficeService;
 import sk.stuba.fei.team.local.service.SpecializationService;
 
 import java.util.HashSet;
@@ -18,6 +20,7 @@ public class EmployeeWrapper {
     private String prefix_title;
     private String suffix_title;
     private Set<Long> specializations;
+    private Set<Long> offices;
 
     public EmployeeWrapper() {
     }
@@ -32,9 +35,11 @@ public class EmployeeWrapper {
         suffix_title = employee.getSuffix_title();
         specializations = new HashSet<>(employee.getSpecializations().size());
         specializations.addAll(employee.getSpecializations().stream().map(Specialization::getId).collect(Collectors.toSet()));
+        offices = new HashSet<>(employee.getOffices().size());
+        offices.addAll(employee.getOffices().stream().map(Office::getId).collect(Collectors.toSet()));
     }
 
-    public Employee build(SpecializationService specializationService, EmployeeRepository employeeRepository) {
+    public Employee build(SpecializationService specializationService, EmployeeRepository employeeRepository, OfficeService officeService) {
         Employee employee = new Employee();
         employee.setPassword(password);
         employee.setUsername(username);
@@ -47,8 +52,10 @@ public class EmployeeWrapper {
         employee.setPrefix_title(prefix_title);
         employee.setSuffix_title(suffix_title);
         employee.getSpecializations().addAll(this.specializations.stream().map(specializationService::findOne).collect(Collectors.toSet()));
+        employee.getOffices().addAll(this.offices.stream().map(officeService::findOne).collect(Collectors.toSet()));
         Employee oldEmployee = employeeRepository.findOne(username);
         if (oldEmployee != null) {
+            employee.getSpecializations().addAll(oldEmployee.getSpecializations());
             employee.getOffices().addAll(oldEmployee.getOffices());
             employee.setAuthorities(oldEmployee.getAuthorities());
         }
@@ -117,5 +124,13 @@ public class EmployeeWrapper {
 
     public void setSpecializations(Set<Long> specializations) {
         this.specializations = specializations;
+    }
+
+    public Set<Long> getOffices() {
+        return offices;
+    }
+
+    public void setOffices(Set<Long> offices) {
+        this.offices = offices;
     }
 }
