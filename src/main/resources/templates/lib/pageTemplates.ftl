@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="<@spring.url '/fav/fav.ico'/>"/>
     <link type="text/css" href="<@spring.url '/css/bootstrap.min.css'/>" rel="stylesheet"/>
+    <link type="text/css" href="<@spring.url '/css/ladda-themeless.min.css'/>" rel="stylesheet"/>
     <link type="text/css" href="<@spring.url '/css/custom.css'/>" rel="stylesheet"/>
     <title>${pageTitle}</title>
 </head>
@@ -17,6 +18,8 @@
     <#nested>
 <script src="<@spring.url '/js/jquery-2.1.4.min.js'/>"></script>
 <script src="<@spring.url '/js/bootstrap.min.js'/>"></script>
+<script src="<@spring.url '/js/spin.min.js'/>"></script>
+<script src="<@spring.url '/js/ladda.min.js'/>"></script>
 <script src="<@spring.url '/js/custom.js'/>"></script>
 </body>
 </html>
@@ -144,7 +147,8 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">${pageTitle}</h1>
-                <@alert/>
+
+                <div id="alertContainer"><@alert/></div>
                 <#nested>
             </div>
         </div>

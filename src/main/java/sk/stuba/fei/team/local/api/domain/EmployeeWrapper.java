@@ -1,11 +1,8 @@
 package sk.stuba.fei.team.local.api.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.domain.Specialization;
 import sk.stuba.fei.team.local.repository.EmployeeRepository;
-import sk.stuba.fei.team.local.service.EmployeeService;
 import sk.stuba.fei.team.local.service.SpecializationService;
 
 import java.util.HashSet;
@@ -15,7 +12,6 @@ import java.util.stream.Collectors;
 public class EmployeeWrapper {
     private String password;
     private String username;
-    private Set<String> authorities;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -32,8 +28,6 @@ public class EmployeeWrapper {
     public EmployeeWrapper(Employee employee) {
         password = employee.getPassword();
         username = employee.getUsername();
-        authorities = new HashSet<>(employee.getAuthorities().size());
-        authorities.addAll(employee.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
         accountNonExpired = employee.isAccountNonExpired();
         accountNonLocked = employee.isAccountNonLocked();
         credentialsNonExpired = employee.isCredentialsNonExpired();
@@ -50,9 +44,6 @@ public class EmployeeWrapper {
         Employee employee = new Employee();
         employee.setPassword(password);
         employee.setUsername(username);
-        Set<GrantedAuthority> authorities = new HashSet<>(this.authorities.size());
-        authorities.addAll(this.authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
-        employee.setAuthorities(authorities);
         employee.setAccountNonExpired(accountNonExpired);
         employee.setAccountNonLocked(accountNonLocked);
         employee.setCredentialsNonExpired(credentialsNonExpired);
@@ -65,6 +56,7 @@ public class EmployeeWrapper {
         Employee oldEmployee = employeeRepository.findOne(username);
         if (oldEmployee != null) {
             employee.getOffices().addAll(oldEmployee.getOffices());
+            employee.setAuthorities(oldEmployee.getAuthorities());
         }
         return employee;
     }
@@ -83,14 +75,6 @@ public class EmployeeWrapper {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Set<String> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<String> authorities) {
-        this.authorities = authorities;
     }
 
     public boolean isAccountNonExpired() {

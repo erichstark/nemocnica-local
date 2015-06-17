@@ -1,11 +1,8 @@
 package sk.stuba.fei.team.local.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,22 +39,6 @@ public class Patient implements Serializable {
         suffix_title = "";
         phone = "";
         email = "";
-        appointments = new HashSet<>();
-    }
-
-    public Patient(String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
-        this.password = password;
-        this.username = username;
-        accountNonExpired = true;
-        accountNonLocked = true;
-        credentialsNonExpired = true;
-        enabled = true;
-        firstName = "";
-        surname = "";
-        prefix_title = "";
-        suffix_title = "";
-        phone = "";
-        this.email = email;
         appointments = new HashSet<>();
     }
 
@@ -182,6 +163,7 @@ public class Patient implements Serializable {
     }
 
     public void setAppointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
+        this.appointments.clear();
+        this.appointments.addAll(appointments);
     }
 }

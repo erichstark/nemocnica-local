@@ -7,31 +7,37 @@ import java.io.Serializable;
 @Entity
 @XmlRootElement
 public class OpeningHours implements Serializable {
-    private static final long serialVersionUID = 7144402491802676227L;
-    private Long id;
-    private String date;
+    private static final long serialVersionUID = -6163945840447837521L;
+    private Long Id;
+    private int date;
     private Long reservationMorningFrom;
     private Long reservationMorningTo;
     private Long reservationFrom;
     private Long reservationTo;
     private Office office;
 
-    @Id
-    public Long getId() {
-        return id;
+    public OpeningHours() {
     }
 
+    public OpeningHours(int date) {
+        this.date = date;
+    }
+
+    @Id
+    public Long getId() {
+        return Id;
+    }
 
     public void setId(Long id) {
-        this.id = id;
+        Id = id;
     }
 
     @Column
-    public String getDate() {
+    public int getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(int date) {
         this.date = date;
     }
 
@@ -80,6 +86,4 @@ public class OpeningHours implements Serializable {
     public void setReservationMorningTo(Long reservationMorningTo) {
         this.reservationMorningTo = reservationMorningTo;
     }
-
-
 }

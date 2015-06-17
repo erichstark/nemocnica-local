@@ -22,9 +22,10 @@
                 <th style="width: 60px;">Zmazať</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="displays">
                 <#list displayList as display>
-                <tr class='clickable-row' data-href="<@spring.url '/admin/display/edit/${display.id}'/>">
+                <tr class='clickable-row' id="${display.id}"
+                    data-href="<@spring.url '/admin/display/edit/${display.id}'/>">
                     <td>${display_index + 1}</td>
                     <td>${display.id}</td>
                     <td>
@@ -33,16 +34,20 @@
                         </#list>
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-danger btn-sm" href="<@spring.url '/admin/display/delete/${display.id}'/>"
-                           role="button" onclick="return customConfirm('Naozaj chcete odstrániť túto obrazovku?')">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="deleteDisplay('${display.id}')">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                     </td>
                 </tr>
                 </#list>
             </tbody>
         </table>
     </div>
-    <#else>
-    <h4 class="text-muted">V systéme nie sú evidované žiadne obrazovky.</h4>
     </#if>
+
+<h4 id="noDisplays" <#if displayList?has_content>style="display: none" </#if>class="text-muted">V
+    systéme
+    nie sú evidované
+    žiadne obrazovky.</h4>
+<script src="<@spring.url '/js/display.js'/>"></script>
 </@pt.dashboardPage>

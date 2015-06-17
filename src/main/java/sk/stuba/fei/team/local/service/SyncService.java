@@ -3,6 +3,7 @@ package sk.stuba.fei.team.local.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,8 @@ import java.util.Date;
 @Component("syncService")
 public class SyncService {
     private static final int MIN_WAIT_TIME = 5;//minutes
+    @Value("${global.autoSync}")
+    boolean autoSync;
     private Logger logger = LoggerFactory.getLogger(SyncService.class);
     @Autowired
     private EmployeeService employeeService;
@@ -25,7 +28,7 @@ public class SyncService {
 
     @Scheduled(fixedDelay = 1000 * 60 * MIN_WAIT_TIME / 2, initialDelay = 1000)
     public void sync() {
-        if (facilityService.getFacility() != null) {
+        if (autoSync && facilityService.getFacility() != null) {
             Date now = new Date();
             logger.info("Starting synchronization...");
 

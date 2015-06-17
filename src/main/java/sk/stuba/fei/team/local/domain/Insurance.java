@@ -21,12 +21,6 @@ public class Insurance implements Serializable {
         patients = new HashSet<>();
     }
 
-    public Insurance(String name) {
-        this.name = name;
-        offices = new HashSet<>();
-        patients = new HashSet<>();
-    }
-
     @Id
     public Long getId() {
         return id;

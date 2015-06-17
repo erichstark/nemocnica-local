@@ -9,4 +9,6 @@ public interface OpeningHoursService {
     List<OpeningHours> findByOfficeId(Long id);
 
     void save(OpeningHours openingHours);
+
+    OpeningHours findOne(Long id);
 }
