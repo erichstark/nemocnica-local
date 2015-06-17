@@ -31,7 +31,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         String url = "/setup";
-        if (!isSetUp() && !requestURI.startsWith(url)) {
+        if (!isSetUp() && !requestURI.startsWith(url) && !requestURI.startsWith("/login")) {
             response.sendRedirect(url);
             return false;
         }

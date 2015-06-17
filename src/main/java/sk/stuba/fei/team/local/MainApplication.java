@@ -22,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -32,6 +33,7 @@ import sk.stuba.fei.team.local.domain.Employee;
 import sk.stuba.fei.team.local.repository.EmployeeRepository;
 import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
+import sk.stuba.fei.team.local.service.FacilityService;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
@@ -40,6 +42,7 @@ import java.util.*;
 @SpringBootApplication
 @EnableJms
 @EnableScheduling
+@EnableOAuth2Client
 public class MainApplication extends WebMvcConfigurerAdapter {
 
     final static Logger logger = LoggerFactory.getLogger(MainApplication.class);
@@ -54,8 +57,9 @@ public class MainApplication extends WebMvcConfigurerAdapter {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
         EmployeeRepository employeeRepository = context.getBean(EmployeeRepository.class);
+        FacilityService facilityService = context.getBean(FacilityService.class);
         PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        if (employeeRepository.findOne("admin") == null) {
+        if (facilityService.getFacility() == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
             Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
