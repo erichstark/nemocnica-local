@@ -55,10 +55,8 @@ $("#facility").submit(function () {
     var spinner = $("#spinner");
     var admin = $("#create-admin");
     var success = $("#success");
-    var errorContainer = $("#error-container");
     form.hide();
     spinner.show();
-    errorContainer.html("");
     $.ajax({
         type: "POST",
         url: "/setup",
@@ -68,7 +66,7 @@ $("#facility").submit(function () {
             if (data == true) {
                 admin.show();
             } else {
-                showMessage("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie. RELOAD");
+                showMessage("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie.",1);
                 form.show();
             }
         },

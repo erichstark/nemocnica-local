@@ -5,7 +5,7 @@
 <div class="container">
     <h1>${pageTitle}</h1>
 
-    <div id="error-container">
+    <div id="alertContainer">
     </div>
     <form id="facility" name="facility" method="post">
         <span class="text-muted" style="padding-bottom: 10px">* Povinné údaje</span>
