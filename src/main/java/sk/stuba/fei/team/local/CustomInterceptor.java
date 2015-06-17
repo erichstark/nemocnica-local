@@ -35,8 +35,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect(url);
             return false;
         }
-        if (isSetUp() && requestURI.startsWith(url) && !(url + "?finished").equals(requestURI)) {
-            response.sendRedirect(url + "?finished");
+        if (isSetUp() && requestURI.startsWith(url)) {
+            response.sendRedirect("/");
             return false;
         }
         return true;
@@ -56,7 +56,7 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
                 }
             }
         }
-        if (modelAndView != null) {
+        if (modelAndView != null && facilityService.getFacility() != null) {
             modelAndView.getModelMap().addAttribute("headerText", facilityService.getFacility().getName());
         }
     }

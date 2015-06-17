@@ -3,6 +3,7 @@ function saveOffice() {
     var id = $('input[name=office_id]').val();
     var enabled = $('input[name=enabled]').is(':checked');
     var name = $('input[name=name]').val();
+    var phone = $('input[name=phone]').val();
 
     spinner.start();
 
@@ -14,7 +15,8 @@ function saveOffice() {
         data: {
             id: id,
             enabled: enabled,
-            name: name
+            name: name,
+            phone: phone
         },
         success: function (data) {
             loginCheck(data);

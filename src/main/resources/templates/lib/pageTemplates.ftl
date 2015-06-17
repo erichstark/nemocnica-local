@@ -42,13 +42,12 @@
                             <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
+                                <a href="<@spring.url '/employee'/>"><i class="glyphicon glyphicon-user"></i>
+                                    Profile</a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="glyphicon glyphicon-cog"></i> Settings</a>
+                                <a href="<@spring.url '/employee/password'/>"><i class="glyphicon glyphicon-user"></i>
+                                    Zmena hesla</a>
                             </li>
                             <li class="divider"></li>
                             <li>
