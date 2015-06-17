@@ -13,9 +13,6 @@ public class Patient implements Serializable {
     private static final long serialVersionUID = 1124023639612447072L;
     private String password;
     private String username;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
     private boolean enabled;
     private String firstName;
     private String surname;
@@ -29,9 +26,6 @@ public class Patient implements Serializable {
     public Patient() {
         password = "";
         username = "";
-        accountNonExpired = true;
-        accountNonLocked = true;
-        credentialsNonExpired = true;
         enabled = true;
         firstName = "";
         surname = "";
@@ -58,33 +52,6 @@ public class Patient implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
     }
 
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")

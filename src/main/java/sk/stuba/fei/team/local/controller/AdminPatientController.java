@@ -3,7 +3,10 @@ package sk.stuba.fei.team.local.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sk.stuba.fei.team.local.api.domain.PatientWrapper;
 import sk.stuba.fei.team.local.domain.Patient;
+import sk.stuba.fei.team.local.repository.InsuranceRepository;
+import sk.stuba.fei.team.local.repository.PatientRepository;
 import sk.stuba.fei.team.local.service.InsuranceService;
 import sk.stuba.fei.team.local.service.PatientService;
 
@@ -17,6 +20,10 @@ public class AdminPatientController {
     private PatientService patientService;
     @Autowired
     private InsuranceService insuranceService;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private InsuranceRepository insuranceRepository;
 
     @RequestMapping("")
     public String index(Map<String, Object> model) {
@@ -32,17 +39,16 @@ public class AdminPatientController {
     }
 
     @RequestMapping(value = "/edit/{id}")
-    public String edit(@PathVariable Long id, Map<String, Object> model) {
-        //todo Id je string username
-//        model.put("patient", patientService.findOne(id));
+    public String edit(@PathVariable String id, Map<String, Object> model) {
+        model.put("patient", patientService.findOne(id));
         model.put("insurances", insuranceService.findAll());
 
         return "admin/patient/add";
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveAdd(@ModelAttribute("patient") Patient patient, @RequestParam Long id_insurance) {
-        patient.setInsurance(insuranceService.findOne(id_insurance));
+    public String saveAdd(@ModelAttribute("patient") PatientWrapper patientWrapper) {
+        Patient patient = patientWrapper.build(patientRepository,insuranceService);
         patientService.save(patient);
         return "redirect:/admin/patient";
     }
