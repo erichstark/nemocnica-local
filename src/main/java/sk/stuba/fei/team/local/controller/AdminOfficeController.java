@@ -59,7 +59,8 @@ public class AdminOfficeController {
     @RequestMapping(value = "/save")
     public
     @ResponseBody
-    AlertMessage save(@RequestParam("id") Long id, @RequestParam("enabled") boolean enabled, @RequestParam("name") String name) {
+    AlertMessage save(@RequestParam("id") Long id, @RequestParam("enabled") boolean enabled, @RequestParam("name") String name,
+                      @RequestParam("phone") String phone) {
 
         Office office;
         if (id == null) {
@@ -71,6 +72,7 @@ public class AdminOfficeController {
 
         office.setEnabled(enabled);
         office.setName(name);
+        office.setPhone(phone);
 
         officeService.save(office);
         return new AlertMessage(AlertMessage.SUCCESS, "Ambulancia uložená.", office.getId());
