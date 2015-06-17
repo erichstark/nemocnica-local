@@ -19,7 +19,7 @@ public class EmployeeController {
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public String profile(@PathVariable String username, Map<String, Object> model) {
         model.put("employee", employeeService.findOne(username));
-        return "profile";
+        return "/employee/profile";
     }
 
 
