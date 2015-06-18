@@ -9,6 +9,7 @@ import java.util.Set;
 @Entity
 @XmlRootElement
 public class Insurance implements Serializable {
+    private static final long serialVersionUID = -207078852946947343L;
     private Long id;
     private String name;
     private Set<Office> offices;
@@ -16,12 +17,6 @@ public class Insurance implements Serializable {
     private Boolean enabled;
 
     public Insurance() {
-        offices = new HashSet<>();
-        patients = new HashSet<>();
-    }
-
-    public Insurance(String name) {
-        this.name = name;
         offices = new HashSet<>();
         patients = new HashSet<>();
     }

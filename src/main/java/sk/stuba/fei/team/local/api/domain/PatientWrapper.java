@@ -1,15 +1,12 @@
 package sk.stuba.fei.team.local.api.domain;
 
 import sk.stuba.fei.team.local.domain.Patient;
+import sk.stuba.fei.team.local.repository.PatientRepository;
 import sk.stuba.fei.team.local.service.InsuranceService;
-import sk.stuba.fei.team.local.service.PatientService;
 
 public class PatientWrapper {
     private String password;
     private String username;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
     private boolean enabled;
     private String firstName;
     private String surname;
@@ -25,9 +22,6 @@ public class PatientWrapper {
     public PatientWrapper(Patient patient) {
         password = patient.getPassword();
         username = patient.getUsername();
-        accountNonExpired = patient.isAccountNonExpired();
-        accountNonLocked = patient.isAccountNonLocked();
-        credentialsNonExpired = patient.isCredentialsNonExpired();
         enabled = patient.isEnabled();
         firstName = patient.getFirstName();
         surname = patient.getSurname();
@@ -38,13 +32,10 @@ public class PatientWrapper {
         insurance = patient.getInsurance().getId();
     }
 
-    public Patient build(PatientService patientService, InsuranceService insuranceService) {
+    public Patient build(PatientRepository patientRepository, InsuranceService insuranceService) {
         Patient patient = new Patient();
         patient.setPassword(password);
         patient.setUsername(username);
-        patient.setAccountNonExpired(accountNonExpired);
-        patient.setAccountNonLocked(accountNonLocked);
-        patient.setCredentialsNonExpired(credentialsNonExpired);
         patient.setEnabled(enabled);
         patient.setFirstName(firstName);
         patient.setSurname(surname);
@@ -53,7 +44,7 @@ public class PatientWrapper {
         patient.setPrefix_title(prefix_title);
         patient.setSuffix_title(suffix_title);
         patient.setInsurance(insuranceService.findOne(insurance));
-        Patient oldPatient = patientService.findOne(username);
+        Patient oldPatient = patientRepository.findOne(username);
         if (oldPatient != null) {
             patient.getAppointments().addAll(oldPatient.getAppointments());
         }
@@ -74,30 +65,6 @@ public class PatientWrapper {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
     }
 
     public boolean isEnabled() {

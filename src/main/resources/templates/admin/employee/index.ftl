@@ -36,7 +36,6 @@
             <th>Meno zamestnanca</th>
             <th>Autorita</th>
             <th>Aktivovaný účet</th>
-            <th style="width: 60px;">Akcia</th>
         </tr>
         </thead>
         <tbody>
@@ -60,8 +59,6 @@
                         <input type="checkbox" disabled>
                     </#if>
                 </td>
-                <td><a href="<@spring.url '/admin/employee/delete/' + employee.username />"
-                       onclick="return confirm('Naozaj?');">Zmazať</a></td>
             </tr>
             </#list>
         </tbody>

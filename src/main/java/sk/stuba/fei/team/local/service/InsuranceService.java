@@ -8,7 +8,7 @@ public interface InsuranceService {
 
     Insurance findOne(Long id);
 
-    List<Insurance> findByName(String name);
+    List<Insurance> findByNameAndEnabled(String name);
 
     Iterable<Insurance> findAll();
 

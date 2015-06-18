@@ -1,22 +1,18 @@
 package sk.stuba.fei.team.local.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @XmlRootElement
-public class Patient {
+public class Patient implements Serializable {
 
+    private static final long serialVersionUID = 1124023639612447072L;
     private String password;
     private String username;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
     private boolean enabled;
     private String firstName;
     private String surname;
@@ -30,9 +26,6 @@ public class Patient {
     public Patient() {
         password = "";
         username = "";
-        accountNonExpired = true;
-        accountNonLocked = true;
-        credentialsNonExpired = true;
         enabled = true;
         firstName = "";
         surname = "";
@@ -40,22 +33,6 @@ public class Patient {
         suffix_title = "";
         phone = "";
         email = "";
-        appointments = new HashSet<>();
-    }
-
-    public Patient(String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
-        this.password = password;
-        this.username = username;
-        accountNonExpired = true;
-        accountNonLocked = true;
-        credentialsNonExpired = true;
-        enabled = true;
-        firstName = "";
-        surname = "";
-        prefix_title = "";
-        suffix_title = "";
-        phone = "";
-        this.email = email;
         appointments = new HashSet<>();
     }
 
@@ -75,33 +52,6 @@ public class Patient {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
     }
 
     @Column(columnDefinition = "BOOLEAN NOT NULL DEFAULT TRUE")
@@ -180,6 +130,7 @@ public class Patient {
     }
 
     public void setAppointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
+        this.appointments.clear();
+        this.appointments.addAll(appointments);
     }
 }

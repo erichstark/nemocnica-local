@@ -1,6 +1,7 @@
 package sk.stuba.fei.team.local.api.domain;
 
 import sk.stuba.fei.team.local.domain.Specialization;
+import sk.stuba.fei.team.local.service.SpecializationService;
 
 public class SpecializationWrapper {
     private Long id;
@@ -16,12 +17,17 @@ public class SpecializationWrapper {
         enabled = specialization.getEnabled();
     }
 
-    public Specialization build() {
-        Specialization specialization = new Specialization();
-        specialization.setId(id);
-        specialization.setName(name);
-        specialization.setEnabled(enabled);
-        return specialization;
+    public Specialization build(SpecializationService specializationService) {
+        Specialization newSpecialization = new Specialization();
+        newSpecialization.setId(id);
+        newSpecialization.setName(name);
+        newSpecialization.setEnabled(enabled);
+        Specialization oldSpecialization = specializationService.findOne(newSpecialization.getId());
+        if (oldSpecialization != null) {
+            newSpecialization.setEmployees(oldSpecialization.getEmployees());
+            newSpecialization.setOffices(oldSpecialization.getOffices());
+        }
+        return newSpecialization;
     }
 
     public Long getId() {

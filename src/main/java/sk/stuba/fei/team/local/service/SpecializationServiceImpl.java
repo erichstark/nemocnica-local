@@ -29,8 +29,8 @@ public class SpecializationServiceImpl implements SpecializationService {
     }
 
     @Override
-    public List<Specialization> findByName(String name) {
-        return specializationRepository.findByNameContainingIgnoreCase(name);
+    public List<Specialization> findByNameAndEnabled(String name) {
+        return specializationRepository.findByNameContainingIgnoreCaseAndEnabledTrue(name);
     }
 
     @Override
@@ -45,15 +45,9 @@ public class SpecializationServiceImpl implements SpecializationService {
 
     @Override
     public void update() {
-        SpecializationWrapper[] specializations = (SpecializationWrapper[]) restConsumer.post("insurance/update", facilityService.getSpecializationsUpdateDate(), SpecializationWrapper[].class);
+        SpecializationWrapper[] specializations = (SpecializationWrapper[]) restConsumer.post("specialization/update", facilityService.getSpecializationsUpdateDate(), SpecializationWrapper[].class);
         for (SpecializationWrapper specializationWrapper : specializations) {
-            Specialization oldSpecialization = specializationRepository.findOne(specializationWrapper.getId());
-            Specialization newSpecialization = specializationWrapper.build();
-            if (oldSpecialization != null) {
-                newSpecialization.setEmployees(oldSpecialization.getEmployees());
-                newSpecialization.setOffices(oldSpecialization.getOffices());
-            }
-            specializationRepository.save(newSpecialization);
+            specializationRepository.save(specializationWrapper.build(this));
         }
         facilityService.specializationsUpdated();
     }

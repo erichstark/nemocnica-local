@@ -44,17 +44,17 @@
             <#list patients as patient>
             <tr>
                 <td>${patient_index + 1}</td>
-                <td>${patient.id}</td>
+                <td>${patient.username}</td>
                 <td>
-                    <a href="<@spring.url '/admin/patient/edit/' + patient.id />">
-                    ${patient.prefix_title + ' ' + patient.firstName + ' ' + patient.surname}
-                    <#if patient.suffix_title?length gt 0>${', ' + patient.suffix_title}</#if>
+                    <a href="<@spring.url '/admin/patient/edit/' + patient.username />">
+                    ${patient.prefix_title!""} ${patient.firstName!""} ${patient.surname!""}
+                    <#if patient.suffix_title?? && patient.suffix_title?length gt 0>${', ' + patient.suffix_title}</#if>
                     </a>
                 </td>
                 <td>${patient.phone!""}</td>
                 <td>${patient.email!""}</td>
                 <td>${patient.insurance.name}</td>
-                <td><a href="<@spring.url '/admin/patient/delete/' + patient.id />"
+                <td><a href="<@spring.url '/admin/patient/delete/' + patient.username />"
                        onclick="return confirm('Naozaj?');">Zmazať</a></td>
             </tr>
             </#list>

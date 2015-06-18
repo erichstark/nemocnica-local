@@ -5,21 +5,23 @@
 <@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office/add'/>" role="button">Vytvoriť
-            ambulanciu</a>
+        <a class="btn btn-success" href="<@spring.url '/admin/office/add'/>" role="button">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Pridať
+        </a>
     </div>
 </div>
 
-<h2 class="sub-header">Ambulancie</h2>
+<hr>
 
 <div class="row">
     <div class="col-md-12">
         <form class="form-inline" method="POST" action="<@spring.url '/admin/office/search'/>">
             <div class="form-group">
-                <label for="text">Vyhľadanie:</label>
+                <label for="text">Vyhľadanie:&nbsp;&nbsp;</label>
                 <input type="text" name="text" class="form-control" id="text" placeholder="Hľadaný text"
-                       value="${search!""}">
+                       value="${search!""}" style="width: 500px;">
             </div>
+            &nbsp;
             <input type="submit" value="Hľadaj" class="btn btn-default">
             <a class="btn btn-default" href="<@spring.url '/admin/office/clear'/>">Zruš</a>
         </form>
@@ -31,23 +33,17 @@
         <thead>
         <tr>
             <th style="width: 60px;">#</th>
-            <th style="width: 60px;">ID</th>
-            <th>Názov ambulancie</th>
-            <th>Názov zariadenia</th>
-            <th>Adresa zariadenia</th>
-            <th style="width: 60px;">Akcia</th>
+            <th style="text-align: left">Názov ambulancie</th>
+            <th style="width: 75px; text-align: right">Aktívna</th>
         </tr>
         </thead>
         <tbody>
             <#list offices as office>
             <tr>
                 <td>${office_index + 1}</td>
-                <td>${office.id}</td>
-                <td><a href="<@spring.url '/admin/office/edit/' + office.id />">${office.name}</a></td>
-                <td>${office.facility.name}</td>
-                <td>${office.facility.city+', '+office.facility.streetAndNumber}</td>
-                <td><a href="<@spring.url '/admin/office/delete/' + office.id />"
-                       onclick="return confirm('Naozaj?');">Zmazať</a></td>
+                <td style="text-align: left"><a
+                        href="<@spring.url '/admin/office/edit/' + office.id />">${office.name}</a></td>
+                <td><input type="checkbox" <#if office.enabled>checked</#if> disabled></td>
             </tr>
             </#list>
         </tbody>

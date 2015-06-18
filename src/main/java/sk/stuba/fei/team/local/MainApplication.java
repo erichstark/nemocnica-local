@@ -2,6 +2,8 @@ package sk.stuba.fei.team.local;
 
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -13,12 +15,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -26,9 +30,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import sk.stuba.fei.team.local.domain.Employee;
+import sk.stuba.fei.team.local.repository.EmployeeRepository;
 import sk.stuba.fei.team.local.security.CustomUserDetailService;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
-import sk.stuba.fei.team.local.service.EmployeeService;
 import sk.stuba.fei.team.local.service.FacilityService;
 
 import javax.jms.ConnectionFactory;
@@ -37,7 +41,11 @@ import java.util.*;
 
 @SpringBootApplication
 @EnableJms
+@EnableScheduling
+@EnableOAuth2Client
 public class MainApplication extends WebMvcConfigurerAdapter {
+
+    final static Logger logger = LoggerFactory.getLogger(MainApplication.class);
 
     @Value("${server.address:localhost}")
     String serverAddress;
@@ -48,27 +56,16 @@ public class MainApplication extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
-        initializeUsers(context);
-    }
-
-
-    private static void initializeUsers(ConfigurableApplicationContext context) {
-        EmployeeService employeeService = context.getBean(EmployeeService.class);
+        EmployeeRepository employeeRepository = context.getBean(EmployeeRepository.class);
+        FacilityService facilityService = context.getBean(FacilityService.class);
         PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        if (employeeService.findOne("user") == null) {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("USER"));
-            Employee userDetails = new Employee("user", encoder.encode("user123"), authorities);
-            employeeService.save(userDetails);
-        }
-        if (employeeService.findOne("admin") == null) {
+        if (facilityService.getFacility() == null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
             Employee userDetails = new Employee("admin", encoder.encode("admin123"), authorities);
-            employeeService.save(userDetails);
+            employeeRepository.save(userDetails);
         }
     }
-
 
     @Bean
     public LocaleResolver localeResolver() {
@@ -107,7 +104,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
             Map<String, Object> params = new HashMap<>();
             params.put("host", serverAddress);
             params.put("port", "5445");
-            System.out.println("Starting JMS acceptor on " + serverAddress + ":5445");
+            logger.info("Starting new JMS acceptor on " + serverAddress + ":5445");
             TransportConfiguration tc = new TransportConfiguration(NettyAcceptorFactory.class.getName(), params);
             acceptors.add(tc);
         };
@@ -130,14 +127,14 @@ public class MainApplication extends WebMvcConfigurerAdapter {
 
         @SuppressWarnings("SpringJavaAutowiringInspection")
         @Autowired
-        private EmployeeService employeeService;
+        private EmployeeRepository employeeRepository;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/admin/**", "/manage").hasAuthority("ADMIN")
-                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**", "/setup/**").permitAll()
+                    .antMatchers("/admin/**", "/manage", "/setup/**").hasAuthority("ADMIN")
+                    .antMatchers("/css/**", "/js/**", "/fonts/**", "/img/**", "/fav/**", "/service/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
@@ -147,7 +144,7 @@ public class MainApplication extends WebMvcConfigurerAdapter {
 
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(new CustomUserDetailService(employeeService)).passwordEncoder(new PBKDF2WithHmacSHA1());
+            auth.userDetailsService(new CustomUserDetailService(employeeRepository)).passwordEncoder(new PBKDF2WithHmacSHA1());
             auth.jdbcAuthentication().dataSource(dataSource);
         }
     }

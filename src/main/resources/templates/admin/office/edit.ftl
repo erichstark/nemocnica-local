@@ -1,99 +1,183 @@
-<#-- @ftlvariable name="insurances" type="sk.stuba.fei.team.local.domain.Insurance[]" -->
-<#-- @ftlvariable name="office.insurances" type="sk.stuba.fei.team.local.domain.Insurance[]" -->
-<#-- @ftlvariable name="office" type="sk.stuba.fei.team.local.domain.Office[]" -->
+<#-- @ftlvariable name="office" type="sk.stuba.fei.team.local.domain.Office" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Editácia ambulancie</#assign>
+<#if !office.id?has_content>
+    <#assign pageTitle>Pridanie novej ambulancie</#assign>
+<#else>
+    <#assign pageTitle>Editácia ambulancie</#assign>
+</#if>
 <@pt.dashboardPage pageTitle=pageTitle>
+
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-info btn-sm" href="<@spring.url '/admin/office'/>" role="button">Naspäť</a>
+        <a class="btn btn-info" href="<@spring.url '/admin/office'/>" role="button">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            Späť
+        </a>
     </div>
 </div>
 
-<br>
+<hr>
 
-<div class="table-responsive">
+<div class="panel-body" id="form">
 
-    <form name="office" action="<@spring.url '/admin/office/edit'/>" method="post">
-        <div class="form-group" style="display: none">
-            <label for="office-id">ID</label>
-            <input type="text" name="id" class="form-control" id="office-id" placeholder="ID"
-                   value="${office.id}">
-        </div>
-        <div class="form-group">
-            <label for="office-name">Názov</label>
-            <input type="text" name="name" class="form-control" id="office-name" placeholder="Name"
-                   value="${office.name!""}">
-        </div>
-        <div class="form-group">
-            <label for="office-facility">Zariadenie</label>
-            <select name="id_facility" class="form-control" id="office-facility">
-                <#list facilities as facility>
-                    <#if facility.id == office.facility.id>
-                        <option value="${facility.id}" selected="selected">${facility.name}</option>
-                    <#else>
-                        <option value="${facility.id}">${facility.name}</option>
-                    </#if>
-                </#list>
-            </select>
-        </div>
+    <input type="hidden" name="office_id" value="${office.id!}">
 
-        <div class="form-group">
-            <div>
-                <input type="submit" value="Ulož" class="btn btn-success">
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <div class="input-group has-warning">
+                <span class="input-group-addon">
+                    <input type="checkbox" name="enabled" value="true" <#if  office.enabled>checked</#if> >
+                </span>
+                <span class="form-control">Aktívna ambulancia</span>
             </div>
         </div>
+    </div>
 
-    </form>
-</div>
+    <div class="form-group">
+        <label for="office-name">Názov</label>
+        <input type="text" name="name" class="form-control" id="office-name" placeholder="Názov"
+               value="${office.name!""}">
+        <label for="office-phone">Telefón</label>
+        <input type="text" name="phone" class="form-control" id="office-phone" placeholder="Telefón"
+               value="${office.phone!""}">
+    </div>
+    <div style="padding-top: 30px" class="form-group">
+        <div>
+            <button id="saveButton" class="btn btn-success ladda-button" data-style="zoom-in" onclick="saveOffice()">
+                <span class="ladda-label">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                    Uložiť
+                </span>
+            </button>
+        </div>
+    </div>
 
-<div class="row">
-
-    <h2>Poisťovne ambulancie</h2>
     <hr>
 
-    <div class="col-md-12">
-        <form class="form-inline" method="POST" action="<@spring.url '/admin/office/insurance/add'/>">
-            <div class="form-group">
-                <label for="text">Pridanie poisťovne:</label>
-                <select name="id_insurance" class="form-control" id="office-facility">
-                    <#list insurances as insurance>
-                        <option value="${insurance.id}">${insurance.name}</option>
-                    </#list>
-                </select>
-                <input type="hidden" name="id_office" value="${office.id}">
-            </div>
-            <input type="submit" value="Pridaj" class="btn btn-success">
-        </form>
-    </div>
-
-    <div class="col-md-12">
-        <table class="table table-striped">
+    <div class="form-group">
+        <h3>Ordináčné hodiny</h3>
+        <a class="btn btn-info" href="<@spring.url '/admin/office/hours/${office.id!}'/>" role="button" name="link"
+           onclick="return check(this)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            Upraviť
+        </a>
+        <#if office.hours?? && office.hours?has_content>
+            <table class="table table-striped table-hover">
             <thead>
             <tr>
-                <th style="width: 60px;">#</th>
-                <th style="width: 60px;">ID</th>
-                <th>Názov poisťovne</th>
-                <th style="width: 60px;">Akcia</th>
+                <th>Deň</th>
+                <th>Ráno od - do</th>
+                <th>Cez deň od - do</th>
             </tr>
             </thead>
             <tbody>
-                <#if office.insurances??>
+                <#list office.hours?sort_by("date") as hour>
+                <tr>
+                    <td><#if hour.date == 1>Pondelok</#if><#if hour.date == 2>Utorok</#if><#if hour.date == 3>
+                        Streda</#if><#if hour.date == 4>Štvrtok</#if><#if hour.date == 5>Piatok</#if></td>
+                    <td>
+                        <span>${hour.reservationMorningFrom!}</span> - <span>${hour.reservationMorningTo!}</span>
+                    </td>
+                    <td><span>${hour.reservationFrom!}</span> - <span>${hour.reservationTo!}</span></td>
+                </tr>
+                </#list>
+            </tbody>
+            </table>
+        <#else>
+            <h4 id="no-results" class="text-muted">Nenastavené ordinačné hodiny.</h4>
+        </#if>
+    </div>
+    <hr>
+    <div class="form-group">
+        <h3>Poisťovne</h3>
+        <a class="btn btn-info" href="<@spring.url '/admin/office/insurance/${office.id!}'/>" role="button" name="link"
+           onclick="return check(this)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            Upraviť
+        </a>
+        <#if office.insurances?? && office.insurances?has_content>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 100px;">#</th>
+                    <th style="text-align: left">Názov</th>
+                </tr>
+                </thead>
+                <tbody>
                     <#list office.insurances as insurance>
                     <tr>
-                        <td>${insurance_index + 1}</td>
-                        <td>${insurance.id}</td>
-                        <td>${insurance.name}</td>
-                        <td>
-                            <a href="<@spring.url '/admin/office/'+office.id+'/insurance/'+insurance.id+'/delete' />"
-                               onclick="return confirm('Naozaj?');">Zmazať</a></td>
+                        <td>${insurance_index+1}</td>
+                        <td style="text-align: left">${insurance.name}</td>
                     </tr>
                     </#list>
-                </#if>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        <#else>
+            <h4 class="text-muted">Ordinácia nemá priradené žiadne poisťovne.</h4>
+        </#if>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <h3>Špecializácie</h3>
+        <a id="test" class="btn btn-info" href="<@spring.url '/admin/office/specialization/${office.id!}'/>"
+           role="button" name="link" onclick="return check(this)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            Upraviť
+        </a>
+        <#if office.specializations?? && office.specializations?has_content>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 100px;">#</th>
+                    <th style="text-align: left">Názov</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <#list office.specializations as specialization>
+                    <tr>
+                        <td>${specialization_index+1}</td>
+                        <td style="text-align: left">${specialization.name}</td>
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        <#else>
+            <h4 class="text-muted">Ordinácia nemá priradené žiadne špecializáciu.</h4>
+        </#if>
+    </div>
+    <hr>
+
+    <div class="form-group">
+        <h3>Zamestnanci</h3>
+        <a class="btn btn-info" href="<@spring.url '/admin/office/employee/${office.id!}'/>" role="button" name="link"
+           onclick="return check(this)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            Upraviť
+        </a>
+        <#if office.employees?? && office.employees?has_content>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 100px;">#</th>
+                    <th style="text-align: left">Meno zamestnanca</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <#list office.employees as employee>
+                    <tr>
+                        <td>${employee_index+1}</td>
+                        <td style="text-align: left">${employee.firstName!} ${employee.lastName!}</td>
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        <#else>
+            <h4 class="text-muted">Ordinácia nemá priradených žiadnych zamestnancov.</h4>
+        </#if>
     </div>
 </div>
-
+<script src="<@spring.url '/js/admin/office.js'/>"></script>
 </@pt.dashboardPage>

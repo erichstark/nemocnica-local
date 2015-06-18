@@ -1,3 +1,5 @@
+<#-- @ftlvariable name="alertMessage" type="sk.stuba.fei.team.local.api.AlertMessage" -->
+<#-- @ftlvariable name="headerText" type="java.lang.String" -->
 <#-- @ftlvariable name="user" type="sk.stuba.fei.team.local.security.CustomUser" -->
 <#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
 <#-- @ftlvariable name="menu" type="java.util.List<sk.stuba.fei.nemocnica.menu.MenuItem>" -->
@@ -10,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="<@spring.url '/fav/fav.ico'/>"/>
     <link type="text/css" href="<@spring.url '/css/bootstrap.min.css'/>" rel="stylesheet"/>
+    <link type="text/css" href="<@spring.url '/css/ladda-themeless.min.css'/>" rel="stylesheet"/>
     <link type="text/css" href="<@spring.url '/css/custom.css'/>" rel="stylesheet"/>
     <title>${pageTitle}</title>
 </head>
@@ -17,6 +20,8 @@
     <#nested>
 <script src="<@spring.url '/js/jquery-2.1.4.min.js'/>"></script>
 <script src="<@spring.url '/js/bootstrap.min.js'/>"></script>
+<script src="<@spring.url '/js/spin.min.js'/>"></script>
+<script src="<@spring.url '/js/ladda.min.js'/>"></script>
 <script src="<@spring.url '/js/custom.js'/>"></script>
 </body>
 </html>
@@ -27,7 +32,7 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
+                <a class="navbar-brand" href="<@spring.url '/'/>">${headerText}</a>
             </div>
             <div class="navbar-header pull-right">
                 <ul class="nav navbar-nav navbar-right">
@@ -38,13 +43,16 @@
                             <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-user"></i> Profile</a>
+                                <a href="<@spring.url '/employee'/>"><i class="glyphicon glyphicon-user"></i>
+                                    Profile</a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
+                                <a href="<@spring.url '/employee/password'/>"><i class="glyphicon glyphicon-user"></i>
+                                    Zmena hesla</a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-cog"></i> Settings</a>
+                                <a href="<@spring.url '/'/>"><i class="glyphicon glyphicon-home"></i>
+                                    Ambulancia</a>
                             </li>
                             <li class="divider"></li>
                             <li>
@@ -65,6 +73,7 @@
         </div>
     </nav>
     <div class="container">
+        <div id="alertContainer"><@alert/></div>
         <#nested>
     </div>
     <footer class="footer">
@@ -100,7 +109,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<@spring.url '/'/>"><@spring.message "ProjectName"/></a>
+                <a class="navbar-brand" href="<@spring.url '/'/>">${headerText}</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -135,7 +144,7 @@
             <div id="side-navbar" class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     <li><a href="<@spring.url '/admin'/>">Prehľad</a></li>
-                    <li><a href="<@spring.url '/admin/facility'/>">Zariadenia</a></li>
+                    <li><a href="<@spring.url '/admin/facility'/>">Nastavenie systému</a></li>
                     <li><a href="<@spring.url '/admin/office'/>">Ambulancie</a></li>
                     <li><a href="<@spring.url '/admin/patient'/>">Pacienti</a></li>
                     <li><a href="<@spring.url '/admin/employee'/>">Zamestnanci</a></li>
@@ -144,7 +153,8 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">${pageTitle}</h1>
-                <@alert/>
+
+                <div id="alertContainer"><@alert/></div>
                 <#nested>
             </div>
         </div>

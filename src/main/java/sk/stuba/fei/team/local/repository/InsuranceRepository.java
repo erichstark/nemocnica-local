@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface InsuranceRepository extends CrudRepository<Insurance, Long> {
 
-    List<Insurance> findByNameContainingIgnoreCase(String name);
+    List<Insurance> findByNameContainingIgnoreCaseAndEnabledTrue(String name);
 }

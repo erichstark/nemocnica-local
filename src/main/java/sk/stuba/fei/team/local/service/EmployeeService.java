@@ -14,7 +14,7 @@ public interface EmployeeService {
 
     boolean exists(String username);
 
-    List<Employee> findByFirstNameOrLastName(String text);
+    List<Employee> findByFirstNameOrLastNameOrUsername(String text);
 
     void update();
 }

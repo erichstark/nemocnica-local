@@ -9,12 +9,14 @@ import java.util.Date;
 @XmlRootElement
 public class Appointment implements Serializable {
 
+    private static final long serialVersionUID = 1421512442419014237L;
     private Long id;
     private Patient patient;
     private Office office;
     private Date date;
     private int intervalStart;
     private String note;
+    private boolean enabled;
 
     @Id
     public Long getId() {
@@ -71,5 +73,13 @@ public class Appointment implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

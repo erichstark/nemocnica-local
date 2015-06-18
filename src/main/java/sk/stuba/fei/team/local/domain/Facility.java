@@ -4,12 +4,14 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @XmlRootElement
 public class Facility implements Serializable {
 
+    private static final long serialVersionUID = -4934907403436041978L;
     private Long id;
     private String name;
     private Set<Office> offices;
@@ -26,6 +28,16 @@ public class Facility implements Serializable {
     private Date appointmentsUpdated;
     private Date specializationsUpdated;
     private Date insurancesUpdated;
+
+    public Facility() {
+        enabled = true;
+        offices = new HashSet<>(0);
+        employeesUpdated = new Date(0);
+        patientsUpdated = new Date(0);
+        appointmentsUpdated = new Date(0);
+        specializationsUpdated = new Date(0);
+        insurancesUpdated = new Date(0);
+    }
 
     @Id
     public Long getId() {

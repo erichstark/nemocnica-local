@@ -7,7 +7,7 @@ import java.util.List;
 public interface SpecializationService {
     Specialization findOne(Long id);
 
-    List<Specialization> findByName(String name);
+    List<Specialization> findByNameAndEnabled(String name);
 
     Iterable<Specialization> findAll();
 

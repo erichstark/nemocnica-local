@@ -9,6 +9,7 @@ import sk.stuba.fei.team.local.domain.Facility;
 import sk.stuba.fei.team.local.repository.FacilityRepository;
 
 import java.util.Date;
+import java.util.Iterator;
 
 @Component("facilityService")
 @Transactional
@@ -21,10 +22,20 @@ public class FacilityServiceImpl implements FacilityService {
     private RestConsumer restConsumer;
 
     @Override
-    public void save(Facility facility) {
+    public boolean save(Facility facility) {
         Long id = (Long) restConsumer.post("facility", new FacilityWrapper(facility), Long.class);
+        if (id == -1) {
+            return false;
+        }
         facility.setId(id);
         facilityRepository.save(facility);
+        return true;
+    }
+
+    @Override
+    public boolean exist(String name) {
+        return false;
+//        return (boolean) restConsumer.post("facility/exists", name, Boolean.class);
     }
 
     @Override
@@ -89,7 +100,12 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility getFacility() {
-        return facilityRepository.findAll().iterator().next();
+        Iterator<Facility> iterator = facilityRepository.findAll().iterator();
+        if (iterator.hasNext()) {
+            return iterator.next();
+        } else {
+            return null;
+        }
     }
 
     @Override

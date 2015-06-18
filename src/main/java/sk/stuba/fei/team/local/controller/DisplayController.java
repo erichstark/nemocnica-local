@@ -2,20 +2,19 @@ package sk.stuba.fei.team.local.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.team.local.api.AlertMessage;
 import sk.stuba.fei.team.local.domain.DisplayConfiguration;
 import sk.stuba.fei.team.local.domain.Office;
+import sk.stuba.fei.team.local.domain.Specialization;
 import sk.stuba.fei.team.local.jms.CallInMessage;
 import sk.stuba.fei.team.local.jms.JmsProducer;
 import sk.stuba.fei.team.local.service.DisplayConfigurationService;
 import sk.stuba.fei.team.local.service.OfficeService;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/display")
@@ -63,75 +62,84 @@ public class DisplayController {
         return "admin/display/edit";
     }
 
-    @RequestMapping(value = "/submit")
-    public String submit(
-            @ModelAttribute("display") DisplayConfiguration display,
-            @ModelAttribute("submit") String submit,
-            @ModelAttribute("originalID") String originalID,
-            @ModelAttribute("searchTerm") String searchTerm,
-            Map<String, Object> model,
-            RedirectAttributes redirectAttributes) {
-        String[] tokens = submit.split("/");
-        String action = tokens[0];
-        String actionId = tokens.length == 2 ? tokens[1] : "";
+    @RequestMapping(value = "/search")
+    public
+    @ResponseBody
+    List<SearchResult> search(@ModelAttribute("searchTerm") String searchTerm) {
+        return officeService.findByNameOrEmployeeOrSpecialization(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
+    }
 
-        //nasty hack to fix freemarker bug returning empty set with size of 1
-        if (display.getOffices().size() == 1 && display.getOffices().iterator().next() == null) {
-            display.getOffices().clear();
-        }
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    AlertMessage save(@ModelAttribute("id") String id) {
+        displayConfigurationService.delete(id);
+        return new AlertMessage(AlertMessage.SUCCESS, "Obrazovka zmazaná.");
+    }
 
-        switch (action) {
-            case "save":
-                if (!originalID.equals(display.getId())) {
-                    if (displayConfigurationService.exists(display.getId())) {
-                        model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Zvolene ID je uz pouzite."));
-                        break;
-                    } else {
-                        if (!"".equals(originalID)) {
-                            displayConfigurationService.delete(originalID);
-                        }
-                    }
-                }
-                displayConfigurationService.save(display);
-                redirectAttributes.addFlashAttribute("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka uložená"));
-                return "redirect:/admin/display";
-            case "remove":
-                Long removeID = Long.parseLong(actionId);
-                Office toRemove = null;
-                for (Office office : display.getOffices()) {
-                    if (office.getId().equals(removeID)) {
-                        toRemove = office;
-                    }
-                }
-                display.getOffices().remove(toRemove);
-                break;
-            case "add":
-                Long addID = Long.parseLong(actionId);
-                Office office = officeService.findOne(addID);
-                if (display.getOffices().contains(office)) {
-                    model.put("alertMessage", new AlertMessage(AlertMessage.WARNING, "Zvolená ambulancia sa už nachádza v zozname."));
-                } else {
-                    display.getOffices().add(office);
-                }
-                break;
-            case "search":
-                if (searchTerm.isEmpty()) {
-                    model.put("alertMessage", new AlertMessage(AlertMessage.WARNING, "Vyhladavaný výraz nesmie byť prázdny."));
-                } else {
-                    model.put("searchResults", officeService.findByIdOrNameOrEmployeesName(searchTerm));
-                }
-                break;
-            default:
-                model.put("alertMessage", new AlertMessage(AlertMessage.DANGER, "Neznama akcia."));
+    @RequestMapping(value = "/save")
+    public
+    @ResponseBody
+    AlertMessage save(@RequestParam("id") String id, @RequestParam("originalID") String originalID, @RequestParam("offices") String offices) {
+        if (id.isEmpty()) {
+            return new AlertMessage(AlertMessage.DANGER, "ID nesmie byt prázdne");
         }
-        return "admin/display/edit";
+        if (displayConfigurationService.exists(id) && !originalID.equals(id)) {
+            return new AlertMessage(AlertMessage.DANGER, "Zvolené ID je už použité.");
+        }
+        DisplayConfiguration displayConfiguration = new DisplayConfiguration();
+        displayConfiguration.setId(id);
+        for (String officeId : offices.split(",")) {
+            displayConfiguration.getOffices().add(officeService.findOne(Long.parseLong(officeId)));
+        }
+        displayConfigurationService.save(displayConfiguration);
+        return new AlertMessage(AlertMessage.SUCCESS, "Obrazovka uložená.");
     }
 
 
-    @RequestMapping(value = "/delete/{id}")
-    public String save(@PathVariable String id, Map<String, Object> model) {
-        displayConfigurationService.delete(id);
-        model.put("alertMessage", new AlertMessage(AlertMessage.SUCCESS, "Obrazovka zmazaná."));
-        return "redirect:/admin/display";
+    private class SearchResult {
+        private Long id;
+        private String name;
+        private String specializations;
+        private String employees;
+
+        public SearchResult(Office office) {
+            id = office.getId();
+            name = office.getName();
+            specializations = office.getSpecializations().stream().map(Specialization::getName).collect(Collectors.joining(", "));
+            employees = office.getEmployees().stream().map(e -> e.getPrefix_title() + " " + e.getFirstName() + " " + e.getLastName() + " " + e.getSuffix_title()).collect(Collectors.joining(", "));
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getSpecializations() {
+            return specializations;
+        }
+
+        public void setSpecializations(String specializations) {
+            this.specializations = specializations;
+        }
+
+        public String getEmployees() {
+            return employees;
+        }
+
+        public void setEmployees(String employees) {
+            this.employees = employees;
+        }
     }
 }

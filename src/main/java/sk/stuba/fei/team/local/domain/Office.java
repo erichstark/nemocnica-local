@@ -10,9 +10,11 @@ import java.util.Set;
 @XmlRootElement
 public class Office implements Serializable {
 
+    private static final long serialVersionUID = 142596241885364920L;
     private Long id;
     private String name;
     private Facility facility;
+    private String phone;
     private Set<Employee> employees;
     private Set<Insurance> insurances;
     private Set<Specialization> specializations;
@@ -135,5 +137,13 @@ public class Office implements Serializable {
 
     public void setDisplayConfigurations(Set<DisplayConfiguration> displayConfigurations) {
         this.displayConfigurations = displayConfigurations;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

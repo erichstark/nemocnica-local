@@ -1,8 +1,12 @@
 <#-- @ftlvariable name="offices" type="sk.stuba.fei.team.local.domain.Office[]" -->
-<#-- @ftlvariable name="employee" type="sk.stuba.fei.team.local.domain.Employee" -->
+<#-- @ftlvariable name="searchTerm" type="java.lang.String" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#assign pageTitle>Editácia zamestnanca</#assign>
+<#if !employee.username?has_content>
+    <#assign pageTitle>Pridanie nového zamestnanca</#assign>
+<#else>
+    <#assign pageTitle>Editácia zamestnanca</#assign>
+</#if>
 <@pt.dashboardPage pageTitle=pageTitle>
 <div class="row">
     <div class="col-md-12">
@@ -12,96 +16,92 @@
 
 <br>
 
-<div class="table-responsive">
-    <form name="patient" action="<@spring.url '/admin/employee/edit'/>" method="post">
-        <div class="form-group" style="display: none;">
+<div class="panel-body" id="form">
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
             <label for="employee-username">Prihlasovacie meno</label>
-            <input type="text" name="username" class="form-control" id="employee-id" placeholder="Prihlasovacie meno"
-                   value="${employee.username!""}">
+            <input type="text" name="username" class="form-control" id="employee-username"
+                   placeholder="Prihlasovacie meno"
+                   value="${employee.username!""}" <#if employee.username?has_content>disabled</#if>>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
             <label for="patient-password">Heslo</label>
             <input type="password" name="password" class="form-control" id="patient-password" placeholder="Heslo"
                    value="${employee.password!""}">
         </div>
-        <div class="form-group">
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
             <label for="employee-prefix_title">Titul pred</label>
             <input type="text" name="prefix_title" class="form-control" id="employee-prefix_title"
                    placeholder="Titul pred"
                    value="${employee.prefix_title!""}">
         </div>
-        <div class="form-group">
-            <label for="employee-firstName">Meno</label>
-            <input type="text" name="firstName" class="form-control" id="employee-firstName" placeholder="Meno"
-                   value="${employee.firstName!""}">
-        </div>
-        <div class="form-group">
-            <label for="employee-surname">Priezvisko</label>
-            <input type="text" name="lastName" class="form-control" id="employee-surname" placeholder="Priezvisko"
-                   value="${employee.lastName!""}">
-        </div>
-        <div class="form-group">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
             <label for="employee-suffix_title">Titul za</label>
             <input type="text" name="suffix_title" class="form-control" id="employee-suffix_title"
                    placeholder="Titul za"
                    value="${employee.suffix_title!""}">
         </div>
-        <table>
-            <tr>
-                <td style="width: 300px;">
-                    <label class="radio-inline"><input type="radio" name="enabled" value="true"
-                                                       <#if  employee.enabled>checked</#if> > Aktivovaný účet</label>
-                </td>
-                <td>
-                    <label class="radio-inline"><input type="radio" name="enabled" value="false"
-                                                       <#if !employee.enabled>checked</#if> > Deaktivovaný účet</label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="radio-inline">
-                        <input type="radio" name="accountNonExpired" value="true"
-                               <#if  employee.accountNonExpired>checked</#if> > Platný účet (non expired)
-                    </label>
-                </td>
-                <td>
-                    <label class="radio-inline">
-                        <input type="radio" name="accountNonExpired" value="false"
-                               <#if !employee.accountNonExpired>checked</#if> > Neplatný účet
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="radio-inline">
-                        <input type="radio" name="accountNonLocked" value="true"
-                               <#if  employee.accountNonLocked>checked</#if> > Odomknutý účet (non locked)
-                    </label>
-                </td>
-                <td>
-                    <label class="radio-inline">
-                        <input type="radio" name="accountNonLocked" value="false"
-                               <#if !employee.accountNonLocked>checked</#if> > Uzamknutý účet
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="radio-inline">
-                        <input type="radio" name="credentialsNonExpired" value="true"
-                               <#if  employee.credentialsNonExpired>checked</#if> > Platné osobné údaje (non expired)
-                    </label>
-                </td>
-                <td>
-                    <label class="radio-inline">
-                        <input type="radio" name="credentialsNonExpired" value="false"
-                               <#if !employee.credentialsNonExpired>checked</#if> > Neplatné osobné údaje
-                    </label>
-                </td>
-            </tr>
-        </table>
-        <br>
-        <div class="form-group">
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <label for="employee-firstName">Meno</label>
+            <input type="text" name="firstName" class="form-control" id="employee-firstName" placeholder="Meno"
+                   value="${employee.firstName!""}">
+        </div>
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <label for="employee-surname">Priezvisko</label>
+            <input type="text" name="lastName" class="form-control" id="employee-surname" placeholder="Priezvisko"
+                   value="${employee.lastName!""}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <div class="input-group has-warning">
+                <span class="input-group-addon">
+                    <input type="checkbox" name="enabled" value="true" <#if  employee.enabled>checked</#if> >
+                </span>
+                <span class="form-control">Aktivovaný účet</span>
+            </div>
+        </div>
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" name="accountNonExpired" value="true"
+                           <#if  employee.accountNonExpired>checked</#if> >
+                </span>
+                <span class="form-control">Platný účet (non expired)</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" name="accountNonLocked" value="true"
+                           <#if employee.accountNonLocked>checked</#if> >
+                </span>
+                <span class="form-control">Odomknutý účet (non locked)</span>
+            </div>
+        </div>
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" name="credentialsNonExpired" value="true"
+                           <#if  employee.credentialsNonExpired>checked</#if> >
+                </span>
+                <span class="form-control">Platné osobné údaje (non expired)</span>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="form-group col-md-6 col-xs-6 col-sm-6">
             <label for="patient-autority">Autorita</label>
             <select name="autority" class="form-control" id="patient-autority">
                 <#if employee.getStringAuthorities()?seq_contains("USER")>
@@ -113,104 +113,71 @@
                 </#if>
             </select>
         </div>
-
-        <div class="form-group">
-            <div>
-                <input type="submit" value="Ulož" class="btn btn-success">
-            </div>
-        </div>
-
-    </form>
-</div>
-
-<br>
-
-<div class="row">
-    <h2>Špecializácia</h2>
-    <hr>
-
-    <div class="col-md-12">
-        <form class="form-inline" method="POST" action="<@spring.url '/admin/employee/specialization/add'/>">
-            <div class="form-group">
-                <label for="employee-office">Specializácia:</label>
-                <input type="text" class="form-control" name="specialization" value="">
-                <input type="hidden" name="username" value="${employee.username}">
-            </div>
-            <input type="submit" value="Pridaj" class="btn btn-success">
-        </form>
     </div>
 
-    <div class="col-md-12">
-        <table class="table table-striped">
+    <div class="form-group">
+        <h3>Špecializácie</h3>
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th style="width: 60px;">#</th>
-                <th>Názov špecializácie</th>
-                <th style="width: 60px;">Akcia</th>
+                <th>Názov</th>
+                <th style="width: 60px;">Odobrať</th>
             </tr>
             </thead>
-            <tbody>
-                <#if employee.specializations??>
+            <tbody id="specializations">
                     <#list employee.specializations as specialization>
-                    <tr>
-                        <td>${specialization_index + 1}</td>
-                        <td>${specialization}</td>
-                        <td>
-                            <a href="<@spring.url '/admin/employee/'+employee.username+'/specialization/'+specialization_index+'/delete' />"
-                               onclick="return confirm('Naozaj?');">Zmazať</a></td>
+                    <tr id="specialization-${specialization.id}">
+                        <td>${specialization_index+1}</td>
+                        <td>${specialization.name}</td>
+                        <td class="text-center">
+                            <button name="submit" class="btn btn-sm btn-danger"
+                                    onclick="removeSpecialization(${specialization.id})">
+                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            </button>
+                        </td>
                     </tr>
                     </#list>
-                </#if>
             </tbody>
         </table>
+        <h4 id="no-specializations"
+            <#if employee.specializations?has_content>style="display: none"</#if>class="text-muted">
+            Zamestnanec nemá priradené žiadne špecializácie.</h4>
     </div>
-</div>
-
-<div class="row">
-    <h2>Zamestnanec - ambulancie</h2>
-    <hr>
-
-    <div class="col-md-12">
-        <form class="form-inline" method="POST" action="<@spring.url '/admin/employee/office/add'/>">
-            <div class="form-group">
-                <label for="employee-office">Pridanie ambulancie:</label>
-                <select name="id_office" class="form-control" id="employee-office">
-                    <#list offices as office>
-                        <option value="${office.id}">${office.name}</option>
-                    </#list>
-                </select>
-                <input type="hidden" name="username" value="${employee.username}">
-            </div>
-            <input type="submit" value="Pridaj" class="btn btn-success">
-        </form>
+    <div class="input-group">
+        <input type="text" class="form-control" id="searchTerm" placeholder="Vyhladať špecializáciu..."
+               name="searchTerm">
+        <span class="input-group-btn">
+            <button id="searchButton" class="btn btn-default ladda-button" data-style="zoom-in" onclick="search()">
+                <spanc lass="ladda-label">Hladať</span></button>
+        </span>
     </div>
-
-    <div class="col-md-12">
-        <table class="table table-striped">
+    <div style="display: none" id="search-container">
+        <h3>Nájdené </h3>
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th style="width: 60px;">#</th>
-                <th style="width: 60px;">ID</th>
-                <th>Názov ambulancie</th>
-                <th style="width: 60px;">Akcia</th>
+                <th>Názov</th>
+                <th style="width: 60px;">Pridať</th>
             </tr>
             </thead>
-            <tbody>
-                <#if employee.offices??>
-                    <#list employee.offices as office>
-                    <tr>
-                        <td>${office_index + 1}</td>
-                        <td>${office.id}</td>
-                        <td>${office.name}</td>
-                        <td>
-                            <a href="<@spring.url '/admin/employee/'+employee.username+'/office/'+office.id+'/delete' />"
-                               onclick="return confirm('Naozaj?');">Zmazať</a></td>
-                    </tr>
-                    </#list>
-                </#if>
+            <tbody id="search-results">
             </tbody>
         </table>
+        <h4 id="no-results" class="text-muted">Žiadne nájdené výsledky.</h4>
+    </div>
+
+    <div style="padding-top: 30px" class="form-group">
+        <div>
+            <button id="saveButton" class="btn btn-success ladda-button" data-style="zoom-in" onclick="save()">
+        <span class="ladda-label">
+            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+            Uložiť
+        </span>
+            </button>
+        </div>
     </div>
 </div>
-
+<script src="<@spring.url '/js/admin/employee.js'/>"></script>
 </@pt.dashboardPage>

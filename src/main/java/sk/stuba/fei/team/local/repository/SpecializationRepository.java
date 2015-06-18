@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface SpecializationRepository extends CrudRepository<Specialization, Long> {
 
-    List<Specialization> findByNameContainingIgnoreCase(String name);
+    List<Specialization> findByNameContainingIgnoreCaseAndEnabledTrue(String name);
 }

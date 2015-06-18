@@ -11,14 +11,16 @@ public interface AppointmentService {
 
     void save(Appointment appointment);
 
-    List<Appointment> findByDateAndOffice(Date date, Office office);
+    List<Appointment> findByDateAndOfficeAndEnabled(Date date, Office office);
+
+    List<Appointment> findByDateAfterAndOffice(Date date, Office office);
 
     Iterable<Appointment> findAll();
 
     Iterable<Appointment> findByPatient(Patient patient);
 
-    void delete(Long id);
-
     Appointment findById(Long id);
+
+    void update();
 
 }

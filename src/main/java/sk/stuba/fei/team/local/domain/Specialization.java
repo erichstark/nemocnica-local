@@ -1,15 +1,19 @@
 package sk.stuba.fei.team.local.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @XmlRootElement
 public class Specialization implements Serializable {
 
+    private static final long serialVersionUID = 7118518081051227683L;
     private Long id;
     private String name;
     private Set<Office> offices;
@@ -17,10 +21,10 @@ public class Specialization implements Serializable {
     private Boolean enabled;
 
     public Specialization() {
-    }
-
-    public Specialization(String name) {
-        this.name = name;
+        name = "";
+        offices = new HashSet<>();
+        employees = new HashSet<>();
+        enabled = true;
     }
 
     @Id
@@ -47,7 +51,8 @@ public class Specialization implements Serializable {
     }
 
     public void setOffices(Set<Office> offices) {
-        this.offices = offices;
+        this.offices.clear();
+        this.offices.addAll(offices);
     }
 
     @ManyToMany(mappedBy = "specializations")
@@ -56,7 +61,8 @@ public class Specialization implements Serializable {
     }
 
     public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
+        this.employees.clear();
+        this.employees.addAll(employees);
     }
 
     @Column(nullable = false)

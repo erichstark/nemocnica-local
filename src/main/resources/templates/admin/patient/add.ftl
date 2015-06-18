@@ -2,13 +2,12 @@
 <#-- @ftlvariable name="patient" type="sk.stuba.fei.team.local.domain.Patient" -->
 <#import "../../lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
-<#if patient.id??>
+<#if patient.username?? && patient.username?has_content>
     <#assign pageTitle>Editácia pacienta</#assign>
 <#else>
     <#assign pageTitle>Pridanie nového pacienta</#assign>
 </#if>
-<@pt.dashboardPage>
-<h1 class="page-header">Pridanie nového pacienta</h1>
+<@pt.dashboardPage pageTitle=pageTitle>
 
 <div class="row">
     <div class="col-md-12">
@@ -24,14 +23,24 @@
     <#else>
     <div class="table-responsive">
         <form name="patient" action="<@spring.url '/admin/patient/save'/>" method="post">
-            <#if patient.id??>
-            <div class="form-group" style="display: none;">
+            <#if patient.username?? && patient.username?has_content>
+                <input type="hidden" name="username" class="form-control" id="patient-username" value="${patient.username}">
+                <input type="hidden" name="password" class="form-control" id="patient-password" value="${patient.password}">
             <#else>
-            <div class="form-group">
+                <div class="form-group">
+                    <label for="patient-username">Používateľské meno</label>
+                    <input type="text" name="username" class="form-control" id="patient-username" placeholder="Používateľské meno">
+                </div>
+                <div class="form-group">
+                    <label for="patient-password">Heslo</label>
+                    <input type="text" name="password" class="form-control" id="patient-password" placeholder="Heslo">
+                </div>
             </#if>
-                <label for="patient-id">ID</label>
-                <input type="text" name="id" class="form-control" id="patient-id" placeholder="ID"
-                       value="${patient.id!""}">
+            <div class="input-group has-warning">
+                <span class="input-group-addon">
+                    <input type="checkbox" name="enabled" value="true" <#if  patient.enabled>checked</#if> >
+                </span>
+                <span class="form-control">Aktivovaný účet</span>
             </div>
             <div class="form-group">
                 <label for="patient-prefix_title">Titul pred</label>
@@ -67,7 +76,7 @@
             </div>
             <div class="form-group">
                 <label for="pationt-insurance">Poisťovňa</label>
-                <select name="id_insurance" class="form-control" id="pationt-insurance">
+                <select name="insurance" class="form-control" id="pationt-insurance">
                     <#list insurances as insurance>
                         <option value="${insurance.id}">${insurance.name}</option>
                     </#list>

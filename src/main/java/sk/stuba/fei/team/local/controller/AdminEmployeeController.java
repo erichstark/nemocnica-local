@@ -1,32 +1,41 @@
 package sk.stuba.fei.team.local.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sk.stuba.fei.team.local.api.AlertMessage;
 import sk.stuba.fei.team.local.domain.Employee;
-import sk.stuba.fei.team.local.domain.Office;
+import sk.stuba.fei.team.local.domain.Specialization;
+import sk.stuba.fei.team.local.domain.ajax.JsonEmployee;
 import sk.stuba.fei.team.local.security.PBKDF2WithHmacSHA1;
 import sk.stuba.fei.team.local.service.EmployeeService;
-import sk.stuba.fei.team.local.service.OfficeService;
+import sk.stuba.fei.team.local.service.SpecializationService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/employee")
 public class AdminEmployeeController {
 
+    final static Logger logger = LoggerFactory.getLogger(AdminEmployeeController.class);
+
     @Autowired
     private EmployeeService employeeService;
     @Autowired
-    private OfficeService officeService;
+    private SpecializationService specializationService;
 
     @RequestMapping("")
     public String index(Map<String, Object> model) {
+        employeeService.update();
         model.put("employees", employeeService.findAll());
         return "admin/employee/index";
     }
@@ -34,109 +43,85 @@ public class AdminEmployeeController {
     @RequestMapping(value = "/add")
     public String add(Map<String, Object> model) {
         model.put("employee", new Employee());
-        model.put("offices", officeService.findAll());
-        return "admin/employee/add";
+        return "admin/employee/edit";
+    }
+
+    @RequestMapping(value = "/specialization/search")
+    public
+    @ResponseBody
+    List<SearchResult> search(@ModelAttribute("searchTerm") String searchTerm) {
+        return specializationService.findByNameAndEnabled(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/save", consumes = "application/json")
+    public
+    @ResponseBody
+    AlertMessage save(@RequestBody JsonEmployee data) {
+
+        Employee employee;
+        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
+
+        if (!employeeService.exists(data.getEmployee().getUsername())) {
+            employee = data.getEmployee();
+
+        } else {
+            employee = employeeService.findOne(data.getEmployee().getUsername());
+            employee.setAccountNonLocked(data.getEmployee().isAccountNonLocked());
+            employee.setAccountNonExpired(data.getEmployee().isAccountNonExpired());
+            employee.setCredentialsNonExpired(data.getEmployee().isCredentialsNonExpired());
+            employee.setEnabled(data.getEmployee().isEnabled());
+            employee.setFirstName(data.getEmployee().getFirstName());
+            employee.setLastName(data.getEmployee().getLastName());
+            employee.setPrefix_title(data.getEmployee().getPrefix_title());
+            employee.setSuffix_title(data.getEmployee().getSuffix_title());
+        }
+
+        if (data.getEmployee().getPassword() != null)
+            employee.setPassword(encoder.encode(data.getEmployee().getPassword()));
+
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(data.getAutority()));
+        employee.setAuthorities(authorities);
+
+        employee.getSpecializations().clear();
+        for (String specId : data.getSpecializations().split(",")) {
+            if(!specId.isEmpty())
+                employee.getSpecializations().add(specializationService.findOne(Long.parseLong(specId)));
+        }
+        employeeService.save(employee);
+        return new AlertMessage(AlertMessage.SUCCESS, "Zamestnanec uložený.");
     }
 
     @RequestMapping(value = "/edit/{username}")
     public String edit(@PathVariable String username, Map<String, Object> model) {
         Employee employee = employeeService.findOne(username);
         model.put("employee", employee);
-        model.put("offices", officeService.findAll());
-
         return "admin/employee/edit";
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String edit(@ModelAttribute("employee") Employee employee, @RequestParam String autority) {
+    private class SearchResult {
+        private Long id;
+        private String name;
 
-        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(autority));
-        employee.setPassword(encoder.encode(employee.getPassword()));
-        employee.setAuthorities(authorities);
-
-        Employee temp = employeeService.findOne(employee.getUsername());
-        employee.setOffices(temp.getOffices());
-
-        employeeService.save(employee);
-
-        return "redirect:/admin/employee";
-    }
-
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String save(@ModelAttribute("employee") Employee employee, @RequestParam String autority) {
-        PasswordEncoder encoder = new PBKDF2WithHmacSHA1();
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(autority));
-        employee.setPassword(encoder.encode(employee.getPassword()));
-        employee.setAuthorities(authorities);
-        employeeService.save(employee);
-        return "redirect:/admin/employee";
-    }
-
-    @RequestMapping(value = "/delete/{username}")
-    public String delete(@PathVariable String username) {
-        //todo remove this request
-        return "redirect:/admin/employee";
-    }
-
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String search(@RequestParam("text") String text, Map<String, Object> model) {
-        Iterable<Employee> employees = employeeService.findByFirstNameOrLastName(text);
-        model.put("search", text);
-        model.put("employees", employees);
-
-        return "admin/employee/index";
-    }
-
-    @RequestMapping(value = "/clear")
-    public String clear(Map<String, Object> model) {
-        model.put("employees", employeeService.findAll());
-
-        return "admin/employee/index";
-    }
-
-    @RequestMapping(value = "/office/add", method = RequestMethod.POST)
-    public String officeAdd(@RequestParam("username") String username, @RequestParam("id_office") Long id_office) {
-        Office office = officeService.findOne(id_office);
-        Employee employee = employeeService.findOne(username);
-        employee.getOffices().add(office);
-        office.getEmployees().add(employee);
-        employeeService.save(employee);
-        return "redirect:/admin/employee/edit/" + username;
-    }
-
-    @RequestMapping(value = "{username}/office/{id_office}/delete")
-    public String officeDelete(@PathVariable("username") String username, @PathVariable("id_office") Long id_office) {
-        Employee employee = employeeService.findOne(username);
-        Office removeOff = null;
-        for (Office o : employee.getOffices()) {
-            if (o.getId() == id_office) {
-                removeOff = o;
-            }
+        public SearchResult(Specialization specialization) {
+            id = specialization.getId();
+            name = specialization.getName();
         }
 
-        employee.getOffices().remove(removeOff);
-        employeeService.save(employee);
-        return "redirect:/admin/employee/edit/" + username;
-    }
+        public Long getId() {
+            return id;
+        }
 
-    @RequestMapping(value = "/specialization/add", method = RequestMethod.POST)
-    public String specializationAdd(@RequestParam("username") String username, @RequestParam("specialization") String specialization) {
-        Employee employee = employeeService.findOne(username);
-        //TODO fix this
-//        employee.getSpecializations().add(specialization);
-        employeeService.save(employee);
-        return "redirect:/admin/employee/edit/" + username;
-    }
+        public void setId(Long id) {
+            this.id = id;
+        }
 
-    @RequestMapping(value = "{username}/specialization/{specialization}/delete")
-    public String specializationDelete(@PathVariable("username") String username, @PathVariable("specialization") int specialization) {
-        Employee employee = employeeService.findOne(username);
-        //todo specializaca nieje int
-//        employee.getSpecializations().remove(specialization);
-        employeeService.save(employee);
-        return "redirect:/admin/employee/edit/" + username;
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }
