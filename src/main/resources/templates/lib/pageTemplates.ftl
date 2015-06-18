@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="alertMessage" type="sk.stuba.fei.team.local.api.AlertMessage" -->
 <#-- @ftlvariable name="headerText" type="java.lang.String" -->
 <#-- @ftlvariable name="user" type="sk.stuba.fei.team.local.security.CustomUser" -->
 <#-- @ftlvariable name="pageTitle" type="java.lang.String" -->
@@ -139,7 +140,7 @@
             <div id="side-navbar" class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     <li><a href="<@spring.url '/admin'/>">Prehľad</a></li>
-                    <li><a href="<@spring.url '/admin/facility'/>">Zariadenia</a></li>
+                    <li><a href="<@spring.url '/admin/facility'/>">Nastavenie systému</a></li>
                     <li><a href="<@spring.url '/admin/office'/>">Ambulancie</a></li>
                     <li><a href="<@spring.url '/admin/patient'/>">Pacienti</a></li>
                     <li><a href="<@spring.url '/admin/employee'/>">Zamestnanci</a></li>

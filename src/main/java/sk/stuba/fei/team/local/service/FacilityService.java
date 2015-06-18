@@ -6,7 +6,9 @@ import java.util.Date;
 
 public interface FacilityService {
 
-    void save(Facility facility);
+    boolean save(Facility facility);
+
+    boolean exist(String name);
 
     Date getEmployeesUpdateDate();
 

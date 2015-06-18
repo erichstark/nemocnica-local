@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import sk.stuba.fei.team.local.domain.Facility;
 import sk.stuba.fei.team.local.repository.EmployeeRepository;
 import sk.stuba.fei.team.local.security.CustomUser;
 import sk.stuba.fei.team.local.service.FacilityService;
@@ -24,7 +25,8 @@ public class CustomInterceptor extends HandlerInterceptorAdapter {
     EmployeeRepository employeeRepository;
 
     public boolean isSetUp() {
-        return facilityService.getFacility() != null;
+        Facility facility = facilityService.getFacility();
+        return facility != null && facility.getEnabled();
     }
 
     @Override

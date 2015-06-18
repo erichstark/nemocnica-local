@@ -7,7 +7,10 @@
 
     <div id="alertContainer">
     </div>
-    <form id="facility-setup" name="facility" method="post">
+    <form id="facility-setup" name="facility">
+        <h2>Krok 1 <span class="text-muted">>>Krok 2 >> Krok 3</span></h2>
+
+        <h3>Údaje o zariadení</h3>
         <span class="text-muted" style="padding-bottom: 10px">* Povinné údaje</span>
 
         <div class="form-group">
@@ -46,36 +49,51 @@
             <input type="text" name="password" class="form-control" id="password" required>
         </div>
         <div class="form-group">
-            <div>
-                <input type="submit" value="Odoslať" class="btn btn-success">
-            </div>
+            <button type="button" id="setupFacility" class="btn btn-success ladda-button" data-style="zoom-in"
+                    onclick="registerFacility()">
+            <span class="ladda-label">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                Pokračovať
+            </span>
+            </button>
         </div>
     </form>
-    <div id="spinner" class="spinner">
-        <div class="spinner-container container1">
-            <div class="circle1"></div>
-            <div class="circle2"></div>
-            <div class="circle3"></div>
-            <div class="circle4"></div>
-        </div>
-        <div class="spinner-container container2">
-            <div class="circle1"></div>
-            <div class="circle2"></div>
-            <div class="circle3"></div>
-            <div class="circle4"></div>
-        </div>
-        <div class="spinner-container container3">
-            <div class="circle1"></div>
-            <div class="circle2"></div>
-            <div class="circle3"></div>
-            <div class="circle4"></div>
-        </div>
+    <div id="admin">
+        <form>
+            <h2>Krok 1 >> Krok 2 <span class="text-muted">>> Krok 3</span></h2>
+
+            <h3>Vytvorenie administrátorského konta</h3>
+            <span class="text-muted" style="padding-bottom: 10px">* Povinné údaje</span>
+
+            <div class="form-group">
+                <label for="admin-name">Prihlasovacie meno*</label>
+                <input type="text" name="admin-name" class="form-control" id="admin-name" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Heslo*</label>
+                <input type="password" name="admin-password" class="form-control" id="admin-password" required>
+            </div>
+            <span class="text-muted" style="padding-bottom: 10px">Ostatné údaje je možné nastaviť neskôr.</span>
+            <button id="createAdmin" type="button" class="btn btn-success ladda-button" data-style="zoom-in"
+                    onclick="registerAdmin()">
+            <span class="ladda-label">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                Pokračovať
+            </span>
+            </button>
+        </form>
     </div>
     <div id="success">
-        <h3>Inštalácia prebehla úspešne.</h3>
-        <a href="<@spring.url '/'/>" class="btn btn-default btn-lg">
-            <span class="glyphicon glyphicon-home"></span> Home
-        </a>
+        <h2>Krok 1 >> Krok 2 >> Krok 3</h2>
+
+        <h3>Hotovo!</h3>
+
+        <div style="padding-top: 40px" class="form-group">
+            Pre dokončenie inštalácie je nutné sa odhlásiť a následne prihlásiť na vytvorené administrátorské konto.
+            <a href="<@spring.url '/logout'/>" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-home"></span> Odhlásiť
+            </a>
+        </div>
     </div>
 </div>
 </@pt.genericPage>

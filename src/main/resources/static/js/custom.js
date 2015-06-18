@@ -50,43 +50,64 @@ function showMessage(message, type) {
 }
 
 
-$("#facility-setup").submit(function () {
-    var form = $("#facility");
-    var spinner = $("#spinner");
-    var admin = $("#create-admin");
-    var success = $("#success");
-    form.hide();
-    spinner.show();
+function registerFacility() {
+    var spinner = Ladda.create(document.querySelector("#setupFacility"));
+    spinner.start();
     $.ajax({
         type: "POST",
-        url: "/setup",
-        data: form.serialize(),
+        url: "/setup/facility",
+        data: $("#facility-setup").serialize(),
         success: function (data) {
-            spinner.hide();
-            if (data == true) {
-                spinner.hide();
-                success.show();
+            spinner.stop();
+            if (data.type == 2) {
+                $("#facility-setup").hide();
+                $("#admin").show();
             } else {
-                showMessage("Nepodarilo sa nadviazať spojenie s Globálnym serverom. Prosím skontrolujte parametre synchronizácie.", 1);
-                form.show();
+                showMessage(data.message, data.type);
             }
         },
         error: function () {
-            spinner.hide();
+            spinner.stop();
             showMessage("Zlyhala komunikácia so serverom.", 1);
         }
     });
-    return false;
-});
+}
+
+function registerAdmin() {
+    var spinner = Ladda.create(document.querySelector("#createAdmin"));
+    spinner.start();
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        url: "/setup/admin",
+        data: {
+            username: $("#admin-name").val(),
+            password: $("#admin-password").val()
+        },
+        success: function (data) {
+            spinner.stop();
+            if (data.type == 2) {
+                $("#admin").hide();
+                $("#success").show();
+            } else {
+                showMessage(data.message, data.type);
+            }
+        },
+        error: function () {
+            spinner.stop();
+            showMessage("Zlyhala komunikácia so serverom.", 1);
+        }
+    });
+}
 
 function saveFacility() {
-    var form = $("#facility");
     var spinner = Ladda.create(document.querySelector("#saveButton"));
     spinner.start();
     $.ajax({
         type: "POST",
+        dataType: 'json',
         url: "/admin/facility",
-        data: form.serialize(),
+        data: $("#facility").serialize(),
         success: function (data) {
             spinner.stop();
             if (data == true) {

@@ -22,10 +22,20 @@ public class FacilityServiceImpl implements FacilityService {
     private RestConsumer restConsumer;
 
     @Override
-    public void save(Facility facility) {
+    public boolean save(Facility facility) {
         Long id = (Long) restConsumer.post("facility", new FacilityWrapper(facility), Long.class);
+        if (id == -1) {
+            return false;
+        }
         facility.setId(id);
         facilityRepository.save(facility);
+        return true;
+    }
+
+    @Override
+    public boolean exist(String name) {
+        return false;
+//        return (boolean) restConsumer.post("facility/exists", name, Boolean.class);
     }
 
     @Override
