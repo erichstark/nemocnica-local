@@ -50,7 +50,7 @@ public class AdminEmployeeController {
     public
     @ResponseBody
     List<SearchResult> search(@ModelAttribute("searchTerm") String searchTerm) {
-        return specializationService.findByName(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
+        return specializationService.findByNameAndEnabled(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/save", consumes = "application/json")

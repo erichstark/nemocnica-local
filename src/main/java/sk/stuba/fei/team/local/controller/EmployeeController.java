@@ -17,7 +17,6 @@ import sk.stuba.fei.team.local.service.SpecializationService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -73,7 +72,7 @@ public class EmployeeController {
     public
     @ResponseBody
     List<SearchResult> search(@ModelAttribute("searchTerm") String searchTerm) {
-        return specializationService.findByName(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
+        return specializationService.findByNameAndEnabled(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "password")

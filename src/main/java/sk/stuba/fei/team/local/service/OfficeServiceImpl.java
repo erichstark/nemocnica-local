@@ -60,7 +60,7 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public List<Office> findByNameOrEmployeeOrSpecialization(String searchTerm) {
         List<Employee> employees = employeeService.findByFirstNameOrLastNameOrUsername(searchTerm);
-        List<Specialization> specializations = specializationService.findByName(searchTerm);
+        List<Specialization> specializations = specializationService.findByNameAndEnabled(searchTerm);
         return officeRepository.findDistinctOfficesByNameContainingIgnoreCaseOrEmployeesInOrSpecializationsIn(searchTerm, employees, specializations);
     }
 }
