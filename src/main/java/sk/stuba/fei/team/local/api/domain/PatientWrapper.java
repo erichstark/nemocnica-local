@@ -36,9 +36,6 @@ public class PatientWrapper {
         Patient patient = new Patient();
         patient.setPassword(password);
         patient.setUsername(username);
-        patient.setAccountNonExpired(true);
-        patient.setAccountNonLocked(true);
-        patient.setCredentialsNonExpired(true);
         patient.setEnabled(enabled);
         patient.setFirstName(firstName);
         patient.setSurname(surname);
