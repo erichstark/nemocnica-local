@@ -29,8 +29,8 @@ public class SpecializationServiceImpl implements SpecializationService {
     }
 
     @Override
-    public List<Specialization> findByName(String name) {
-        return specializationRepository.findByNameContainingIgnoreCase(name);
+    public List<Specialization> findByNameAndEnabled(String name) {
+        return specializationRepository.findByNameContainingIgnoreCaseAndEnabledTrue(name);
     }
 
     @Override

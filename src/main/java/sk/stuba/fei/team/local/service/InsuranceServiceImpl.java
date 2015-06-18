@@ -29,8 +29,8 @@ public class InsuranceServiceImpl implements InsuranceService {
     }
 
     @Override
-    public List<Insurance> findByName(String name) {
-        return insuranceRepository.findByNameContainingIgnoreCase(name);
+    public List<Insurance> findByNameAndEnabled(String name) {
+        return insuranceRepository.findByNameContainingIgnoreCaseAndEnabledTrue(name);
     }
 
     @Override

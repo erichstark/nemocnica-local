@@ -5,15 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sk.stuba.fei.team.local.api.AlertMessage;
 import sk.stuba.fei.team.local.domain.*;
 import sk.stuba.fei.team.local.service.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -135,7 +132,7 @@ public class AdminOfficeController {
     public
     @ResponseBody
     List<SearchResult> searchSpecialization(@ModelAttribute("searchTerm") String searchTerm) {
-        return specializationService.findByName(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
+        return specializationService.findByNameAndEnabled(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "specialization/save")
@@ -201,7 +198,7 @@ public class AdminOfficeController {
     public
     @ResponseBody
     List<SearchResult> searchInsurance(@ModelAttribute("searchTerm") String searchTerm) {
-        return insuranceService.findByName(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
+        return insuranceService.findByNameAndEnabled(searchTerm).stream().map(SearchResult::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "insurance/save")

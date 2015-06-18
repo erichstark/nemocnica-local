@@ -16,6 +16,7 @@ public class Appointment implements Serializable {
     private Date date;
     private int intervalStart;
     private String note;
+    private boolean enabled;
 
     @Id
     public Long getId() {
@@ -72,5 +73,13 @@ public class Appointment implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

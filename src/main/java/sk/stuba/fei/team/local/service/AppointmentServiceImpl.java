@@ -43,8 +43,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findByDateAndOffice(Date date, Office office) {
-        return appointmentRepository.findByDateAndOffice(date, office);
+    public List<Appointment> findByDateAndOfficeAndEnabled(Date date, Office office) {
+        return appointmentRepository.findByDateAndOfficeAndEnabledTrue(date, office);
     }
 
     @Override

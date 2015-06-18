@@ -64,7 +64,7 @@ public class OfficeController {
         Date date = new Date();
 
         model.put("office", office);
-        model.put("appointments", appointmentService.findByDateAndOffice(clearTimeInDate(date, 0), office));
+        model.put("appointments", appointmentService.findByDateAndOfficeAndEnabled(clearTimeInDate(date, 0), office));
 
         return "office/call";
     }

@@ -11,7 +11,7 @@ public interface AppointmentService {
 
     void save(Appointment appointment);
 
-    List<Appointment> findByDateAndOffice(Date date, Office office);
+    List<Appointment> findByDateAndOfficeAndEnabled(Date date, Office office);
 
     List<Appointment> findByDateAfterAndOffice(Date date, Office office);
 

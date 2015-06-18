@@ -22,6 +22,7 @@
                 <th>Pacient</th>
                 <th>Telefón</th>
                 <th>Email</th>
+                <th>Stav</th>
                 <th style="width: 100px;">Detail</th>
             </tr>
             </thead>
@@ -29,12 +30,13 @@
                 <#list appointments?sort_by('date') as appointment>
                 <tr>
                     <td>${appointment_index+1}</td>
-                    <td>${appointment.date?substring(0,10)}</td>
-                    <td><span>${appointment.intervalStart}</span></td>
+                    <td>${appointment.date?date}</td>
+                    <td>${(appointment.intervalStart/60)?string["0"]}:${(appointment.intervalStart%60)?string["00"]}</td>
                     <td>${appointment.patient.prefix_title!} ${appointment.patient.firstName!} ${appointment.patient.surname!}
                         ${appointment.patient.suffix_title!}</td>
                     <td>${appointment.patient.phone!}</td>
                     <td>${appointment.patient.email!}</td>
+                    <td><@spring.message "canceled." + appointment.patient.enabled /></td>
                     <td><a href="<@spring.url '/office/${office.id}/patientdetail/${appointment.patient.username}'/>"
                            style="color: #5bc0de">
                         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
