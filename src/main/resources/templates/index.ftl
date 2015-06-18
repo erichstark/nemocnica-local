@@ -1,140 +1,41 @@
+<#-- @ftlvariable name="user" type="sk.stuba.fei.team.local.domain.Employee" -->
 <#import "lib/pageTemplates.ftl" as pt>
 <#import "/spring.ftl" as spring>
 <@pt.menuFooterPage pageTitle="Timovy projekt">
+
 <div>
-    <h1 class="text-center">8:11</h1>
-    <h3 class="text-center">5.4.2015</h3>
+    <h1>${user.prefix_title!} ${user.firstName!} ${user.lastName!} ${user.suffix_title!}</h1>
+    <hr>
+
+    <h3>Zoznam ambulancií</h3>
+    <#if user.offices?? && user.offices?has_content>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th style="text-align: left">Názov ambulancie</th>
+                <th>Telefónne číslo</th>
+                <th style="width: 60px; text-align: right">Zobraz</th>
+            </tr>
+            </thead>
+            <tbody>
+                <#list user.offices as office>
+                <tr>
+                    <td>${office_index + 1}</td>
+                    <td style="text-align: left">${office.name}</td>
+                    <td>${office.phone}</td>
+                    <td style="text-align: center">
+                        <a class="btn btn-info btn-sm " href="<@spring.url '/office/' + office.id />">
+                            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+                </#list>
+            </tbody>
+        </table>
+    <#else>
+        <h4 class="text-muted">Nepriradené žiadne ambulancie.</h4>
+    </#if>
 </div>
-<div class="col-xs-6" style="border-right: 1px solid #2c3e50">
-    <button class="btn btn-default">
-        <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-        Vyvolať objednaného
-    </button>
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th>Vyvolať</th>
-            <th>Odobrať</th>
-            <th>Objednávka</th>
-            <th>Čas</th>
-            <th>Detail</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="warning">
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>8:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>8:30</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>9:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>9:30</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>10:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>10:30</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-            <td>A465</td>
-            <td>11:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div class="col-xs-6">
-    <button class="btn btn-default pull-right">
-        <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-        Vyvolať poradové číslo
-    </button>
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th class="text-center">Poradové číslo</th>
-            <th class="text-center">Čas pridania</th>
-            <th class="text-center">Vyvolať</th>
-            <th>Odobrať</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="success">
-            <td>1</td>
-            <td>8:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>8:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>8:00</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>8:10</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>8:10</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>8:10</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        <tr>
-            <td>7</td>
-            <td>8:10</td>
-            <td class="text-center"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span></td>
-            <td class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<button class="btn btn-default pull-right">
-    <td class="text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-    Pridať poradové číslo
-</button>
+
 </@pt.menuFooterPage>

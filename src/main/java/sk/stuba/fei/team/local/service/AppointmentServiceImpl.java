@@ -48,6 +48,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> findByDateAfterAndOffice(Date date, Office office) {
+        return appointmentRepository.findByDateAfterAndOffice(date, office);
+    }
+
+    @Override
     public Iterable<Appointment> findAll() {
 
         return appointmentRepository.findAll();

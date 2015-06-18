@@ -50,6 +50,10 @@
                                 <a href="<@spring.url '/employee/password'/>"><i class="glyphicon glyphicon-user"></i>
                                     Zmena hesla</a>
                             </li>
+                            <li>
+                                <a href="<@spring.url '/'/>"><i class="glyphicon glyphicon-home"></i>
+                                    Ambulancia</a>
+                            </li>
                             <li class="divider"></li>
                             <li>
                                 <a href="<@spring.url '/logout'/>"><i

@@ -13,6 +13,8 @@ public interface AppointmentService {
 
     List<Appointment> findByDateAndOffice(Date date, Office office);
 
+    List<Appointment> findByDateAfterAndOffice(Date date, Office office);
+
     Iterable<Appointment> findAll();
 
     Iterable<Appointment> findByPatient(Patient patient);

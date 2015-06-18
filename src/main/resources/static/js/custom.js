@@ -4,10 +4,14 @@ jQuery(document).ready(function ($) {
     });
     setNavigation();
 
-    if (window.location.href.indexOf("admin/office/edit") > -1) {
+    if (window.location.href.indexOf("admin/office/edit") > -1 || window.location.href.indexOf("patientdetail") > -1
+        || window.location.href.indexOf("orders") > -1) {
         minutesToHour();
     } else if (window.location.href.indexOf("admin/office/hours/") > -1) {
         loadHours();
+    } else if (window.location.href.indexOf("call") > -1) {
+        setDate();
+        minutesToHour();
     }
 });
 

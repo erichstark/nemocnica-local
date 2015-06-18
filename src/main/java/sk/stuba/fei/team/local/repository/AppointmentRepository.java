@@ -16,5 +16,5 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 
     Iterable<Appointment> findByPatient(Patient patient);
 
-
+    List<Appointment> findByDateAfterAndOffice(@Temporal(TemporalType.DATE) Date date, Office office);
 }
